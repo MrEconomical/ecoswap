@@ -7,7 +7,7 @@ import { useState } from "react"
 const WalletManager = () => {
     // Button text
 
-    const [ content, setContent ] = useState(getButtonText());
+    const [ content, setContent ] = useState(getButtonText())
 
     // Get button text
 

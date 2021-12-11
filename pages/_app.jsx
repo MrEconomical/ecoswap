@@ -38,16 +38,17 @@ const App = ({ Component, pageProps }) => (
             }
 
             :root {
-                --background: #F6F6F6;
+                --background: #FFFFFF;
                 --accent: #48BF53;
                 --light-dark: #C8EBCB;
                 --light: #E3F5E5;
-                --black: #111111;
+                --text-black: #111111;
+                --text-light: #999999;
             }
 
             * {
                 font-family: "Gilroy";
-                color: var(--black);
+                color: var(--text-black);
                 box-sizing: border-box;
             }
 
@@ -74,6 +75,7 @@ const App = ({ Component, pageProps }) => (
 
             button {
                 cursor: pointer;
+                padding: 0;
             }
         `}</style>
     </>
