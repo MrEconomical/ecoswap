@@ -2,6 +2,39 @@
 
 import { useState } from "react"
 
+// Swap input component
+
+const SwapInput = () => {
+    // Component
+
+    return (
+        <>
+            <input className="input"></input>
+            <style jsx>{`
+                .input {
+                    width: 65%;
+                    font-size: 1.2rem;
+                    outline: none;
+                    border: 1px solid var(--light-gray);
+                    border-radius: 8px;
+                    padding: 8px 12px;
+                    margin-right: 5%;
+                }
+
+                .input:focus {
+                    border: 1px solid var(--gray);
+                }
+            `}</style>
+        </>
+    )
+}
+
+// Token selection component
+
+const TokenSelect = () => (
+    <>this is token select</>
+)
+
 // Swap interface component
 
 const SwapInterface = () => {
@@ -10,9 +43,82 @@ const SwapInterface = () => {
     return (
         <>
             <div className="interface">
-                this is the interface
+                <div className="token-section">
+                    <SwapInput></SwapInput>
+                    <TokenSelect></TokenSelect>
+                </div>
+                <button className="switch">
+                    <img className="arrows" src="/switch.svg"></img>
+                </button>
+                <div className="token-section">
+                    <div className="output">3</div>
+                    <TokenSelect></TokenSelect>
+                </div>
+                <button className="swap">Swap Tokens</button>
             </div>
             <style jsx>{`
+                .interface {
+                    width: 300px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                }
+
+                .token-section {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                }
+
+                .switch {
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    background-color: var(--light);
+                    border: 1px solid var(--background-color);
+                    border-radius: 20px;
+                    margin: 18px 0;
+                }
+
+                .switch:hover {
+                    border: 1px solid var(--light-dark);
+                }
+
+                .arrows {
+                    width: 20px;
+                    height: 20px;
+                    object-fit: contain;
+                }
+
+                .output {
+                    width: 65%;
+                    font-size: 1.2rem;
+                    border: 1px solid var(--light-gray);
+                    border-radius: 8px;
+                    padding: 8px 12px;
+                    margin-right: 5%;
+                }
+
+                .swap {
+                    width: 100%;
+                    font-size: 1.2rem;
+                    text-align: center;
+                    background-color: var(--light);
+                    border: 1px solid var(--background);
+                    border-radius: 8px;
+                    padding: 12px 0;
+                    margin-top: 18px;
+                }
+
+                .swap:hover {
+                    border: 1px solid var(--light-dark);
+                }
             `}</style>
         </>
     )
@@ -40,15 +146,14 @@ const Swap = () => (
     <>
         <div className="content">
             <SwapInterface></SwapInterface>
-            <SwapSettings></SwapSettings>
         </div>
         <style jsx>{`
             .content {
                 width: 100%;
                 height: calc(100vh - 80px);
                 display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
+                flex-direction: row;
+                justify-content: center;
                 align-items: flex-start;
                 padding: 40px 0;
             }
