@@ -48,7 +48,7 @@ const SwapInterface = () => {
                     <TokenSelect></TokenSelect>
                 </div>
                 <button className="switch">
-                    <img className="arrows" src="/switch.svg"></img>
+                    <img className="arrows" src="/icons/switch.svg"></img>
                 </button>
                 <div className="token-section">
                     <div className="output">3</div>

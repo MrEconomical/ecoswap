@@ -104,12 +104,12 @@ const WalletManager = () => {
         <>
             <div className="wallet">
                 <button className="chain" onClick={() => setChainSelectActive(!chainSelectActive)}>
-                    <img className="chain-icon" src={`/tokens/${chains[activeChain].token}.svg`}></img>
+                    <img className="chain-icon" src={`/chains/${chainId}.svg`}></img>
                     {chains[activeChain].name}
                 </button>
                 <button className="connect" onClick={requestConnect}>
                     <div className="connect-content">
-                        <img className="connect-icon" src="/wallet.svg"></img>
+                        <img className="connect-icon" src="/icons/wallet.svg"></img>
                         {buttonText}
                     </div>
                 </button>
@@ -117,7 +117,7 @@ const WalletManager = () => {
                     <div className="chain-select">
                         {chainIds.slice(0, chainIds.indexOf(activeChain)).concat(chainIds.slice(chainIds.indexOf(activeChain) + 1)).map(chainId => (
                             <button className="switch-chain" onClick={() => requestSwitch(chainId)} key={chainId}>
-                                <img className="switch-icon" src={`/tokens/${chains[chainId].token}.svg`}></img>
+                                <img className="switch-icon" src={`/chains/${chainId}.svg`}></img>
                                 {chains[chainId].name}
                             </button>
                         ))}
