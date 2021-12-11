@@ -11,12 +11,7 @@ const WalletManager = () => {
     // Wallet data
 
     const { enabled, chain, account } = useEthereum()
-    const [ forceUpdate, setForceUpdate ] = useState(0)
     const [ chainSelectActive, setChainSelectActive ] = useState(false)
-
-    useEffect(() => {
-        setForceUpdate(forceUpdate ++)
-    }, [])
 
     // Connect to MetaMask
 
@@ -63,7 +58,7 @@ const WalletManager = () => {
         <>
             <div className="wallet">
                 <button className="chain" onClick={() => setChainSelectActive(!chainSelectActive)}>
-                    <img className="chain-icon" src={`/chains/${chain.id}.svg`} prop={forceUpdate}></img>
+                    <img className="chain-icon" src={`/chains/${chain.id}.svg`}></img>
                     {chain.name}
                 </button>
                 <button className="connect" onClick={requestConnect}>
