@@ -22,6 +22,7 @@ for (const id in chainData) {
 function useEthereum() {
     // Default Ethereum application state
 
+    const [ enabled, setEnabled ] = useState(false) // non-responsive
     const [ chain, setChain ] = useState(chains["0x1"])
     const [ account, setAccount ] = useState(null)
 
@@ -43,6 +44,7 @@ function useEthereum() {
     // Run initial client side update
 
     useEffect(() => {
+        setEnabled(typeof ethereum !== "undefined")
         updateAccount()
         updateChain()
     }, [])
@@ -67,6 +69,7 @@ function useEthereum() {
     // Ethereum data
 
     return {
+        enabled,
         web3,
         chain,
         account,
