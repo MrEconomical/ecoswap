@@ -1,22 +1,37 @@
 {
     "0x1": {
         "name": "Ethereum",
-        "token": "eth"
+        "fullName": "Ethereum",
+        "token": "eth",
+        "rpc": "",
+        "explorer": "https://etherscan.io"
     },
     "0x89": {
         "name": "Polygon",
-        "token": "matic"
+        "fullName": "Polygon Network",
+        "token": "matic",
+        "rpc": "https://polygon-rpc.com",
+        "explorer": "https://polygonscan.com"
     },
     "0xfa": {
         "name": "Fantom",
-        "token": "ftm"
+        "fullName": "Fantom Network",
+        "token": "ftm",
+        "rpc": "https://rpc.ftm.tools",
+        "explorer": "https://ftmscan.com"
     },
     "0xa86a": {
         "name": "Avalanche",
-        "token": "avax"
+        "fullName": "Avalanche Network",
+        "token": "avax",
+        "rpc": "https://api.avax.network/ext/bc/C/rpc",
+        "explorer": "https://snowtrace.io"
     },
     "0x38": {
         "name": "Binance SC",
-        "token": "bnb"
+        "fullName": "Binance Smart Chain",
+        "token": "bnb",
+        "rpc": "https://bsc-dataseed.binance.org",
+        "explorer": "https://bscscan.com"
     }
 }

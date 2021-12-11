@@ -3,6 +3,8 @@
 import chains from "../data/chains"
 import { useEffect, useState } from "react"
 
+const chainIds = Object.keys(chains)
+
 // Wallet manager component
 
 const WalletManager = () => {
@@ -10,6 +12,7 @@ const WalletManager = () => {
 
     const [ buttonText, setButtonText ] = useState("Enable Ethereum")
     const [ activeChain, setActiveChain ] = useState("0x1")
+    const [ chainSelectActive, setChainSelectActive ] = useState(false)
 
     useEffect(() => {
         updateButtonText()
@@ -66,12 +69,33 @@ const WalletManager = () => {
         }
     }
 
+    // Switch wallet to chain ID
+
+    async function requestSwitch(chainId) {
+        if (typeof ethereum !== "undefined") {
+            await ethereum.request({
+                method: "eth_addEthereumChain",
+                params: [{
+                    chainId,
+                    chainName: chains[chainId].fullName,
+                    nativeCurrency: {
+                        name: chains[chainId].token.toUpperCase(),
+                        symbol: chains[chainId].token.toUpperCase(),
+                        decimals: 18
+                    },
+                    rpcUrls: [chains[chainId].rpc],
+                    blockExplorerUrls: [chains[chainId].explorer]
+                }]
+            })
+        }
+    }
+
     // Component
 
     return (
         <>
             <div className="wallet">
-                <button className="chain">
+                <button className="chain" onClick={() => setChainSelectActive(!chainSelectActive)}>
                     <img className="chain-icon" src={`/tokens/${chains[activeChain].token}.svg`}></img>
                     {chains[activeChain].name}
                 </button>
@@ -81,9 +105,22 @@ const WalletManager = () => {
                         {buttonText}
                     </div>
                 </button>
+                {chainSelectActive ? (
+                    <div className="chain-select">
+                        {chainIds.slice(0, chainIds.indexOf(activeChain)).concat(chainIds.slice(chainIds.indexOf(activeChain) + 1)).map(chainId => (
+                            <button className="switch-chain" onClick={() => requestSwitch(chainId)}>
+                                <img className="switch-icon" src={`/tokens/${chains[chainId].token}.svg`}></img>
+                                {chains[chainId].name}
+                            </button>
+                        ))}
+                    </div>
+                ) : (
+                    <></>
+                )}
             </div>
             <style jsx>{`
                 .wallet {
+                    position: relative;
                     display: flex;
                     flex-direction: row;
                     justify-content: center;
@@ -108,6 +145,46 @@ const WalletManager = () => {
                     height: 0.8rem;
                     object-fit: contain;
                     margin-right: 0.75rem;
+                }
+
+                .chain-select {
+                    position: absolute;
+                    top: calc(8px * 2 + 1.1rem + 1rem);
+                    left: 0;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                    border: 1px solid var(--light-dark);
+                    border-radius: 8px;
+                }
+
+                .switch-chain {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    padding: 8px 16px;
+                }
+
+                .switch-chain:first-child {
+                    border-radius: 8px 8px 0 0;
+                }
+
+                .switch-chain:last-child {
+                    border-radius: 0 0 8px 8px;
+                }
+
+                .switch-chain:hover {
+                    background-color: var(--light);
+                }
+
+                .switch-icon {
+                    width: 0.7rem;
+                    height: 0.7rem;
+                    object-fit: contain;
+                    margin-right: 0.68rem;
                 }
 
                 .connect {
