@@ -1,32 +1,49 @@
 // Files and modules
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 // Wallet manager component
 
 const WalletManager = () => {
     // Button text
 
-    const [ content, setContent ] = useState(getButtonText())
+    const [ buttonText, setButtonText ] = useState("Enable Ethereum")
+    useEffect(updateButtonText, [])
+    useEffect(() => {
+        // Set MetaMask listeners
+
+        if (typeof ethereum !== "undefined" && !ethereum.walletInitialized) {
+            ethereum.walletInitialized = true
+            ethereum.on("accountsChanged", updateButtonText)
+        }
+
+        // Remove MetaMask listeners
+
+        return () => {
+            if (typeof ethereum !== "undefined") {
+                ethereum.walletInitialized = false
+                ethereum.removeListener("accountsChanged", updateButtonText)
+            }
+        }
+    })
 
     // Get button text
 
-    function getButtonText() {
+    function updateButtonText() {
         if (typeof ethereum === "undefined") {
-            return "Enable Ethereum"
+            setButtonText("Enable Ethereum")
         } else if (!ethereum.selectedAddress) {
-            return "Connect Wallet"
+            setButtonText("Connect Wallet")
         } else {
-            return `${ethereum.selectedAddress.slice(0, 6)}...${ethereum.selectedAddress.slice(-4)}`
+            setButtonText(`${ethereum.selectedAddress.slice(0, 6)}...${ethereum.selectedAddress.slice(-4)}`)
         }
     }
 
     // Connect to MetaMask
 
-    async function connectWallet() {
+    async function requestConnect() {
         if (typeof ethereum !== "undefined") {
             await ethereum.request({ method: "eth_requestAccounts" })
-            setContent(getButtonText())
         }
     }
 
@@ -34,7 +51,12 @@ const WalletManager = () => {
 
     return (
         <>
-            <button className="connect" onClick={connectWallet}>{content}</button>
+            <button className="connect" onClick={requestConnect}>
+                <div className="connect-content">
+                    <img className="connect-icon" src="/wallet.svg"></img>
+                    {buttonText}
+                </div>
+            </button>
             <style jsx>{`
                 .connect {
                     font-size: 1.1rem;
@@ -47,6 +69,20 @@ const WalletManager = () => {
 
                 .connect:hover {
                     border: 1px solid var(--light-dark);
+                }
+
+                .connect-content {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .connect-icon {
+                    width: 0.8rem;
+                    height: 0.8rem;
+                    object-fit: contain;
+                    margin-right: 0.75rem;
                 }
             `}</style>
         </>
