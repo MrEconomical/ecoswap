@@ -37,12 +37,22 @@ const App = ({ Component, pageProps }) => (
                 src: url("/gilroy/Gilroy-Medium.woff2") format("woff2");
             }
 
+            :root {
+                --background: #F6F6F6;
+                --accent: #48BF53;
+                --light-dark: #C8EBCB;
+                --light: #E3F5E5;
+                --black: #111111;
+            }
+
             * {
                 font-family: "Gilroy";
+                color: var(--black);
                 box-sizing: border-box;
             }
 
             body {
+                background-color: var(--background);
                 margin: 0;
             }
 
@@ -59,6 +69,10 @@ const App = ({ Component, pageProps }) => (
             a {
                 color: initial;
                 text-decoration: initial;
+                cursor: pointer;
+            }
+
+            button {
                 cursor: pointer;
             }
         `}</style>
