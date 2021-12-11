@@ -5,11 +5,36 @@ import { useState } from "react"
 // Wallet manager component
 
 const WalletManager = () => {
+    // Button text
+
+    const [ content, setContent ] = useState(getButtonText());
+
+    // Get button text
+
+    function getButtonText() {
+        if (typeof ethereum === "undefined") {
+            return "Enable Ethereum"
+        } else if (!ethereum.selectedAddress) {
+            return "Connect Wallet"
+        } else {
+            return `${ethereum.selectedAddress.slice(0, 6)}...${ethereum.selectedAddress.slice(-4)}`
+        }
+    }
+
+    // Connect to MetaMask
+
+    async function connectWallet() {
+        if (typeof ethereum !== "undefined") {
+            await ethereum.request({ method: "eth_requestAccounts" })
+            setContent(getButtonText())
+        }
+    }
+
     // Component
 
     return (
         <>
-            <button className="connect">{content}</button>
+            <button className="connect" onClick={connectWallet}>{content}</button>
             <style jsx>{`
                 .connect {
                     font-size: 1.1rem;
