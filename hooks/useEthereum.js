@@ -24,14 +24,13 @@ function useEthereum() {
 
     const [ enabled, setEnabled ] = useState(typeof ethereum !== "undefined")
     const [ chain, setChain ] = useState(chains["0x1"])
-    const [ account, setAccount ] = useState(enabled ? ethereum.selectedAccount : null)
+    const [ account, setAccount ] = useState(enabled ? ethereum.selectedAddress : null)
 
     // Update active account
 
     function updateAccount() {
-        if (enabled) {
-            setAccount(ethereum.selectedAccount)
-        }
+        if (!enabled) return
+        setAccount(ethereum.selectedAddress)
     }
 
     // Update active chain
@@ -42,7 +41,7 @@ function useEthereum() {
         }
     }
     
-    // Check window.ethereum enabled
+    // Set initial client side data values
 
     useEffect(() => {
         setEnabled(typeof ethereum !== "undefined")
