@@ -28,7 +28,30 @@ const SwapInput = () => {
 // Token selection component
 
 const TokenSelect = () => (
-    <>this is token select</>
+    <>
+        <button className="select">
+            WETH
+            <img className="arrow" src="/icons/arrow-down.svg"></img>
+        </button>
+        <style jsx>{`
+            .select {
+                width: 30%;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                font-size: 1.2rem;
+                padding: 9px 0;
+            }
+
+            .arrow {
+                width: 0.9rem;
+                height: 0.9rem;
+                object-fit: contain;
+                margin-left: 0.5rem;
+            }
+        `}</style>
+    </>
 )
 
 // Swap interface component

@@ -34,7 +34,7 @@ const App = ({ Component, pageProps }) => (
         <style jsx global>{`
             @font-face {
                 font-family: "Gilroy";
-                src: url("/gilroy/Gilroy-Medium.woff2") format("woff2");
+                src: url("/fonts/Gilroy-Medium.woff2") format("woff2");
             }
 
             :root {
