@@ -1,7 +1,3 @@
-// Files and modules
-
-import { useState } from "react"
-
 // Swap input component
 
 const SwapInput = () => {
