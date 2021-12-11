@@ -23,7 +23,7 @@ function useEthereum() {
     // Ethereum application state
 
     const [ enabled, setEnabled ] = useState(typeof ethereum !== "undefined")
-    const [ chain, setChain ] = useState(chains["0x1"])
+    const [ chain, setChain ] = useState(enabled && chains[ethereum.chainId] ? chains[ethereum.chainId] : chains["0x1"])
     const [ account, setAccount ] = useState(enabled ? ethereum.selectedAddress : null)
 
     // Update active account
