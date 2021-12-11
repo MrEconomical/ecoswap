@@ -10,7 +10,7 @@ const chainIds = Object.keys(chains)
 const WalletManager = () => {
     // Wallet data
 
-    const { enabled, chain, account } = useEthereum()
+    const { chain, account } = useEthereum()
     const [ forceUpdate, setForceUpdate ] = useState(0)
     const [ chainSelectActive, setChainSelectActive ] = useState(false)
 
@@ -21,14 +21,14 @@ const WalletManager = () => {
     // Connect to MetaMask
 
     async function requestConnect() {
-        if (!enabled) return
+        if (typeof ethereum === "undefined") return
         await ethereum.request({ method: "eth_requestAccounts" })
     }
 
     // Switch wallet to chain ID
 
     async function requestSwitch(chainId) {
-        if (!enabled) return
+        if (typeof ethereum === "undefined") return
         setChainSelectActive(false)
         try {
             await ethereum.request({
@@ -65,7 +65,7 @@ const WalletManager = () => {
                 <button className="connect" onClick={requestConnect}>
                     <div className="connect-content">
                         <img className="connect-icon" src="/icons/wallet.svg"></img>
-                        {enabled ? account ? `${account.slice(0, 6)}...${account.slice(-4)}` : "Connect Wallet" : "Enable Ethereum"}
+                        {typeof ethereum !== "undefined" ? account ? `${account.slice(0, 6)}...${account.slice(-4)}` : "Connect Wallet" : "Enable Ethereum"}
                     </div>
                 </button>
                 {chainSelectActive ? (

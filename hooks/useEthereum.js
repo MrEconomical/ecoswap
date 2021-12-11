@@ -22,7 +22,6 @@ for (const id in chainData) {
 function useEthereum() {
     // Default Ethereum application state
 
-    const [ enabled, setEnabled ] = useState(false)
     const [ chain, setChain ] = useState(chains["0x1"])
     const [ account, setAccount ] = useState(null)
 
@@ -44,18 +43,8 @@ function useEthereum() {
     // Run initial client side update
 
     useEffect(() => {
-        setEnabled(typeof ethereum !== "undefined")
         updateAccount()
         updateChain()
-    }, [])
-
-    // Check window.ethereum enabled
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setEnabled(typeof ethereum !== "undefined")
-        }, 200)
-        return () => clearInterval(interval)
     }, [])
 
     // Set MetaMask listeners
@@ -78,7 +67,6 @@ function useEthereum() {
     // Ethereum data
 
     return {
-        enabled,
         web3,
         chain,
         account,
