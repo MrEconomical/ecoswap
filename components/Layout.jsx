@@ -1,20 +1,28 @@
 // Files and modules
 
+import chains from "../data/chains"
 import { useEffect, useState } from "react"
 
 // Wallet manager component
 
 const WalletManager = () => {
-    // Button text
+    // Wallet display
 
     const [ buttonText, setButtonText ] = useState("Enable Ethereum")
-    useEffect(updateButtonText, [])
+    const [ activeChain, setActiveChain ] = useState("0x1")
+
+    useEffect(() => {
+        updateButtonText()
+        updateActiveChain()
+    }, [])
+
     useEffect(() => {
         // Set MetaMask listeners
 
         if (typeof ethereum !== "undefined" && !ethereum.walletInitialized) {
             ethereum.walletInitialized = true
             ethereum.on("accountsChanged", updateButtonText)
+            ethereum.on("chainChanged", updateActiveChain)
         }
 
         // Remove MetaMask listeners
@@ -23,6 +31,7 @@ const WalletManager = () => {
             if (typeof ethereum !== "undefined") {
                 ethereum.walletInitialized = false
                 ethereum.removeListener("accountsChanged", updateButtonText)
+                ethereum.removeListener("chainChanged", updateActiveChain)
             }
         }
     })
@@ -39,6 +48,16 @@ const WalletManager = () => {
         }
     }
 
+    // Get active chain
+
+    function updateActiveChain() {
+        if (typeof ethereum === "undefined" || !ethereum.selectedAddress) {
+            setActiveChain("0x1")
+        } else if (chains[ethereum.chainId]) {
+            setActiveChain(ethereum.chainId)
+        }
+    }
+
     // Connect to MetaMask
 
     async function requestConnect() {
@@ -51,20 +70,52 @@ const WalletManager = () => {
 
     return (
         <>
-            <button className="connect" onClick={requestConnect}>
-                <div className="connect-content">
-                    <img className="connect-icon" src="/wallet.svg"></img>
-                    {buttonText}
-                </div>
-            </button>
+            <div className="wallet">
+                <button className="chain">
+                    <img className="chain-icon" src={`/tokens/${chains[activeChain].token}.svg`}></img>
+                    {chains[activeChain].name}
+                </button>
+                <button className="connect" onClick={requestConnect}>
+                    <div className="connect-content">
+                        <img className="connect-icon" src="/wallet.svg"></img>
+                        {buttonText}
+                    </div>
+                </button>
+            </div>
             <style jsx>{`
+                .wallet {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    margin-left: auto;
+                }
+
+                .chain {
+                    font-size: 1.1rem;
+                    border: 1px solid var(--light-dark);
+                    border-radius: 8px;
+                    padding: 8px 36px;
+                    margin-right: 1rem;
+                }
+
+                .chain:hover {
+                    background-color: var(--light);
+                }
+
+                .chain-icon {
+                    width: 0.8rem;
+                    height: 0.8rem;
+                    object-fit: contain;
+                    margin-right: 0.75rem;
+                }
+
                 .connect {
                     font-size: 1.1rem;
                     background-color: var(--light);
                     border: 1px solid var(--background);
                     border-radius: 8px;
                     padding: 8px 36px;
-                    margin-left: auto;
                 }
 
                 .connect:hover {

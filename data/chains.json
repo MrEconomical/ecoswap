@@ -1,17 +1,22 @@
 {
     "0x1": {
-        "name": "Ethereum"
+        "name": "Ethereum",
+        "token": "eth"
     },
     "0x89": {
-        "name": "Polygon"
+        "name": "Polygon",
+        "token": "matic"
     },
     "0xfa": {
-        "name": "Fantom"
+        "name": "Fantom",
+        "token": "ftm"
     },
     "0xa86a": {
-        "name": "Avalanche"
+        "name": "Avalanche",
+        "token": "avax"
     },
     "0x38": {
-        "name": "Binance Smart Chain"
+        "name": "Binance SC",
+        "token": "bnb"
     }
 }

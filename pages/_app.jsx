@@ -76,6 +76,7 @@ const App = ({ Component, pageProps }) => (
 
             button {
                 cursor: pointer;
+                background-color: transparent;
                 padding: 0;
             }
         `}</style>
