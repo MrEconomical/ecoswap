@@ -52,12 +52,28 @@ const WalletManager = () => {
         }
     }
 
+    // Detect click off chain select
+
+    useEffect(() => {
+        function clickOff(event) {
+            if (
+                document.getElementById("chain-select") &&
+                !event.path.includes(document.getElementById("select-chain")) &&
+                !event.path.includes(document.getElementById("chain-select"))
+            ) {
+                setChainSelectActive(false)
+            }
+        }
+        document.documentElement.addEventListener("click", clickOff)
+        return () => document.documentElement.removeEventListener("click", clickOff)
+    }, [])
+
     // Component
 
     return (
         <>
             <div className="wallet">
-                <button className="chain" onClick={() => setChainSelectActive(!chainSelectActive)}>
+                <button id="select-chain" className="chain" onClick={() => setChainSelectActive(!chainSelectActive)}>
                     <img className="chain-icon" src={`/chains/${chain.id}.svg`}></img>
                     {chain.name}
                 </button>
@@ -68,7 +84,7 @@ const WalletManager = () => {
                     </div>
                 </button>
                 {chainSelectActive ? (
-                    <div className="chain-select">
+                    <div id="chain-select" className="chain-select">
                         {chainIds.slice(0, chainIds.indexOf(chain.id)).concat(chainIds.slice(chainIds.indexOf(chain.id) + 1)).map(chainId => (
                             <button className="switch-chain" onClick={() => requestSwitch(chainId)} key={chainId}>
                                 <img className="switch-icon" src={`/chains/${chainId}.svg`}></img>
@@ -121,6 +137,7 @@ const WalletManager = () => {
                     flex-direction: column;
                     justify-content: flex-start;
                     align-items: flex-start;
+                    z-index: 1;
                     border: 1px solid var(--light-dark);
                     border-radius: 8px;
                 }
@@ -131,6 +148,7 @@ const WalletManager = () => {
                     flex-direction: row;
                     justify-content: flex-start;
                     align-items: center;
+                    background-color: var(--background);
                     padding: 8px 16px;
                 }
 
