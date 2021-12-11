@@ -16,20 +16,20 @@ for (const id in chainData) {
         tokens: require(`../data/tokens/${id}.json`)
     }
 }
-console.log(chains)
 
 // Ethereum hook
 
 function useEthereum() {
     // Ethereum application state
 
+    const [ enabled, setEnabled ] = useState(typeof ethereum !== "undefined")
     const [ chain, setChain ] = useState(chains["0x1"])
-    const [ account, setAccount ] = useState(typeof ethereum !== "undefined" ? ethereum.selectedAccount : null)
+    const [ account, setAccount ] = useState(enabled ? ethereum.selectedAccount : null)
 
     // Update active account
 
     function updateAccount() {
-        if (typeof ethereum !== "undefined") {
+        if (enabled) {
             setAccount(ethereum.selectedAccount)
         }
     }
@@ -37,21 +37,31 @@ function useEthereum() {
     // Update active chain
 
     function updateChain() {
-        if (typeof ethereum !== "undefined" && chains[ethereum.chainId]) {
+        if (enabled && chains[ethereum.chainId]) {
             setChain(chains[ethereum.chainId])
         }
     }
+    
+    // Check window.ethereum enabled
+
+    useEffect(() => {
+        setEnabled(typeof ethereum !== "undefined")
+        const interval = setInterval(() => {
+            setEnabled(typeof ethereum !== "undefined")
+        }, 200)
+        return () => clearInterval(interval)
+    }, [])
 
     // Set MetaMask listeners
 
     useEffect(() => {
-        if (typeof ethereum !== "undefined" && !ethereum.initialized) {
+        if (enabled && !ethereum.initialized) {
             ethereum.initialized = true
             ethereum.on("accountsChanged", updateAccount)
             ethereum.on("chainChanged", updateChain)
         }
         return () => {
-            if (typeof ethereum !== "undefined") {
+            if (enabled) {
                 ethereum.initialized = false
                 ethereum.removeListener("accountsChanged", updateAccount)
                 ethereum.removeListener("chainChanged", updateChain)
@@ -62,6 +72,7 @@ function useEthereum() {
     // Ethereum data
 
     return {
+        enabled,
         web3,
         chain,
         account,
@@ -71,4 +82,5 @@ function useEthereum() {
 
 // Exports
 
+export { chains }
 export default useEthereum
