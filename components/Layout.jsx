@@ -90,8 +90,19 @@ const NavBar = () => (
 
 // Layout component
 
-const Layout = () => (
-    <NavBar></NavBar>
+const Layout = ({ children }) => (
+    <>
+        <NavBar></NavBar>
+        <div className="content">
+            {children}
+        </div>
+        <style jsx>{`
+            .content {
+                width: 100%;
+                padding: 0 max(calc(50vw - 550px), 20px);
+            }
+        `}</style>
+    </>
 )
 
 // Exports
