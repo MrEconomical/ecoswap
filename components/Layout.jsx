@@ -1,6 +1,7 @@
 // Files and modules
 
 import chains from "../data/chains"
+import useEthereum from "../hooks/useEthereum"
 import { useEffect, useState } from "react"
 
 const chainIds = Object.keys(chains)
@@ -10,6 +11,7 @@ const chainIds = Object.keys(chains)
 const WalletManager = () => {
     // Wallet display
 
+    useEthereum()
     const [ buttonText, setButtonText ] = useState("Enable Ethereum")
     const [ activeChain, setActiveChain ] = useState("0x1")
     const [ chainSelectActive, setChainSelectActive ] = useState(false)
@@ -86,8 +88,8 @@ const WalletManager = () => {
                         chainId,
                         chainName: chains[chainId].fullName,
                         nativeCurrency: {
-                            name: chains[chainId].token.toUpperCase(),
-                            symbol: chains[chainId].token.toUpperCase(),
+                            name: chains[chainId].token,
+                            symbol: chains[chainId].token,
                             decimals: 18
                         },
                         rpcUrls: [chains[chainId].rpc],
@@ -104,7 +106,7 @@ const WalletManager = () => {
         <>
             <div className="wallet">
                 <button className="chain" onClick={() => setChainSelectActive(!chainSelectActive)}>
-                    <img className="chain-icon" src={`/chains/${chainId}.svg`}></img>
+                    <img className="chain-icon" src={`/chains/${activeChain}.svg`}></img>
                     {chains[activeChain].name}
                 </button>
                 <button className="connect" onClick={requestConnect}>
