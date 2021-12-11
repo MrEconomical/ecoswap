@@ -1,0 +1,17 @@
+{
+    "0x1": {
+        "name": "Ethereum"
+    },
+    "0x89": {
+        "name": "Polygon"
+    },
+    "0xfa": {
+        "name": "Fantom"
+    },
+    "0xa86a": {
+        "name": "Avalanche"
+    },
+    "0x38": {
+        "name": "Binance Smart Chain"
+    }
+}
