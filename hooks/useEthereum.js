@@ -41,10 +41,9 @@ function useEthereum() {
         }
     }
     
-    // Set initial client side data values
+    // Check window.ethereum enabled
 
     useEffect(() => {
-        setEnabled(typeof ethereum !== "undefined")
         const interval = setInterval(() => {
             setEnabled(typeof ethereum !== "undefined")
         }, 200)
