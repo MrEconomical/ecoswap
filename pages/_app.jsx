@@ -41,14 +41,15 @@ const App = ({ Component, pageProps }) => (
                 --background: #FFFFFF;
                 --accent: #48BF53;
                 --light-dark: #C8EBCB;
-                --light: #E3F5E5;
-                --text-black: #111111;
-                --text-light: #999999;
+                --light: #ECF8Ed;
+                --black: #111111;
+                --gray: #96999E;
+                --light-gray: #C6C9CE;
             }
 
             * {
                 font-family: "Gilroy";
-                color: var(--text-black);
+                color: var(--black);
                 box-sizing: border-box;
             }
 
