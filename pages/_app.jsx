@@ -87,6 +87,22 @@ const App = ({ Component, pageProps }) => (
                 border: none;
                 padding: 0;
             }
+
+            ::-webkit-scrollbar {
+                width: 10px;
+            }
+
+            ::-webkit-scrollbar-track {
+                background-color: #E6E9EE;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background-color: #96999E;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background-color: #76797E;
+            }
         `}</style>
     </>
 )

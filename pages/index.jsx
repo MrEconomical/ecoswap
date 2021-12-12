@@ -37,7 +37,6 @@ const TokenSelect = ({ label, token, setToken, tokens }) => {
     // Selection menu state
 
     const [ menuActive, setMenuActive ] = useState(false)
-    console.log(tokens)
 
     // Component
 
@@ -60,8 +59,14 @@ const TokenSelect = ({ label, token, setToken, tokens }) => {
                         <input className="search"></input>
                     </div>
                     <div className="tokens">
-                        {tokens.map(token => (
-                            <button className="token">{token.name}</button>
+                        {tokens.map((token, i) => (
+                            <button className="token" key={i}>
+                                <img className="icon" src={`/tokens/${token.symbol}.svg`}></img>
+                                <div className="info">
+                                    <div className="name">{token.name} - {token.symbol}</div>
+                                    <div className="balance">0</div>
+                                </div>
+                            </button>
                         ))}
                     </div>
                 </div>
@@ -142,10 +147,51 @@ const TokenSelect = ({ label, token, setToken, tokens }) => {
 
                 .tokens {
                     width: 100%;
+                    height: 100%;
                     display: flex;
                     flex-direction: column;
                     justify-content: flex-start;
                     align-items: flex-start;
+                    overflow: auto;
+                }
+
+                .token {
+                    width: calc(100% - 8px);
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    border: 1px solid var(--background);
+                    border-radius: 8px;
+                    padding: 12px;
+                    margin-right: 8px;
+                }
+
+                .token:hover {
+                    border: 1px solid var(--light-dark);
+                }
+
+                .icon {
+                    width: 2.5rem;
+                    height: 2.5rem;
+                    object-fit: contain;
+                    margin-right: 1rem;
+                }
+
+                .info {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                }
+
+                .name {
+                    text-align: left;
+                    margin-bottom: 3px;
+                }
+
+                .balance {
+                    color: var(--gray);
                 }
             `}</style>
         </>
