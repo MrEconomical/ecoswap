@@ -49,7 +49,6 @@ const EthereumContextProvider = ({ children }) => {
         const [ tokenBalances, setTokenBalances ] = useState(balances)
         chains[id].tokenBalances = tokenBalances
         chains[id].setTokenBalances = setTokenBalances
-        console.log(chains[id])
 
         // Initialize swap state
 
@@ -80,6 +79,11 @@ const EthereumContextProvider = ({ children }) => {
         if (!account) return
         const balances = {}
         const tokens = Object.keys(chain.tokenBalances)
+        console.log("before update:", chain.tokenBalances, tokens)
+        for (const token of tokens) {
+            balances[token] = BN(Math.floor(Math.random() * 5))
+        }
+        /*
         let index = 0
         for (let t = 0; t < 5; t ++) {
             // Run concurrent tasks
@@ -92,15 +96,17 @@ const EthereumContextProvider = ({ children }) => {
                     return
                 }
                 const token = tokens[index ++]
+                console.log("my token:", token, typeof token, balances[token])
                 if (token === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
                     balances[token] = BN(await chain.web3.eth.getBalance(account))
                 } else {
                     const Token = new chain.web3.eth.Contract(ERC20ABI, token)
                     balances[token] = BN(await Token.methods.balanceOf(account).call())
                 }
+                console.log("after:", balances[token])
             }, 50)
-        }
-        console.log(balances)
+        }*/
+        console.log("finished updating balances:", balances, Object.keys(balances))
         chain.setTokenBalances(balances)
     }
 

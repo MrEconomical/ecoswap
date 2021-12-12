@@ -2,6 +2,7 @@
 
 import EthereumContext from "../state/EthereumContext"
 import PriceContext from "../state/PriceContext"
+import { parse, format } from "../helpers/number"
 import { useContext, useEffect, useState } from "react"
 
 // Swap input component
@@ -69,6 +70,11 @@ const TokenSelect = ({ label, type, chain }) => {
         setTokenList(chain.tokens)
     }, [chain, opposite])
 
+    useEffect(() => {
+        console.log("updated token balances:")
+        console.log(Object.keys(chain.tokenBalances))
+    }, [chain.tokenBalances])
+
     // Component
 
     return (
@@ -95,7 +101,7 @@ const TokenSelect = ({ label, type, chain }) => {
                                 <img className="icon" src={`/tokens/${token.default ? token.symbol : "unknown"}.svg`}></img>
                                 <div className="info">
                                     <div className="name">{token.name} - {token.symbol}</div>
-                                    <div className="balance">0</div>
+                                    <div className="balance">{parse(chain.tokenBalances[token.address])}</div>
                                 </div>
                             </button>
                         ))}
