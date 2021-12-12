@@ -3,16 +3,61 @@
 import EthereumContext from "../state/EthereumContext"
 import PriceContext from "../state/PriceContext"
 import quoteSwap from "../swap/quote"
-import { parse, format } from "../helpers/number"
+import { parse, unparse, format } from "../helpers/number"
 import { useContext, useEffect, useState } from "react"
 
 // Swap input component
 
 const SwapInput = ({ onChange }) => {
-    // Handle swap input change
+    // Input data
+
+    const [ inputBefore, setInputBefore ] = useState("")
+
+    // Format swap input on change
 
     function handleChange(event) {
-        console.log("changed")
+        if (event.target.value === "") return
+        if (!/^[0-9,.]+$/g.test(event.target.value)) {
+            event.target.value = inputBefore
+            return
+        }
+        let insert = 0
+        while (event.target.value[insert] === inputBefore[insert]) {
+            insert ++
+            if (!event.target.value[insert] && !inputBefore[insert]) break
+        }
+        if (!event.target.value.endsWith(".")) {
+            if (event.target.value.includes(".")) {
+                event.target.value = format(event.target.value, event.target.value.length - event.target.value.indexOf(".") - 1)
+            } else {
+                event.target.value = format(event.target.value, 0)
+            }
+        }
+        if (event.target.value.length === 1) {
+            event.target.selectionEnd = 1
+        } else {
+            let count = 0
+            for (let c = 0; c < insert; c ++) {
+                if (inputBefore[c] === ",") {
+                    count ++
+                }
+            }
+            for (let c = 0; c < event.target.value.length; c ++) {
+                if (count === insert) {
+                    if ((!event.target.value.endsWith(".") && event.target.value[c] === ".") || event.target.value.length < inputBefore.length) {
+                        event.target.selectionEnd = c
+                    } else {
+                        event.target.selectionEnd = c + 1
+                    }
+                    break
+                }
+                if (event.target.value[c] !== "," && event.target.value[c] !== ".") {
+                    count ++
+                }
+            }
+        }
+        setInputBefore(event.target.value)
+        onChange(unparse(event.target.value))
     }
 
     // Component
@@ -269,7 +314,7 @@ const TokenSelect = ({ label, type }) => {
 const SwapInterface = () => {
     // Swap data
 
-    const { chain } = useContext(EthereumContext)
+    const swap = useContext(EthereumContext).chain.swap
     const prices = useContext(PriceContext)
 
     const [ updateTimeout, setUpdateTimeout ] = useState()
@@ -278,15 +323,21 @@ const SwapInterface = () => {
 
     function updateSwapQuote() {
         clearTimeout(updateTimeout)
-        setUpdateTimeout(setTimeout(quoteSwap, 500))
+        setUpdateTimeout(setTimeout(async () => {
+            try {
+                await quoteSwap(swap)
+            } catch(error) {
+                console.error(error)
+            }
+        }, 500))
     }
 
     // Switch input and output tokens
 
     function switchTokens() {
-        const newInput = chain.swap.tokenOut
-        chain.swap.setTokenOut(chain.swap.tokenIn)
-        chain.swap.setTokenIn(newInput)
+        const newInput = swap.tokenOut
+        swap.setTokenOut(swap.tokenIn)
+        swap.setTokenIn(newInput)
     }
 
     // Calculate swap info
@@ -805,7 +856,7 @@ const RouterOutputs = () => {
             <div className="routers">
                 <div className="title">Aggregation Routers</div>
                 {swap.routers.map(router => (
-                    <div className="router">
+                    <div className="router" key={router.id}>
                         <div className="router-info">
                             <img className="router-icon" src={`/routers/${router.id}.svg`}></img>
                             {router.name}

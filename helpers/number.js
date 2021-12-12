@@ -17,7 +17,7 @@ function unparse(num, decimals) {
 // Format number
 
 function format(num, decimals = 4) {
-    const value = typeof num === "number" ? num.toString() : num
+    const value = (typeof num === "number" ? num.toString() : num).replace(/,/g, "") || "0"
     const split = decimals > 0 && !value.includes(".") ? [value, "0"] : value.split(".")
     return `${split[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")}${split[1] ? `.${split[1].match(new RegExp(`^0*\\d{0,${decimals}}`, "g"))[0]}` : ""}`
 }
