@@ -525,7 +525,7 @@ const SwapSettings = () => {
                     flex-direction: column;
                     justify-content: flex-start;
                     align-items: flex-start;
-                    padding: 32px 0;
+                    padding-top: 32px;
                 }
 
                 .top {
@@ -775,6 +775,44 @@ const SwapSettings = () => {
     )
 }
 
+// Router outputs component
+
+const RouterOutputs = () => {
+    // Router output data
+
+    const routers = useContext(EthereumContext).chain.swap.routers
+
+    // Component
+
+    return (
+        <>
+            <div className="routers">
+                <div className="title">Aggregation Routers</div>
+                {routers.map(router => (
+                    <div className="router">{JSON.stringify(router)}</div>
+                ))}
+            </div>
+            <style jsx>{`
+                .routers {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                    border-top: 0.5px solid var(--gray);
+                    padding: 32px 0;
+                }
+
+                .title {
+                    font-size: 1.5rem;
+                    margin-bottom: 2rem;
+                }
+            `}</style>
+        </>
+    )
+}
+
 // Swap page
 
 const Swap = () => (
@@ -784,6 +822,7 @@ const Swap = () => (
                 <SwapInterface></SwapInterface>
                 <SwapSettings></SwapSettings>
             </div>
+            <RouterOutputs></RouterOutputs>
         </div>
         <style jsx>{`
             .content {
@@ -802,6 +841,7 @@ const Swap = () => (
                 flex-direction: row;
                 justify-content: flex-start;
                 align-items: flex-start;
+                margin-bottom: 16px;
             }
         `}</style>
     </>
