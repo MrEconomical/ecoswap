@@ -76,38 +76,46 @@ const EthereumContextProvider = ({ children }) => {
     // Update token balances
 
     async function updateBalances() {
+        // Token balance data
+
         if (!account) return
         const balances = {}
         const tokens = Object.keys(chain.tokenBalances)
-        console.log("before update:", chain.tokenBalances, tokens)
-        for (const token of tokens) {
-            balances[token] = BN(Math.floor(Math.random() * 5))
-        }
-        /*
         let index = 0
-        for (let t = 0; t < 5; t ++) {
-            // Run concurrent tasks
 
-            let busy = false
-            const interval = setInterval(async () => {
-                if (busy) return
-                if (index >= tokens.length) {
-                    clearInterval(interval)
-                    return
-                }
-                const token = tokens[index ++]
-                console.log("my token:", token, typeof token, balances[token])
-                if (token === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
-                    balances[token] = BN(await chain.web3.eth.getBalance(account))
-                } else {
-                    const Token = new chain.web3.eth.Contract(ERC20ABI, token)
-                    balances[token] = BN(await Token.methods.balanceOf(account).call())
-                }
-                console.log("after:", balances[token])
-            }, 50)
-        }*/
-        console.log("finished updating balances:", balances, Object.keys(balances))
+        // Run concurrent tasks
+
+        await Promise.all(Array.from({ length: 5 }).map(() => {
+            return new Promise(resolve => {
+                let busy = false
+                const interval = setInterval(async () => {
+                    if (busy) return
+                    busy = true
+                    if (index >= tokens.length) {
+                        clearInterval(interval)
+                        return resolve()
+                    }
+                    const token = tokens[index ++]
+                    balances[token] = await getTokenBalance(token, account)
+                    busy = false
+                }, 50)
+            })
+        }))
+
+        // Update state
+        
         chain.setTokenBalances(balances)
+    }
+
+    // Fetch token balance
+
+    async function getTokenBalance(token, account) {
+        if (token === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
+            return BN(await chain.web3.eth.getBalance(account))
+        } else {
+            const Token = new chain.web3.eth.Contract(ERC20ABI, token)
+            return BN(await Token.methods.balanceOf(account).call())
+        }
     }
 
     // Run initial client side update
