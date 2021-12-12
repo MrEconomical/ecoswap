@@ -1,3 +1,4 @@
+/*
 // Files and modules
 
 import axios from "axios"
@@ -34,3 +35,4 @@ function usePrice(tokenSymbol) {
 // Exports
 
 export default usePrice
+*/

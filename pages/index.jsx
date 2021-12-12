@@ -1,7 +1,6 @@
 // Files and modules
 
 import useEthereum from "../hooks/useEthereum"
-import usePrice from "../hooks/usePrice"
 import { useState } from "react"
 
 // Swap input component
