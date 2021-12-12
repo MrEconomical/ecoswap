@@ -26,7 +26,7 @@ function useSwap(chain) {
     // Run initial client side update
 
     useEffect(() => {
-        // Check swap store
+        // Initialize swap store
 
         if (!localStorage.swapStore) {
             localStorage.swapStore = JSON.stringify({ [chain.id]: getDefault() })
