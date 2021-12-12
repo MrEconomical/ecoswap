@@ -472,7 +472,7 @@ const SwapSettings = () => {
                     <div className="gas-section">
                         <div className="section-title">
                             Gas Price
-                            <div className="title-value"> - {typeof settings.gas[chain.id] === "number" ? `custom ${settings.gas[chain.id]}` : "100"} gwei</div>
+                            <div className="title-value"> - {typeof settings.gas[chain.id] === "number" ? `custom ${settings.gas[chain.id]}` : chain.gasPrice[settings.gas[chain.id]]} gwei</div>
                         </div>
                         <div className="gas-controls">
                             <div className="gas-switch" data-checked={settings.gas[chain.id] === "slow"} onClick={() => updateGas("slow")}></div>
