@@ -11,7 +11,8 @@ import { useContext, useEffect, useState } from "react"
 const SwapInput = ({ onChange }) => {
     // Swap data
 
-    const swap = useContext(EthereumContext).chain.swap
+    const { chain } = useContext(EthereumContext)
+    const swap = chain.swap
     const [ inputBefore, setInputBefore ] = useState("")
 
     // Format swap input on change
@@ -63,6 +64,12 @@ const SwapInput = ({ onChange }) => {
         }
     }
 
+    // Reset input on chain change
+
+    useEffect(() => {
+        document.getElementById("swap-input").value = ""
+    }, [chain])
+
     // Call quote update on token change
 
     useEffect(() => {
@@ -75,7 +82,7 @@ const SwapInput = ({ onChange }) => {
 
     return (
         <>
-            <input className="input" onChange={handleChange}></input>
+            <input id="swap-input" className="input" onChange={handleChange}></input>
             <style jsx>{`
                 .input {
                     width: 45%;
