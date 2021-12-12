@@ -38,6 +38,7 @@ const TokenSelect = ({ label, type, chain }) => {
 
     const token = chain.swap[type === "input" ? "tokenIn" : "tokenOut"]
     const setToken = chain.swap[type === "input" ? "setTokenIn" : "setTokenOut"]
+    const opposite = chain.swap[type === "input" ? "tokenOut" : "tokenIn"]
     const [ menuActive, setMenuActive ] = useState(false)
     const [ tokenList, setTokenList ] = useState(chain.tokens)
 
@@ -58,6 +59,13 @@ const TokenSelect = ({ label, type, chain }) => {
     // Update token list on chain changes
 
     useEffect(() => {
+        if (opposite) {
+            const index = chain.tokens.find(token => opposite.address === token.address)
+            if (index !== -1) {
+                setTokenList(chain.tokens.slice(0, index).concat(chain.tokens.slice(index + 1)))
+                return
+            }
+        }
         setTokenList(chain.tokens)
     }, [chain])
 
