@@ -1,5 +1,6 @@
 // Files and modules
 
+import routers from "../routers.json"
 import { useEffect, useState } from "react"
 
 // Swap data hook
@@ -7,10 +8,14 @@ import { useEffect, useState } from "react"
 function useSwap(chain) {
     // Swap state data
 
-    const [ tokenIn, setTokenIn ] = useState()
+    const [ tokenIn, setTokenIn ] = useState({})
     const [ tokenInAmount, setTokenInAmount ] = useState()
-    const [ tokenOut, setTokenOut ] = useState()
+    const [ tokenOut, setTokenOut ] = useState({})
     const [ tokenOutAmount, setTokenOutAmount ] = useState()
+    const [ routers, setRouters ] = useState(routers.map(router => ({
+        name: router.name,
+        icon: router.icon
+    })))
 
     // Default swap store
 
@@ -55,7 +60,9 @@ function useSwap(chain) {
         tokenOut,
         setTokenOut,
         tokenOutAmount,
-        setTokenOutAmount
+        setTokenOutAmount,
+        routers,
+        setRouters
     }
 }
 

@@ -43,7 +43,7 @@ const TokenSelect = ({ label, type, chain }) => {
     const [ menuActive, setMenuActive ] = useState(false)
     const [ tokenList, setTokenList ] = useState(chain.tokens)
 
-    // Update token search
+    // Update token search with query
 
     function updateTokenList(event) {
         const query = event.target.value.toLowerCase()
@@ -284,7 +284,7 @@ const SwapInterface = () => {
                     <div className="label" style={{ top: "12px" }}>Output Token</div>
                 </div>
                 <div className="token-section">
-                    <div className="output">3</div>
+                    <div className="output"></div>
                     <TokenSelect label="Output Token" type="output" chain={chain}></TokenSelect>
                 </div>
                 <button className="swap">Swap Tokens</button>

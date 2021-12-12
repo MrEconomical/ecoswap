@@ -1,0 +1,10 @@
+[{
+    "name": "ZeroEx",
+    "icon": "/routers/0x.svg"
+}, {
+    "name": "1inch",
+    "icon": "/routers/1inch.svg"
+}, {
+    "name": "Firebird",
+    "icon": "/routers/firebird.svg"
+}]
