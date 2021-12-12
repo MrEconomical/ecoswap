@@ -33,6 +33,15 @@ async function quoteSwap(chain, BN) {
             out: quotes[q].gt(0) ? null : quotes[q]
         })
     }
+    routerQuotes.sort((a, b) => {
+        if (a.out && !b.out) {
+            return -1
+        } else if (b.out && !a.out) {
+            return 1
+        } else {
+            return a.out.gt(b.out) ? -1 : 1
+        }
+    })
     chain.swap.setRouters(routerQuotes)
 }
 
