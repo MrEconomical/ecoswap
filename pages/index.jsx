@@ -811,13 +811,13 @@ const RouterOutputs = () => {
 
                 .title {
                     font-size: 1.5rem;
-                    margin-bottom: 2rem;
+                    margin-bottom: 1.5rem;
                 }
 
                 .router {
-                    width: 100%:
+                    width: 100%;
                     display: grid;
-                    grid-template-columns: 20% 50% 30%;
+                    grid-template-columns: 2fr 5fr 3fr;
                     grid-gap: 16px;
                     margin: 1.5rem 0;
                 }
