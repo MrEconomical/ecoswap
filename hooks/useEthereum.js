@@ -30,7 +30,9 @@ function useEthereum() {
     const [ account, setAccount ] = useGlobalState("account", null)
 
     for (const id in chains) {
-        chains[id].swap = useSwap(chains[id])
+        if (!chains[id].swap) {
+            chains[id].swap = useSwap(chains[id])
+        }
     }
 
     // Update active account
@@ -51,22 +53,32 @@ function useEthereum() {
     // Run initial client side update
 
     useEffect(() => {
-        setEnabled(typeof ethereum !== "undefined")
-        updateAccount()
-        updateChain()
+        console.log("running my use effect")
+        console.log(typeof window)
+        if (typeof window !== "undefined" && !window.ethereumInitialized) {
+            window.ethereumInitialized = true
+            setEnabled(typeof ethereum !== "undefined")
+            updateAccount()
+            updateChain()
+        }
+        return () => {
+            if (window.ethereumInitialized) {
+                window.ethereumInitialized = false
+            }
+        }
     }, [])
 
     // Set MetaMask listeners
 
     useEffect(() => {
-        if (typeof ethereum !== "undefined" && !ethereum.initialized) {
-            ethereum.initialized = true
+        if (typeof ethereum !== "undefined" && !ethereum.listenersAdded) {
+            ethereum.listenersAdded = true
             ethereum.on("accountsChanged", updateAccount)
             ethereum.on("chainChanged", updateChain)
         }
         return () => {
-            if (typeof ethereum !== "undefined") {
-                ethereum.initialized = false
+            if (typeof ethereum !== "undefined" && ethereum.listenersAdded) {
+                ethereum.listenersAdded = false
                 ethereum.removeListener("accountsChanged", updateAccount)
                 ethereum.removeListener("chainChanged", updateChain)
             }
