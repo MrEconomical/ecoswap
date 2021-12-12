@@ -1,6 +1,7 @@
 // Files and modules
 
 import EthereumContext from "../state/EthereumContext"
+import PriceContext from "../state/PriceContext"
 import { useContext, useState } from "react"
 
 // Swap input component
@@ -71,6 +72,7 @@ const TokenSelect = ({ tokens, token, setToken }) => {
                     left: 0;
                     width: 100%;
                     height: 100%;
+                    z-index: 1;
                     background-color: black;
                 }
             `}</style>
@@ -84,13 +86,20 @@ const SwapInterface = () => {
     // Swap data
 
     const { chain } = useContext(EthereumContext)
+    const prices = useContext(PriceContext)
+
+    // Calculate swap info
+
+    function getSwapInfo() {
+        return `1 ... = ...`
+    }
 
     // Component
 
     return (
         <>
             <div className="interface">
-                <div className="label">Input Token</div>
+                <div className="label" style={{ marginBottom: "12px" }}>Input Token</div>
                 <div className="token-section">
                     <SwapInput></SwapInput>
                     <TokenSelect tokens={chain.tokens} token={chain.swap.tokenIn} setToken={chain.swap.setTokenIn}></TokenSelect>
@@ -99,13 +108,15 @@ const SwapInterface = () => {
                     <button className="switch">
                         <img className="arrows" src="/icons/switch.svg"></img>
                     </button>
-                    <div className="label">Output Token</div>
+                    <div className="label" style={{ top: "12px" }}>Output Token</div>
                 </div>
                 <div className="token-section">
                     <div className="output">3</div>
                     <TokenSelect tokens={chain.tokens} token={chain.swap.tokenOut} setToken={chain.swap.setTokenOut}></TokenSelect>
                 </div>
                 <button className="swap">Swap Tokens</button>
+                <div className="swap-info">{getSwapInfo()}</div>
+                <div className="swap-info" style={{ marginBottom: "0" }}>{getSwapInfo()}</div>
             </div>
             <style jsx>{`
                 .interface {
@@ -118,13 +129,10 @@ const SwapInterface = () => {
                 }
 
                 .label {
+                    position: relative;
                     color: var(--dark-gray);
                     margin-top: auto;
                     margin-left: auto;
-                }
-
-                .label:first-child {
-                    margin-bottom: 16px;
                 }
 
                 .token-section {
@@ -141,7 +149,7 @@ const SwapInterface = () => {
                     flex-direction: row;
                     justify-content: flex-start;
                     align-items: center;
-                    margin: 16px 0;
+                    margin: 24px 0;
                 }
 
                 .switch {
@@ -182,11 +190,15 @@ const SwapInterface = () => {
                     border: 1px solid var(--background);
                     border-radius: 8px;
                     padding: 12px 0;
-                    margin-top: 18px;
+                    margin: 24px 0;
                 }
 
                 .swap:hover {
                     border: 1px solid var(--light-dark);
+                }
+
+                .swap-info {
+                    margin-bottom: 6px;
                 }
             `}</style>
         </>

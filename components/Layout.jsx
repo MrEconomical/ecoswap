@@ -137,7 +137,7 @@ const WalletManager = () => {
                     flex-direction: column;
                     justify-content: flex-start;
                     align-items: flex-start;
-                    z-index: 1;
+                    z-index: 2;
                     border: 1px solid var(--light-dark);
                     border-radius: 8px;
                 }
