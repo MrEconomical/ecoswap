@@ -47,6 +47,35 @@ function useSwap(chain) {
         setTokenOut(store.tokenOut)
     }, [])
 
+    // Update local storage on token change
+
+    useEffect(() => {
+        if (!localStorage.swapStore) {
+            localStorage.swapStore = JSON.stringify({
+                [chain.id]: {
+                    tokenIn,
+                    tokenOut
+                }
+            })
+        } else {
+            try {
+                const store = JSON.parse(localStorage.swapStore)
+                store[chain.id] = {
+                    tokenIn,
+                    tokenOut
+                }
+                localStorage.swapStore = JSON.stringify(store)
+            } catch {
+                localStorage.swapStore = JSON.stringify({
+                    [chain.id]: {
+                        tokenIn,
+                        tokenOut
+                    }
+                })
+            }
+        }
+    }, [tokenIn, tokenOut])
+
     // Swap data
 
     return {
