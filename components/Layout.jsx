@@ -1,6 +1,6 @@
 // Files and modules
 
-import useEthereum, { chains } from "../hooks/useEthereum"
+import useEthereum, { chains } from "../state/useEthereum"
 import { useEffect, useState } from "react"
 
 const chainIds = Object.keys(chains)

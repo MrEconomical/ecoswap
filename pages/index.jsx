@@ -1,6 +1,6 @@
 // Files and modules
 
-import useEthereum from "../hooks/useEthereum"
+import useEthereum from "../state/useEthereum"
 import { useState } from "react"
 
 // Swap input component
