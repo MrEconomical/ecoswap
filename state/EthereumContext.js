@@ -161,7 +161,7 @@ const EthereumContextProvider = ({ children }) => {
             }
             chains[chainId].setTokenBalances(balances)
         }
-    }, [chain])
+    }, [chain, account])
 
     // Component
 
