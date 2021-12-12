@@ -58,14 +58,12 @@ function useEthereum() {
     // Set MetaMask listeners
 
     useEffect(() => {
-        if (typeof ethereum !== "undefined" && !ethereum.listenersAdded) {
-            ethereum.listenersAdded = true
+        if (typeof ethereum !== "undefined") {
             ethereum.on("accountsChanged", updateAccount)
             ethereum.on("chainChanged", updateChain)
         }
         return () => {
-            if (typeof ethereum !== "undefined" && ethereum.listenersAdded) {
-                ethereum.listenersAdded = false
+            if (typeof ethereum !== "undefined") {
                 ethereum.removeListener("accountsChanged", updateAccount)
                 ethereum.removeListener("chainChanged", updateChain)
             }
