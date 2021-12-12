@@ -3,6 +3,7 @@
 import chainData from "../data/chains"
 import useTokens from "./useTokens"
 import useSwap from "./useSwap"
+import ERC20ABI from "../abis/ERC20"
 import { createContext, useEffect, useState } from "react"
 import Web3 from "web3"
 
@@ -33,9 +34,25 @@ const EthereumContextProvider = ({ children }) => {
     // Default Ethereum application state
 
     for (const id in chains) {
+        // Initialize token list
+
         const [ tokens, setTokens ] = useTokens(id)
         chains[id].tokens = tokens
         chains[id].setTokens = setTokens
+
+        // Initialize token balances to 0
+
+        const balances = {}
+        for (const token of chains[id].tokens) {
+            balances[token.address] = BN(0)
+        }
+        const [ tokenBalances, setTokenBalances ] = useState(balances)
+        chains[id].tokenBalances = tokenBalances
+        chains[id].setTokenBalances = setTokenBalances
+        console.log(chains[id])
+
+        // Initialize swap state
+
         chains[id].swap = useSwap(chains[id])
     }
     const [ enabled, setEnabled ] = useState(false) // non-responsive
@@ -61,13 +78,30 @@ const EthereumContextProvider = ({ children }) => {
 
     async function updateBalances() {
         if (!account) return
-        /*
+        const balances = {}
+        const tokens = Object.keys(chain.tokenBalances)
         let index = 0
         for (let t = 0; t < 5; t ++) {
+            // Run concurrent tasks
+
+            let busy = false
             const interval = setInterval(async () => {
-                if (index >= chain.tokens.length) return
-            })
-        }*/
+                if (busy) return
+                if (index >= tokens.length) {
+                    clearInterval(interval)
+                    return
+                }
+                const token = tokens[index ++]
+                if (token === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
+                    balances[token] = BN(await chain.web3.eth.getBalance(account))
+                } else {
+                    const Token = new chain.web3.eth.Contract(ERC20ABI, token)
+                    balances[token] = BN(await Token.methods.balanceOf(account).call())
+                }
+            }, 50)
+        }
+        console.log(balances)
+        chain.setTokenBalances(balances)
     }
 
     // Run initial client side update
@@ -96,9 +130,17 @@ const EthereumContextProvider = ({ children }) => {
     // Update token balances
 
     useEffect(() => {
+        const chainId = chain.id
         updateBalances()
-        const interval = setInterval(updateBalances, 50)
-        return () => clearInterval(interval)
+        const interval = setInterval(updateBalances, 3000)
+        return () => {
+            clearInterval(interval)
+            const balances = {}
+            for (const token in chains[chainId].tokenBalances) {
+                balances[token] = BN(0)
+            }
+            chains[chainId].setTokenBalances(balances)
+        }
     }, [chain])
 
     // Component
