@@ -2,18 +2,26 @@
 
 function parse(num, decimals = 18) {
     const padded = num.toString().padStart(decimals + 1, "0")
-    const parsed = `${padded.slice(0, -18)}.${padded.slice(-18)}`
-    return parsed
+    const parsed = `${padded.slice(0, -decimals)}.${padded.slice(-decimals)}`.replace(/0+$/g, "")
+    return parsed.endsWith(".") ? parsed.slice(0, -1) : parsed
+}
+
+// Convert string to BN string
+
+function unparse(num, decimals) {
+    const trimmed = num.replace(/,/g, "")
+    const float = trimmed.includes(".") ? trimmed.slice(trimmed.indexOf(".") + 1, trimmed.indexOf(".") + 1 + decimals).padEnd(decimals, "0") : "0".repeat(decimals)
+    return `${trimmed.includes(".") ? trimmed.slice(0, trimmed.indexOf(".")) : trimmed}${float}`
 }
 
 // Format number
 
-function format(num, maxDecimals = 18) {
-    return (+num).toLocaleString(undefined, {
-        maximumFractionDigits: maxDecimals
-    })
+function format(num, decimals = 3) {
+    const value = typeof num === "number" ? num.toString() : num
+    const split = decimals > 0 && !value.includes(".") ? [value, "0"] : value.split(".")
+    return `${split[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")}${split[1] ? `.${split[1].match(new RegExp(`^0+\d{${decimals}}`, "g"))[0]}` : ""}`
 }
 
 // Exports
 
-export { parse, format }
+export { parse, unparse, format }
