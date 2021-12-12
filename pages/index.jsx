@@ -18,7 +18,10 @@ const SwapInput = ({ onChange }) => {
     // Format swap input on change
 
     function handleChange(event) {
-        if (event.target.value === "") return
+        if (event.target.value === "") {
+            onChange("", true)
+            return
+        }
         if (!/^[0-9,.]+$/g.test(event.target.value)) {
             event.target.value = inputBefore
             return
@@ -61,6 +64,8 @@ const SwapInput = ({ onChange }) => {
         setInputBefore(event.target.value)
         if (swap.tokenIn && swap.tokenOut) {
             onChange(unparse(event.target.value, swap.tokenIn.decimals))
+        } else {
+            onChange("", true)
         }
     }
 
@@ -68,13 +73,16 @@ const SwapInput = ({ onChange }) => {
 
     useEffect(() => {
         document.getElementById("swap-input").value = ""
+        onChange("", true)
     }, [chain])
 
     // Call quote update on token change
 
     useEffect(() => {
-        if (swap.tokenIn && swap.tokenOut && inputBefore) {
+        if (swap.tokenIn && swap.tokenOut) {
             onChange(unparse(inputBefore, swap.tokenIn.decimals), true)
+        } else {
+            onChange("", true)
         }
     }, [swap.tokenIn, swap.tokenOut])
 
@@ -342,6 +350,11 @@ const SwapInterface = () => {
     function updateSwapQuote(value, force) {
         clearTimeout(updateTimeout)
         chain.swap.setTokenInAmount(BN(value))
+        if (BN(value).eq(BN(0))) {
+            chain.swap.setTokenOutAmount(null)
+            return
+        }
+        chain.swap.setTokenOutAmount("...")
         setUpdateTimeout(setTimeout(async () => {
             try {
                 await quoteSwap(chain, BN)
@@ -382,7 +395,7 @@ const SwapInterface = () => {
                     <div className="label" style={{ top: "12px" }}>Output Token</div>
                 </div>
                 <div className="token-section">
-                    <div className="output">{chain.swap.tokenOutAmount ? parse(chain.swap.tokenOutAmount, chain.swap.tokenOut.decimals) : null}</div>
+                    <div className="output">{chain.swap.tokenOutAmount ? typeof chain.swap.tokenOutAmount === "string" ? chain.swap.tokenOutAmount : format(parse(chain.swap.tokenOutAmount, chain.swap.tokenOut.decimals)) : null}</div>
                     <TokenSelect label="Output Token" type="output"></TokenSelect>
                 </div>
                 <button className="swap">Swap Tokens</button>
