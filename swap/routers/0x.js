@@ -33,7 +33,7 @@ async function quote(chain, BN) {
         sellAmount: swap.tokenInAmount.toString(),
         slippagePercentage: chain.swapSettings.slippage / 100
     })}`))
-    console.log(result)
+    return BN(result.data.buyAmount)
 }
 
 // Exports
