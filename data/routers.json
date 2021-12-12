@@ -3,7 +3,7 @@
     "name": "0x"
 }, {
     "id": "1inch",
-    "icon": "/routers/1inch.svg"
+    "name": "1inch"
 }, {
     "id": "firebird",
     "name": "Firebird"

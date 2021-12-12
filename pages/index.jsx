@@ -428,7 +428,7 @@ const SwapSettings = () => {
                         </div>
                         <div className="slippage-content">
                             <input id="slippage-slider" className="slippage-slider" type="range" min="10" max="200" value={settings.slippage * 100} onChange={updateSlippage}></input>
-                            <input className="slippage-input" maxlength="5" onChange={setSlippage}></input>
+                            <input className="slippage-input" maxLength="5" onChange={setSlippage}></input>
                         </div>
                     </div>
                     <div className="section gas-section">
@@ -440,7 +440,7 @@ const SwapSettings = () => {
                     <div className="routers">
                         {Object.keys(settings.routers).map(router => (
                             <div className="router" key={router}>
-                                {router.name}
+                                {settings.routers[router].name}
                             </div>
                         ))}
                     </div>
