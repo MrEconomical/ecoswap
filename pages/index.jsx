@@ -37,9 +37,6 @@ const TokenSelect = ({ tokens, token, setToken }) => {
     // Selection menu state
 
     const [ menuActive, setMenuActive ] = useState(false)
-    const eth = usePrice("ETH")
-    const btc = usePrice("BTC")
-    const bnb = usePrice("BNB")
 
     // Component
 
@@ -47,7 +44,6 @@ const TokenSelect = ({ tokens, token, setToken }) => {
         <>
             <button className="select" onClick={() => setMenuActive(true)}>
                 {token ? token.symbol.length > 9 ? `${token.symbol.slice(0, 8)}...` : token.symbol : "Choose"}
-                {eth} {btc} {bnb}
                 <img className="arrow" src="/icons/arrow-down.svg"></img>
             </button>
             {menuActive ? <div className="menu"></div> : <></>}
