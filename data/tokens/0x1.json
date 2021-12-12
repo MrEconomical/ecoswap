@@ -1,7 +1,7 @@
 [{
     "name": "Ethereum",
     "symbol": "ETH",
-    "address": null,
+    "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
     "decimals": 18
 }, {
     "name": "Wrapped Ether",

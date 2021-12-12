@@ -1,7 +1,7 @@
 [{
     "name": "Polygon",
     "symbol": "MATIC",
-    "address": null,
+    "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
     "decimals": 18
 }, {
     "name": "Wrapped Matic",
