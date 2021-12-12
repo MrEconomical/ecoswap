@@ -56,18 +56,18 @@ const TokenSelect = ({ label, type, chain }) => {
         setMenuActive(false)
     }
 
-    // Update token list on chain changes
+    // Update token list on data changes
 
     useEffect(() => {
         if (opposite) {
-            const index = chain.tokens.find(token => opposite.address === token.address)
+            const index = chain.tokens.findIndex(token => opposite.address === token.address)
             if (index !== -1) {
                 setTokenList(chain.tokens.slice(0, index).concat(chain.tokens.slice(index + 1)))
                 return
             }
         }
         setTokenList(chain.tokens)
-    }, [chain])
+    }, [chain, opposite])
 
     // Component
 
@@ -91,7 +91,7 @@ const TokenSelect = ({ label, type, chain }) => {
                     </div>
                     <div className="tokens">
                         {tokenList.map(token => (
-                            <button className="token" key={token.address} onClick={() => switchToken(token)}>
+                            <button className="token" key={`${type}-${token.address}`} onClick={() => switchToken(token)}>
                                 <img className="icon" src={`/tokens/${token.symbol}.svg`}></img>
                                 <div className="info">
                                     <div className="name">{token.name} - {token.symbol}</div>
