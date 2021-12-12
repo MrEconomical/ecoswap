@@ -399,7 +399,7 @@ const SwapInterface = () => {
 const SwapSettings = () => {
     // Swap settings data
     
-    const settings = useContext(EthereumContext).chain.swapSettings
+    const { web3, chain: { swapSettings: settings } } = useContext(EthereumContext)
 
     // Update slippage with slider value
 
@@ -423,24 +423,34 @@ const SwapSettings = () => {
         settings.setRouters(routers)
     }
 
+    // Set referral address
+
+    function setReferral() {
+        const address = document.getElementById("referral-input").value
+        if (web3.utils.isAddress(address)) {
+            settings.setReferral(web3.utils.toChecksumAddress(address))
+        }
+    }
+
     // Component
 
     return (
         <>
             <div className="settings">
                 <div className="top">
-                    <div className="section slippage-section">
+                    <div className="slippage-section">
                         <div className="section-title">
                             Slippage
-                            <div className="slippage"> - {settings.slippage}%</div>
+                            <div className="title-value"> - {settings.slippage}%</div>
                         </div>
                         <div className="slippage-content">
                             <input id="slippage-slider" className="slippage-slider" type="range" min="10" max="200" value={settings.slippage * 100} onChange={updateSlippage}></input>
                             <input className="slippage-input" maxLength="5" onChange={setSlippage}></input>
                         </div>
                     </div>
-                    <div className="section gas-section">
-                    <div className="section-title">Gas Price</div>
+                    <div className="gas-section">
+                        <div className="section-title">Gas Price</div>
+                        <div className="gas-controls"></div>
                     </div>
                 </div>
                 <div className="section">
@@ -464,24 +474,35 @@ const SwapSettings = () => {
                     </div>
                 </div>
                 <div className="section">
-                    <div className="section-title">Referral Address</div>
+                    <div className="section-title referral-title">
+                        Referral Address
+                        <div className="title-value referral-value"> - {settings.referral || "None"}</div>
+                    </div>
+                    <div className="referral-label">Referral address will not work if it is the same as the account swapping tokens</div>
+                    <div className="referral">
+                        <input id="referral-input" className="referral-input"></input>
+                        <button className="set-referral" onClick={setReferral}>Set</button>
+                    </div>
                 </div>
             </div>
             <style jsx>{`
                 .settings {
                     width: calc(100% - 348px);
                     height: 100%;
-                    display: grid;
-                    grid-template-rows: repeat(3, 1fr);
-                    grid-gap: 16px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: flex-start;
                     padding: 32px 0;
                 }
 
                 .top {
+                    width: 100%;
                     display: flex;
                     flex-direction: row;
                     justify-content: flex-start;
                     align-items: flex-start;
+                    margin-bottom: 2rem;
                 }
 
                 .section {
@@ -491,6 +512,7 @@ const SwapSettings = () => {
                     flex-direction: column;
                     justify-content: flex-start;
                     align-items: flex-start;
+                    margin-bottom: 2rem;
                 }
 
                 .slippage-section {
@@ -511,18 +533,18 @@ const SwapSettings = () => {
                     margin-bottom: 1.2rem;
                 }
 
+                .title-value {
+                    white-space: pre-wrap;
+                    font-size: 1.2rem;
+                    color: var(--dark-gray);
+                }
+
                 .slippage-content {
                     width: 100%;
                     display: flex;
                     flex-direction: row;
                     justify-content: flex-start;
                     align-items: center;
-                }
-
-                .slippage {
-                    white-space: pre-wrap;
-                    font-size: 1.2rem;
-                    color: var(--dark-gray);
                 }
 
                 .slippage-slider {
@@ -551,8 +573,15 @@ const SwapSettings = () => {
                     padding: 6px 8px;
                 }
 
-                .slippage-input:active {
+                .slippage-input:focus {
                     border: 1px solid var(--gray);
+                }
+
+                .gas-controls {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
                 }
 
                 .routers {
@@ -634,6 +663,51 @@ const SwapSettings = () => {
 
                 input:checked + .slider:before {
                     transform: translateX(calc(1.8rem));
+                }
+
+                .referral-title {
+                    margin-bottom: 0.2rem;
+                }
+
+                .referral-value {
+                    font-size: 1rem;
+                }
+
+                .referral-label {
+                    font-size: 0.8rem;
+                    color: var(--dark-gray);
+                    margin-bottom: 1.2rem;
+                }
+
+                .referral {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                }
+
+                .referral-input {
+                    width: 60%;
+                    outline: none;
+                    border: 1px solid var(--light-gray);
+                    border-radius: 8px;
+                    padding: 6px 8px;
+                    margin-right: 1rem;
+                }
+
+                .referral-input:focus {
+                    border: 1px solid var(--gray);
+                }
+
+                .set-referral {
+                    border: 1px solid var(--light-dark);
+                    border-radius: 8px;
+                    padding: 6px 16px;
+                }
+
+                .set-referral:hover {
+                    background-color: var(--light);
                 }
             `}</style>
         </>
