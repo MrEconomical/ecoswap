@@ -415,6 +415,14 @@ const SwapSettings = () => {
         settings.setSlippage(+event.target.value)
     }
 
+    // Toggle router enabled
+
+    function toggleRouter(router) {
+        const routers = { ...settings.routers }
+        routers[router].enabled = !routers[router].enabled
+        settings.setRouters(routers)
+    }
+
     // Component
 
     return (
@@ -440,7 +448,17 @@ const SwapSettings = () => {
                     <div className="routers">
                         {Object.keys(settings.routers).map(router => (
                             <div className="router" key={router}>
-                                {settings.routers[router].name}
+                                <div className="router-section router-title">
+                                    <img className="router-icon" src={`/routers/${router}.svg`}></img>
+                                    {settings.routers[router].name}
+                                </div>
+                                <div className="router-section">
+                                    <div className="router-status">{settings.routers[router].enabled ? "Enabled" : "Disabled"}</div>
+                                    <label className="switch">
+                                        <input type="checkbox" defaultChecked={settings.routers[router].enabled} onChange={() => toggleRouter(router)}></input>
+                                        <span className="slider"></span>
+                                    </label>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -490,7 +508,7 @@ const SwapSettings = () => {
                     justify-content: flex-start;
                     align-items: center;
                     font-size: 1.2rem;
-                    margin-bottom: 0.75rem;
+                    margin-bottom: 1.2rem;
                 }
 
                 .slippage-content {
@@ -538,9 +556,84 @@ const SwapSettings = () => {
                 }
 
                 .routers {
+                    width: 100%;
                     display: grid;
                     grid-template-columns: repeat(3, 1fr);
                     grid-gap: 16px;
+                }
+
+                .router {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                }
+
+                .router-section {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                }
+
+                .router-title {
+                    font-size: 1.2rem;
+                    margin-bottom: 0.6rem;
+                }
+
+                .router-icon {
+                    width: 1.2rem;
+                    height: 1.2rem;
+                    object-fit: contain;
+                    margin-right: 0.75rem;
+                }
+
+                .router-status {
+                    min-width: 70px;
+                    color: var(--dark-gray);
+                    margin-right: 1rem;
+                }
+
+                .switch {
+                    position: relative;
+                    display: inline-block;
+                    width: 3rem;
+                    height: 1.2rem;
+                }
+
+                .switch input {
+                    opacity: 0;
+                    width: 0;
+                    height: 0;
+                }
+
+                .slider {
+                    position: absolute;
+                    cursor: pointer;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background-color: var(--light-gray);
+                }
+
+                .slider:before {
+                    position: absolute;
+                    width: calc(1.2rem - 8px);
+                    height: calc(1.2rem - 8px);
+                    left: 4px;
+                    bottom: 4px;
+                    content: "";
+                    outline: none;
+                    background-color: white;
+                }
+
+                input:checked + .slider {
+                    background-color: var(--light-dark);
+                }
+
+                input:checked + .slider:before {
+                    transform: translateX(calc(1.8rem));
                 }
             `}</style>
         </>
