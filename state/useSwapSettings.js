@@ -41,7 +41,7 @@ function useSwapSettings(chains) {
         } else {
             try {
                 const settings = JSON.parse(localStorage.swapSettings)
-                if (!isNaN(+settings.slippage) && +settings.slippage < 50) {
+                if (!isNaN(+settings.slippage) && +settings.slippage > 0 && +settings.slippage < 50) {
                     setSlippage(+settings.slippage)
                 } else {
                     settings.slippage = 0.5

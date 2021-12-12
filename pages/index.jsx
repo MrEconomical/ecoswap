@@ -149,10 +149,10 @@ const TokenSelect = ({ label, type }) => {
 
                 .menu {
                     position: absolute;
-                    top: 0;
+                    top: 32px;
                     left: 0;
-                    width: 100%;
-                    height: 100%;
+                    width: calc(100% - 32px);
+                    height: calc(100% - 64px);
                     z-index: 1;
                     background-color: var(--background);
                 }
@@ -401,6 +401,20 @@ const SwapSettings = () => {
     
     const settings = useContext(EthereumContext).chain.swapSettings
 
+    // Update slippage with slider value
+
+    function updateSlippage(event) {
+        settings.setSlippage(+event.target.value / 100)
+    }
+
+    // Set slippage with text input value
+
+    function setSlippage(event) {
+        if (isNaN(+event.target.value) || +event.target.value <= 0 || event.target.value >= 50) return
+        if (event.target.value.endsWith(".")) return
+        settings.setSlippage(+event.target.value)
+    }
+
     // Component
 
     return (
@@ -408,11 +422,13 @@ const SwapSettings = () => {
             <div className="settings">
                 <div className="top">
                     <div className="section slippage-section">
-                        <div className="section-title">Slippage</div>
+                        <div className="section-title">
+                            Slippage
+                            <div className="slippage"> - {settings.slippage}%</div>
+                        </div>
                         <div className="slippage-content">
-                            <div className="slippage">{settings.slippage}%</div>
-                            <input id="slippage-slider" className="slippage-slider" type="range"></input>
-                            <input className="slippage-input"></input>
+                            <input id="slippage-slider" className="slippage-slider" type="range" min="10" max="200" value={settings.slippage * 100} onChange={updateSlippage}></input>
+                            <input className="slippage-input" maxlength="5" onChange={setSlippage}></input>
                         </div>
                     </div>
                     <div className="section gas-section">
@@ -462,6 +478,10 @@ const SwapSettings = () => {
                 }
 
                 .section-title {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
                     font-size: 1.2rem;
                     margin-bottom: 0.75rem;
                 }
@@ -475,6 +495,7 @@ const SwapSettings = () => {
                 }
 
                 .slippage {
+                    white-space: pre-wrap;
                     font-size: 1.2rem;
                     color: var(--dark-gray);
                 }
@@ -485,7 +506,7 @@ const SwapSettings = () => {
                     appearance: none;
                     background-color: var(--light-gray);
                     outline: none;
-                    margin: 0 0.75rem;
+                    margin-right: 1rem;
                 }
 
                 .slippage-slider::-webkit-slider-thumb {
@@ -498,7 +519,7 @@ const SwapSettings = () => {
                 }
 
                 .slippage-input {
-                    width: 50px;
+                    width: 60px;
                     outline: none;
                     border: 1px solid var(--light-gray);
                     border-radius: 8px;
