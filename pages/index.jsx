@@ -46,8 +46,23 @@ const TokenSelect = ({ label, type, chain }) => {
     // Update token search
 
     function updateTokenList(event) {
-        const query = event.target.value
-        console.log(query)
+        const query = event.target.value.toLowerCase()
+        if (!query) return setTokenList(chain.tokens)
+        const tokens = chain.tokens.filter(token => token.name.toLowerCase().includes(query) || token.symbol.toLowerCase().includes(query))
+        tokens.sort((a, b) => {
+            const nameA = a.name.toLowerCase()
+            const symbolA = a.symbol.toLowerCase()
+            const nameB = b.name.toLowerCase()
+            const symbolB = b.symbol.toLowerCase()
+            if ((symbolA.includes(query) && !symbolB.includes(query)) || (nameA.includes(query) && !nameB.includes(query))) return -1
+            if ((symbolB.includes(query) && !symbolA.includes(query)) || (nameB.includes(query) && !nameA.includes(query))) return 1
+            if (symbolA.includes(query) && symbolB.includes(query)) {
+                return symbolA.indexOf(query) < symbolB.indexOf(query) ? -1 : 1
+            } else {
+                return nameA.indexOf(query) < nameB.indexOf(query) ? -1 : 1
+            }
+        })
+        setTokenList(tokens)
     }
 
     // Switch to selected token
@@ -102,7 +117,7 @@ const TokenSelect = ({ label, type, chain }) => {
                                 <img className="icon" src={`/tokens/${token.default ? token.symbol : "unknown"}.svg`}></img>
                                 <div className="info">
                                     <div className="name">{token.name} - {token.symbol}</div>
-                                    <div className="balance">{chain.tokenBalances[token.address] ? parse(chain.tokenBalances[token.address]) : "0"}</div>
+                                    <div className="balance">{chain.tokenBalances[token.address] ? format(parse(chain.tokenBalances[token.address], token.decimals)) : "0"}</div>
                                 </div>
                             </button>
                         ))}

@@ -1,7 +1,9 @@
 // Convert BN to string
 
 function parse(num, decimals = 18) {
-    return num.toString()
+    const padded = num.toString().padStart(decimals + 1, "0")
+    const parsed = `${padded.slice(0, -18)}.${padded.slice(-18)}`
+    return parsed
 }
 
 // Format number
