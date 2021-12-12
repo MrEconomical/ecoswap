@@ -92,7 +92,7 @@ const TokenSelect = ({ label, type, chain }) => {
                     <div className="tokens">
                         {tokenList.map(token => (
                             <button className="token" key={`${chain.id}-${type}-${token.address}`} onClick={() => switchToken(token)}>
-                                <img className="icon" src={`/tokens/${token.symbol}.svg`}></img>
+                                <img className="icon" src={`/tokens/${token.default ? token.symbol : "unknown"}.svg`}></img>
                                 <div className="info">
                                     <div className="name">{token.name} - {token.symbol}</div>
                                     <div className="balance">0</div>
