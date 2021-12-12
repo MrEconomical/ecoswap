@@ -17,7 +17,7 @@ async function quoteSwap(chain, BN) {
     const quotes = await Promise.all(routers.map(router => router.quote(chain, BN)))
     let best = [BN(0), -1]
     for (let q = 0; q < quotes.length; q ++) {
-        if (quotes[q].gt(best)) {
+        if (quotes[q].gt(best[0])) {
             best[0] = quotes[q]
             best[1] = q
         }
@@ -29,8 +29,8 @@ async function quoteSwap(chain, BN) {
     const routerQuotes = []
     for (let q = 0; q < quotes.length; q ++) {
         routerQuotes.push({
-            ...routers[q],
-            out: quotes[q].gt(0) ? null : quotes[q]
+            ...routerList[q],
+            out: quotes[q].gt(BN(0)) ? quotes[q] : null
         })
     }
     routerQuotes.sort((a, b) => {
@@ -38,6 +38,8 @@ async function quoteSwap(chain, BN) {
             return -1
         } else if (b.out && !a.out) {
             return 1
+        } else if (!a.out && !b.out) {
+            return 0
         } else {
             return a.out.gt(b.out) ? -1 : 1
         }

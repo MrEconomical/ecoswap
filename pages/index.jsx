@@ -382,7 +382,7 @@ const SwapInterface = () => {
                     <div className="label" style={{ top: "12px" }}>Output Token</div>
                 </div>
                 <div className="token-section">
-                    <div className="output"></div>
+                    <div className="output">{chain.swap.tokenOutAmount ? parse(chain.swap.tokenOutAmount, chain.swap.tokenOut.decimals) : null}</div>
                     <TokenSelect label="Output Token" type="output"></TokenSelect>
                 </div>
                 <button className="swap">Swap Tokens</button>
