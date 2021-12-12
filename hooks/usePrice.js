@@ -1,4 +1,3 @@
-/*
 // Files and modules
 
 import axios from "axios"
@@ -6,16 +5,18 @@ import { useState } from "react"
 
 // Update token prices
 
-const tokens = []
+const priceSetters = []
 setInterval(async () => {
     try {
-        const prices = (await axios("https://api.binance.com/api/v3/ticker/price")).data
-        for (const market of prices) {
-            for (const token of tokens) {
-                if (market.symbol === `${token[0]}USDT`) {
-                    token[1](+market.price)
-                }
+        const prices = {}
+        const markets = (await axios("https://api.binance.com/api/v3/ticker/price")).data
+        for (const market of markets) {
+            if (market.symbol.endsWith("USDT")) {
+                prices[market.symbol.slice(0, -4)] = +market.price
             }
+        }
+        for (const setter of priceSetters) {
+            setter(prices)
         }
     } catch(error) {
         console.error(error)
@@ -24,15 +25,12 @@ setInterval(async () => {
 
 // Token price data hook
 
-function usePrice(tokenSymbol) {
-    const [ price, setPrice ] = useGlobalState(`price-${tokenSymbol}`)
-    if (!tokens.find(token => token[0] === tokenSymbol)) {
-        tokens.push([tokenSymbol, setPrice])
-    }
-    return price
+function usePrice() {
+    const [ prices, setPrices ] = useState({})
+    priceSetters.push(setPrices)
+    return prices
 }
 
 // Exports
 
 export default usePrice
-*/
