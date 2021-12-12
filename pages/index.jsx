@@ -455,7 +455,7 @@ const SwapSettings = () => {
                                 <div className="router-section">
                                     <div className="router-status">{settings.routers[router].enabled ? "Enabled" : "Disabled"}</div>
                                     <label className="switch">
-                                        <input type="checkbox" defaultChecked={settings.routers[router].enabled} onChange={() => toggleRouter(router)}></input>
+                                        <input type="checkbox" checked={settings.routers[router].enabled} onChange={() => toggleRouter(router)}></input>
                                         <span className="slider"></span>
                                     </label>
                                 </div>
