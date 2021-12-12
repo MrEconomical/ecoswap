@@ -437,6 +437,13 @@ const SwapSettings = () => {
                 </div>
                 <div className="section">
                     <div className="section-title">Aggregators</div>
+                    <div className="routers">
+                        {Object.keys(settings.routers).map(router => (
+                            <div className="router" key={router}>
+                                {router.name}
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 <div className="section">
                     <div className="section-title">Referral Address</div>
@@ -528,6 +535,12 @@ const SwapSettings = () => {
 
                 .slippage-input:active {
                     border: 1px solid var(--gray);
+                }
+
+                .routers {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    grid-gap: 16px;
                 }
             `}</style>
         </>

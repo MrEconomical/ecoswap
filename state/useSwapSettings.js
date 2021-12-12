@@ -1,7 +1,6 @@
 // Files and modules
 
 import routerList from "../data/routers"
-import axios from "axios"
 import { useEffect, useState } from "react"
 
 // Swap settings hook
@@ -17,7 +16,10 @@ function useSwapSettings(chains) {
     const [ gas, setGas ] = useState(initialGas)
     const initialRouters = {}
     for (const router of routerList) {
-        initialRouters[router.id] = true
+        initialRouters[router.id] = {
+            name: router.name,
+            enabled: true
+        }
     }
     const [ routers, setRouters ] = useState(initialRouters)
     const [ referral, setReferral ] = useState()
