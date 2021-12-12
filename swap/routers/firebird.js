@@ -5,7 +5,7 @@ import axios from "axios"
 // Quote swap
 
 async function quote(chain, BN) {
-    console.log("firebird quote")
+    return BN(0)
 }
 
 // Exports
