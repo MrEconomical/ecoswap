@@ -218,7 +218,7 @@ const NavBar = () => (
                 flex-direction: row;
                 justify-content: flex-start;
                 align-items: center;
-                padding: 0 max(calc(50vw - 550px), 20px);
+                padding: 0 max(calc(50vw - 500px), 20px);
             }
 
             .icon {
@@ -247,7 +247,7 @@ const Layout = ({ children }) => (
         <style jsx>{`
             .content {
                 width: 100%;
-                padding: 0 max(calc(50vw - 550px), 20px);
+                padding: 0 max(calc(50vw - 500px), 20px);
             }
         `}</style>
     </>

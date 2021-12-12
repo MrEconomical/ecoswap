@@ -262,7 +262,16 @@ const TokenSelect = ({ label, type }) => {
 const SwapInterface = () => {
     // Swap data
 
+    const { chain } = useContext(EthereumContext)
     const prices = useContext(PriceContext)
+
+    // Switch input and output tokens
+
+    function switchTokens() {
+        const newInput = chain.swap.tokenOut
+        chain.swap.setTokenOut(chain.swap.tokenIn)
+        chain.swap.setTokenIn(newInput)
+    }
 
     // Calculate swap info
 
@@ -281,7 +290,7 @@ const SwapInterface = () => {
                     <TokenSelect label="Input Token" type="input"></TokenSelect>
                 </div>
                 <div className="middle">
-                    <button className="switch">
+                    <button className="switch" onClick={switchTokens}>
                         <img className="arrows" src="/icons/switch.svg"></img>
                     </button>
                     <div className="label" style={{ top: "12px" }}>Output Token</div>
@@ -302,6 +311,7 @@ const SwapInterface = () => {
                     flex-direction: column;
                     justify-content: flex-start;
                     align-items: flex-start;
+                    margin-right: 48px;
                 }
 
                 .label {
@@ -351,6 +361,7 @@ const SwapInterface = () => {
 
                 .output {
                     width: 45%;
+                    min-height: calc(1.44rem + 18px);
                     font-size: 1.2rem;
                     border: 1px solid var(--light-gray);
                     border-radius: 8px;
@@ -392,6 +403,10 @@ const SwapSettings = () => {
                 this is the settings
             </div>
             <style jsx>{`
+                .settings {
+                    width: calc(100% - 348px);
+                    height: 100%;
+                }
             `}</style>
         </>
     )
@@ -402,17 +417,28 @@ const SwapSettings = () => {
 const Swap = () => (
     <>
         <div className="content">
-            <SwapInterface></SwapInterface>
+            <div className="top">
+                <SwapInterface></SwapInterface>
+                <SwapSettings></SwapSettings>
+            </div>
         </div>
         <style jsx>{`
             .content {
                 width: 100%;
                 height: calc(100vh - 80px);
                 display: flex;
-                flex-direction: row;
-                justify-content: center;
+                flex-direction: column;
+                justify-content: flex-start;
                 align-items: flex-start;
                 padding: 40px 0;
+            }
+
+            .top {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: flex-start;
             }
         `}</style>
     </>
