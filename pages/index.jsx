@@ -306,12 +306,14 @@ const SwapInterface = () => {
             <style jsx>{`
                 .interface {
                     position: relative;
-                    width: 300px;
+                    width: 332px;
                     display: flex;
                     flex-direction: column;
                     justify-content: flex-start;
                     align-items: flex-start;
-                    margin-right: 48px;
+                    border-right: 0.5px solid var(--gray);
+                    padding: 32px 32px 32px 0;
+                    margin-right: 32px;
                 }
 
                 .label {
@@ -395,17 +397,116 @@ const SwapInterface = () => {
 // Swap settings component
 
 const SwapSettings = () => {
+    // Swap settings data
+    
+    const settings = useContext(EthereumContext).chain.swapSettings
+
     // Component
 
     return (
         <>
             <div className="settings">
-                this is the settings
+                <div className="top">
+                    <div className="section slippage-section">
+                        <div className="section-title">Slippage</div>
+                        <div className="slippage-content">
+                            <div className="slippage">{settings.slippage}%</div>
+                            <input id="slippage-slider" className="slippage-slider" type="range"></input>
+                            <input className="slippage-input"></input>
+                        </div>
+                    </div>
+                    <div className="section gas-section">
+                    <div className="section-title">Gas Price</div>
+                    </div>
+                </div>
+                <div className="section">
+                    <div className="section-title">Aggregators</div>
+                </div>
+                <div className="section">
+                    <div className="section-title">Referral Address</div>
+                </div>
             </div>
             <style jsx>{`
                 .settings {
                     width: calc(100% - 348px);
                     height: 100%;
+                    display: grid;
+                    grid-template-rows: repeat(3, 1fr);
+                    grid-gap: 16px;
+                    padding: 32px 0;
+                }
+
+                .top {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                }
+
+                .section {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                }
+
+                .slippage-section {
+                    width: 40%;
+                    margin-right: 32px;
+                }
+
+                .gas-section {
+                    width: calc(60% - 32px);
+                }
+
+                .section-title {
+                    font-size: 1.2rem;
+                    margin-bottom: 0.75rem;
+                }
+
+                .slippage-content {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                }
+
+                .slippage {
+                    font-size: 1.2rem;
+                    color: var(--dark-gray);
+                }
+
+                .slippage-slider {
+                    width: 100%;
+                    height: 1px;
+                    appearance: none;
+                    background-color: var(--light-gray);
+                    outline: none;
+                    margin: 0 0.75rem;
+                }
+
+                .slippage-slider::-webkit-slider-thumb {
+                    appearance: none;
+                    width: 10px;
+                    height: 25px;
+                    cursor: pointer;
+                    background-color: var(--light-dark);
+                    border: 1px solid var(--background);
+                }
+
+                .slippage-input {
+                    width: 50px;
+                    outline: none;
+                    border: 1px solid var(--light-gray);
+                    border-radius: 8px;
+                    padding: 6px 8px;
+                }
+
+                .slippage-input:active {
+                    border: 1px solid var(--gray);
                 }
             `}</style>
         </>
