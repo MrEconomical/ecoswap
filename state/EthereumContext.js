@@ -103,18 +103,24 @@ const EthereumContextProvider = ({ children }) => {
         }))
 
         // Update state
-        
+
         chain.setTokenBalances(balances)
     }
 
     // Fetch token balance
 
-    async function getTokenBalance(token, account) {
-        if (token === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
-            return BN(await chain.web3.eth.getBalance(account))
-        } else {
-            const Token = new chain.web3.eth.Contract(ERC20ABI, token)
-            return BN(await Token.methods.balanceOf(account).call())
+    async function getTokenBalance(token, account, retry = 0) {
+        try {
+            if (token === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
+                return BN(await chain.web3.eth.getBalance(account))
+            } else {
+                const Token = new chain.web3.eth.Contract(ERC20ABI, token)
+                return BN(await Token.methods.balanceOf(account).call())
+            }
+        } catch(error) {
+            console.error(error)
+            if (retry === 1) return BN(0)
+            return await getTokenBalance(token, account, retry + 1)
         }
     }
 
