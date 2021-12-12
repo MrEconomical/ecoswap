@@ -1,7 +1,7 @@
 // Files and modules
 
-import useEthereum from "../state/useEthereum"
-import { useState } from "react"
+import EthereumContext from "../state/EthereumContext"
+import { useContext, useState } from "react"
 
 // Swap input component
 
@@ -83,7 +83,7 @@ const TokenSelect = ({ tokens, token, setToken }) => {
 const SwapInterface = () => {
     // Swap data
 
-    const { chain } = useEthereum()
+    const { chain } = useContext(EthereumContext)
 
     // Component
 

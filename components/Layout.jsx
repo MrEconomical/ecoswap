@@ -1,7 +1,7 @@
 // Files and modules
 
-import useEthereum, { chains } from "../state/useEthereum"
-import { useEffect, useState } from "react"
+import EthereumContext, { chains } from "../state/EthereumContext"
+import { useEffect, useContext, useState } from "react"
 
 const chainIds = Object.keys(chains)
 
@@ -10,7 +10,7 @@ const chainIds = Object.keys(chains)
 const WalletManager = () => {
     // Wallet data
 
-    const { enabled, chain, account } = useEthereum()
+    const { enabled, chain, account } = useContext(EthereumContext)
     const [ chainSelectActive, setChainSelectActive ] = useState(false)
 
     // Connect to MetaMask

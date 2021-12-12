@@ -1,6 +1,7 @@
 // Files and modules
 
 import Layout from "../components/Layout"
+import { EthereumContextProvider } from "../state/EthereumContext"
 import Head from "next/head"
 
 // Site metadata
@@ -28,9 +29,11 @@ const Metadata = ({ page }) => {
 const App = ({ Component, pageProps }) => (
     <>
         <Metadata page={pageProps.page}></Metadata>
-        <Layout>
-            <Component {...pageProps}></Component>
-        </Layout>
+        <EthereumContextProvider>
+            <Layout>
+                <Component {...pageProps}></Component>
+            </Layout>
+        </EthereumContextProvider>
         <style jsx global>{`
             @font-face {
                 font-family: "Gilroy";

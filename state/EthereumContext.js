@@ -29,7 +29,7 @@ const EthereumContext = createContext({
 
 // Ethereum context provider
 
-const EthereumContextProvider = () => {
+const EthereumContextProvider = ({ children }) => {
     // Default Ethereum application state
 
     for (const id in chains) {
@@ -87,10 +87,13 @@ const EthereumContextProvider = () => {
             account,
             chains,
             BN
-        }}></EthereumContext.Provider>
+        }}>
+            {children}
+        </EthereumContext.Provider>
     )
 }
 
 // Exports
 
-export { EthereumContext, EthereumContextProvider }
+export { EthereumContextProvider, chains }
+export default EthereumContext
