@@ -12,10 +12,7 @@ function useSwap(chain) {
     const [ tokenInAmount, setTokenInAmount ] = useState()
     const [ tokenOut, setTokenOut ] = useState()
     const [ tokenOutAmount, setTokenOutAmount ] = useState()
-    const [ routers, setRouters ] = useState(routerList.map(router => ({
-        name: router.name,
-        icon: router.icon
-    })))
+    const [ routers, setRouters ] = useState(routerList)
 
     // Default swap store
 
