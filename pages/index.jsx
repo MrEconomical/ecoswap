@@ -2,7 +2,7 @@
 
 import EthereumContext from "../state/EthereumContext"
 import PriceContext from "../state/PriceContext"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 
 // Swap input component
 
@@ -33,10 +33,33 @@ const SwapInput = () => {
 
 // Token selection component
 
-const TokenSelect = ({ label, token, setToken, tokens }) => {
-    // Selection menu state
+const TokenSelect = ({ label, type, chain }) => {
+    // Token selection menu data
 
+    const token = chain.swap[type === "input" ? "tokenIn" : "tokenOut"]
+    const setToken = chain.swap[type === "input" ? "setTokenIn" : "setTokenOut"]
     const [ menuActive, setMenuActive ] = useState(false)
+    const [ tokenList, setTokenList ] = useState(chain.tokens)
+
+    // Update token search
+
+    function updateTokenList(event) {
+        const query = event.target.value
+        console.log(query)
+    }
+
+    // Switch to selected token
+
+    function switchToken(token) {
+        setToken(token)
+        setMenuActive(false)
+    }
+
+    // Update token list on chain changes
+
+    useEffect(() => {
+        setTokenList(chain.tokens)
+    }, [chain])
 
     // Component
 
@@ -56,11 +79,11 @@ const TokenSelect = ({ label, token, setToken, tokens }) => {
                     </div>
                     <div className="token-search">
                         <img className="search-icon" src="/icons/search.svg"></img>
-                        <input className="search"></input>
+                        <input className="search" onChange={updateTokenList}></input>
                     </div>
                     <div className="tokens">
-                        {tokens.map((token, i) => (
-                            <button className="token" key={i}>
+                        {tokenList.map((token, i) => (
+                            <button className="token" key={i} onClick={() => switchToken(token)}>
                                 <img className="icon" src={`/tokens/${token.symbol}.svg`}></img>
                                 <div className="info">
                                     <div className="name">{token.name} - {token.symbol}</div>
@@ -109,12 +132,14 @@ const TokenSelect = ({ label, token, setToken, tokens }) => {
                 }
 
                 .exit {
+                    width: 0.75rem;
+                    height: 0.75rem;
                     margin-left: auto;
                 }
 
                 .exit-icon {
-                    width: 0.75rem;
-                    height: 0.75rem;
+                    width: 100%;
+                    height: 100%;
                     object-fit: contain;
                 }
 
@@ -147,7 +172,7 @@ const TokenSelect = ({ label, token, setToken, tokens }) => {
 
                 .tokens {
                     width: 100%;
-                    height: 100%;
+                    height: calc(100% - 1.2rem - 16px - 1rem - 14px - 16px - 1px);
                     display: flex;
                     flex-direction: column;
                     justify-content: flex-start;
@@ -220,7 +245,7 @@ const SwapInterface = () => {
                 <div className="label" style={{ marginBottom: "12px" }}>Input Token</div>
                 <div className="token-section">
                     <SwapInput></SwapInput>
-                    <TokenSelect label="Input Token" token={chain.swap.tokenIn} setToken={chain.swap.setTokenIn} tokens={chain.tokens}></TokenSelect>
+                    <TokenSelect label="Input Token" type="input" chain={chain}></TokenSelect>
                 </div>
                 <div className="middle">
                     <button className="switch">
@@ -230,7 +255,7 @@ const SwapInterface = () => {
                 </div>
                 <div className="token-section">
                     <div className="output">3</div>
-                    <TokenSelect label="Output Token" token={chain.swap.tokenOut} setToken={chain.swap.setTokenOut} tokens={chain.tokens}></TokenSelect>
+                    <TokenSelect label="Output Token" type="output" chain={chain}></TokenSelect>
                 </div>
                 <button className="swap">Swap Tokens</button>
                 <div className="swap-info">{getSwapInfo()}</div>
