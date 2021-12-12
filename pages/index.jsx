@@ -27,7 +27,7 @@ const SwapInput = () => {
 
 // Token selection component
 
-const TokenSelect = () => (
+const TokenSelect = ({ token, setToken }) => (
     <>
         <button className="select">
             WETH
