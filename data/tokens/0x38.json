@@ -1,1 +1,6 @@
-[]
+[{
+    "name": "Binance Coin",
+    "symbol": "BNB",
+    "address": null,
+    "decimals": 18
+}]
