@@ -399,7 +399,8 @@ const SwapInterface = () => {
 const SwapSettings = () => {
     // Swap settings data
     
-    const { web3, chain: { swapSettings: settings } } = useContext(EthereumContext)
+    const { web3, chain } = useContext(EthereumContext)
+    const settings = chain.swapSettings
 
     // Update slippage with slider value
 
@@ -413,6 +414,25 @@ const SwapSettings = () => {
         if (isNaN(+event.target.value) || +event.target.value <= 0 || event.target.value >= 50) return
         if (event.target.value.endsWith(".")) return
         settings.setSlippage(+event.target.value)
+    }
+
+    // Set gas value for chain
+
+    function updateGas(value) {
+        if (settings.gas[chain.id] === value) return
+        const gas = { ...settings.gas }
+        gas[chain.id] = value
+        settings.setGas(gas)
+    }
+
+    // Set gas with text input value
+
+    function setGas(event) {
+        if (isNaN(+event.target.value) || +event.target.value <= 0) return
+        if (event.target.value.endsWith(".")) return
+        const gas = { ...settings.gas }
+        gas[chain.id] = +event.target.value
+        settings.setGas(gas)
     }
 
     // Toggle router enabled
@@ -449,8 +469,19 @@ const SwapSettings = () => {
                         </div>
                     </div>
                     <div className="gas-section">
-                        <div className="section-title">Gas Price</div>
-                        <div className="gas-controls"></div>
+                        <div className="section-title">
+                            Gas Price
+                            <div className="title-value"> - {typeof settings.gas[chain.id] === "number" ? `custom ${settings.gas[chain.id]}` : "100"} gwei</div>
+                        </div>
+                        <div className="gas-controls">
+                            <div className="gas-switch" data-checked={settings.gas[chain.id] === "slow"} onClick={() => updateGas("slow")}></div>
+                            <div className="gas-label">Slow</div>
+                            <div className="gas-switch" data-checked={settings.gas[chain.id] === "normal"} onClick={() => updateGas("normal")}></div>
+                            <div className="gas-label">Normal</div>
+                            <div className="gas-switch" data-checked={settings.gas[chain.id] === "fast"} onClick={() => updateGas("fast")}></div>
+                            <div className="gas-label">Fast</div>
+                            <input className="gas-input" onChange={setGas}></input>
+                        </div>
                     </div>
                 </div>
                 <div className="section">
@@ -553,7 +584,7 @@ const SwapSettings = () => {
                     appearance: none;
                     background-color: var(--light-gray);
                     outline: none;
-                    margin-right: 1rem;
+                    margin-right: 1.5rem;
                 }
 
                 .slippage-slider::-webkit-slider-thumb {
@@ -582,6 +613,33 @@ const SwapSettings = () => {
                     flex-direction: row;
                     justify-content: flex-start;
                     align-items: center;
+                }
+
+                .gas-switch {
+                    width: 1rem;
+                    height: 1rem;
+                    background-color: var(--light-gray);
+                    margin-right: 0.5rem;
+                }
+
+                .gas-switch[data-checked="true"] {
+                    background-color: var(--light-dark);
+                }
+
+                .gas-label {
+                    margin-right: 1.5rem;
+                }
+
+                .gas-input {
+                    width: 60px;
+                    outline: none;
+                    border: 1px solid var(--light-gray);
+                    border-radius: 8px;
+                    padding: 6px 8px;
+                }
+
+                .gas-input:focus {
+                    border: 1px solid var(--gray);
                 }
 
                 .routers {
