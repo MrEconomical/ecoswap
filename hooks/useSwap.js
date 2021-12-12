@@ -7,7 +7,7 @@ import { useEffect, useState } from "react"
 function useSwap(chain) {
     // Swap state data
 
-    const [ tokenIn, setTokenIn ] = useState() // todo: set default value
+    const [ tokenIn, setTokenIn ] = useState()
     const [ tokenInAmount, setTokenInAmount ] = useState()
     const [ tokenOut, setTokenOut ] = useState()
     const [ tokenOutAmount, setTokenOutAmount ] = useState()
@@ -17,9 +17,7 @@ function useSwap(chain) {
     function getDefault() {
         return {
             tokenIn: chain.tokens.find(token => token.symbol === chain.token),
-            tokenInAmount: null,
-            tokenOut: chain.tokens.find(token => token.symbol === "USDC"),
-            tokenOutAmount: null
+            tokenOut: null
         }
     }
 
@@ -42,8 +40,9 @@ function useSwap(chain) {
 
         // Initialize swap data
 
-        const store = JSON.parse(localStorage.swapStore)
-        console.log(store)
+        const store = JSON.parse(localStorage.swapStore)[chain.id]
+        setTokenIn(store.tokenIn)
+        setTokenOut(store.tokenOut)
     }, [])
 
     // Swap data

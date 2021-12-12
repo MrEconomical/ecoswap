@@ -42,7 +42,8 @@ const App = ({ Component, pageProps }) => (
                 --accent: #48BF53;
                 --light-dark: #C8EBCB;
                 --light: #ECF8Ed;
-                --black: #111111;
+                --black: #16191E;
+                --dark-gray: #56595E;
                 --gray: #96999E;
                 --light-gray: #C6C9CE;
             }
