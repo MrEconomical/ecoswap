@@ -13,6 +13,7 @@ for (const router of routerList) {
 
 async function quoteSwap(swap) {
     console.log("quote swap was called")
+    console.log(swap)
 }
 
 // Exports

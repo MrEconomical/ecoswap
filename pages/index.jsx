@@ -9,8 +9,9 @@ import { useContext, useEffect, useState } from "react"
 // Swap input component
 
 const SwapInput = ({ onChange }) => {
-    // Input data
+    // Swap data
 
+    const swap = useContext(EthereumContext).chain.swap
     const [ inputBefore, setInputBefore ] = useState("")
 
     // Format swap input on change
@@ -57,7 +58,9 @@ const SwapInput = ({ onChange }) => {
             }
         }
         setInputBefore(event.target.value)
-        onChange(unparse(event.target.value))
+        if (swap.tokenIn) {
+            onChange(unparse(event.target.value, swap.tokenIn.decimals))
+        }
     }
 
     // Component
@@ -314,18 +317,19 @@ const TokenSelect = ({ label, type }) => {
 const SwapInterface = () => {
     // Swap data
 
-    const swap = useContext(EthereumContext).chain.swap
+    const { chain, BN } = useContext(EthereumContext)
     const prices = useContext(PriceContext)
 
     const [ updateTimeout, setUpdateTimeout ] = useState()
 
     // Update swap quote
 
-    function updateSwapQuote() {
+    function updateSwapQuote(value) {
         clearTimeout(updateTimeout)
+        chain.swap.setTokenInAmount(BN(value))
         setUpdateTimeout(setTimeout(async () => {
             try {
-                await quoteSwap(swap)
+                await quoteSwap(chain.swap)
             } catch(error) {
                 console.error(error)
             }
@@ -335,9 +339,9 @@ const SwapInterface = () => {
     // Switch input and output tokens
 
     function switchTokens() {
-        const newInput = swap.tokenOut
-        swap.setTokenOut(swap.tokenIn)
-        swap.setTokenIn(newInput)
+        const newInput = chain.swap.tokenOut
+        chain.swap.setTokenOut(chain.swap.tokenIn)
+        chain.swap.setTokenIn(newInput)
     }
 
     // Calculate swap info
