@@ -2,17 +2,24 @@
 
 import EthereumContext from "../state/EthereumContext"
 import PriceContext from "../state/PriceContext"
+import quoteSwap from "../swap/quote"
 import { parse, format } from "../helpers/number"
 import { useContext, useEffect, useState } from "react"
 
 // Swap input component
 
-const SwapInput = () => {
+const SwapInput = ({ onChange }) => {
+    // Handle swap input change
+
+    function handleChange(event) {
+        console.log("changed")
+    }
+
     // Component
 
     return (
         <>
-            <input className="input"></input>
+            <input className="input" onChange={handleChange}></input>
             <style jsx>{`
                 .input {
                     width: 45%;
@@ -265,6 +272,15 @@ const SwapInterface = () => {
     const { chain } = useContext(EthereumContext)
     const prices = useContext(PriceContext)
 
+    const [ updateTimeout, setUpdateTimeout ] = useState()
+
+    // Update swap quote
+
+    function updateSwapQuote() {
+        clearTimeout(updateTimeout)
+        setUpdateTimeout(setTimeout(quoteSwap, 500))
+    }
+
     // Switch input and output tokens
 
     function switchTokens() {
@@ -286,7 +302,7 @@ const SwapInterface = () => {
             <div className="interface">
                 <div className="label" style={{ marginBottom: "12px" }}>Input Token</div>
                 <div className="token-section">
-                    <SwapInput></SwapInput>
+                    <SwapInput onChange={updateSwapQuote}></SwapInput>
                     <TokenSelect label="Input Token" type="input"></TokenSelect>
                 </div>
                 <div className="middle">
@@ -778,9 +794,9 @@ const SwapSettings = () => {
 // Router outputs component
 
 const RouterOutputs = () => {
-    // Router output data
+    // Swap data
 
-    const routers = useContext(EthereumContext).chain.swap.routers
+    const swap = useContext(EthereumContext).chain.swap
 
     // Component
 
@@ -788,7 +804,7 @@ const RouterOutputs = () => {
         <>
             <div className="routers">
                 <div className="title">Aggregation Routers</div>
-                {routers.map(router => (
+                {swap.routers.map(router => (
                     <div className="router">
                         <div className="router-info">
                             <img className="router-icon" src={`/routers/${router.id}.svg`}></img>
