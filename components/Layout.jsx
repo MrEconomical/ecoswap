@@ -236,6 +236,24 @@ const NavBar = () => (
     </>
 )
 
+// Footer component
+
+const Footer = () => (
+    <>
+        <div className="footer">
+            Built by MrEconomical.eth
+        </div>
+        <style jsx>{`
+            .footer {
+                width: 100%;
+                height: 40px;
+                font-size: 0.9rem;
+                padding: 0 max(calc(50vw - 500px), 20px);
+            }
+        `}</style>
+    </>
+)
+
 // Layout component
 
 const Layout = ({ children }) => (
@@ -244,6 +262,7 @@ const Layout = ({ children }) => (
         <div className="content">
             {children}
         </div>
+        <Footer></Footer>
         <style jsx>{`
             .content {
                 width: 100%;

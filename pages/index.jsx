@@ -788,7 +788,7 @@ const Swap = () => (
         <style jsx>{`
             .content {
                 width: 100%;
-                height: calc(100vh - 80px);
+                height: calc(100vh - 120px);
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
