@@ -1,8 +1,9 @@
 // Files and modules
 
 import chainData from "../data/chains"
+import useGlobalState from "./useGlobalState"
 import useSwap from "./useSwap"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import Web3 from "web3"
 
 // Load Ethereum data
@@ -24,9 +25,9 @@ for (const id in chainData) {
 function useEthereum() {
     // Default Ethereum application state
 
-    const [ enabled, setEnabled ] = useState(false) // non-responsive
-    const [ chain, setChain ] = useState(chains["0x1"])
-    const [ account, setAccount ] = useState(null)
+    const [ enabled, setEnabled ] = useGlobalState("enabled", false) // non-responsive
+    const [ chain, setChain ] = useGlobalState("chain", chains["0x1"])
+    const [ account, setAccount ] = useGlobalState("account", null)
 
     for (const id in chains) {
         chains[id].swap = useSwap(chains[id])

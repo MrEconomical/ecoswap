@@ -23,9 +23,11 @@ setInterval(async () => {
 
 // Token price data hook
 
-function usePrice(token) {
-    const [ price, setPrice ] = useState()
-    tokens.push([token, setPrice])
+function usePrice(tokenSymbol) {
+    const [ price, setPrice ] = useGlobalState(`price-${tokenSymbol}`)
+    if (!tokens.find(token => token[0] === tokenSymbol)) {
+        tokens.push([tokenSymbol, setPrice])
+    }
     return price
 }
 
