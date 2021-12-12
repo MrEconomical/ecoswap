@@ -15,7 +15,7 @@ for (const id in chainData) {
         id,
         ...chainData[id],
         web3: new Web3(chainData[id].rpc),
-        tokens: require(`../data/tokens/${id}.json`)
+        tokens: require(`../data/tokens/${id}.json`).map(token => token.default = true)
     }
 }
 

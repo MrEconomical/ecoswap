@@ -2,6 +2,7 @@
 
 import Layout from "../components/Layout"
 import { EthereumContextProvider } from "../state/EthereumContext"
+import { PriceContextProvider } from "../state/PriceContext"
 import Head from "next/head"
 
 // Site metadata
@@ -30,9 +31,11 @@ const App = ({ Component, pageProps }) => (
     <>
         <Metadata page={pageProps.page}></Metadata>
         <EthereumContextProvider>
-            <Layout>
-                <Component {...pageProps}></Component>
-            </Layout>
+            <PriceContextProvider>
+                <Layout>
+                    <Component {...pageProps}></Component>
+                </Layout>
+            </PriceContextProvider>
         </EthereumContextProvider>
         <style jsx global>{`
             @font-face {
