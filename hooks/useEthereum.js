@@ -50,7 +50,6 @@ function useEthereum() {
     // Run initial client side update
 
     useEffect(() => {
-        console.log("running initial client side update")
         setEnabled(typeof ethereum !== "undefined")
         updateAccount()
         updateChain()
