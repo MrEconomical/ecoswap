@@ -34,12 +34,14 @@ const SwapInput = () => {
 
 // Token selection component
 
-const TokenSelect = ({ label, type, chain }) => {
+const TokenSelect = ({ label, type }) => {
     // Token selection menu data
 
+    const { chain, account } = useContext(EthereumContext)
     const token = chain.swap[type === "input" ? "tokenIn" : "tokenOut"]
     const setToken = chain.swap[type === "input" ? "setTokenIn" : "setTokenOut"]
     const opposite = chain.swap[type === "input" ? "tokenOut" : "tokenIn"]
+
     const [ menuActive, setMenuActive ] = useState(false)
     const [ tokenList, setTokenList ] = useState(chain.tokens)
 
@@ -50,6 +52,8 @@ const TokenSelect = ({ label, type, chain }) => {
         if (!query) return setTokenList(chain.tokens)
         const tokens = chain.tokens.filter(token => token.name.toLowerCase().includes(query) || token.symbol.toLowerCase().includes(query))
         tokens.sort((a, b) => {
+            // Sort tokens by index of match
+
             const nameA = a.name.toLowerCase()
             const symbolA = a.symbol.toLowerCase()
             const nameB = b.name.toLowerCase()
@@ -72,11 +76,11 @@ const TokenSelect = ({ label, type, chain }) => {
         setMenuActive(false)
     }
 
-    // Hide menu on chain changes
+    // Hide menu on chain or account changes
 
     useEffect(() => {
         setMenuActive(false)
-    }, [chain])
+    }, [chain, account])
 
     // Update token list on data changes
 
@@ -126,13 +130,13 @@ const TokenSelect = ({ label, type, chain }) => {
              ) : <></>}
             <style jsx>{`
                 .select {
-                    width: 50%;
                     display: flex;
                     flex-direction: row;
                     justify-content: flex-end;
                     align-items: center;
                     font-size: 1.2rem;
                     overflow: hidden;
+                    margin-left: auto;
                     padding: 9px 0;
                 }
 
@@ -258,7 +262,6 @@ const TokenSelect = ({ label, type, chain }) => {
 const SwapInterface = () => {
     // Swap data
 
-    const { chain } = useContext(EthereumContext)
     const prices = useContext(PriceContext)
 
     // Calculate swap info
@@ -275,7 +278,7 @@ const SwapInterface = () => {
                 <div className="label" style={{ marginBottom: "12px" }}>Input Token</div>
                 <div className="token-section">
                     <SwapInput></SwapInput>
-                    <TokenSelect label="Input Token" type="input" chain={chain}></TokenSelect>
+                    <TokenSelect label="Input Token" type="input"></TokenSelect>
                 </div>
                 <div className="middle">
                     <button className="switch">
@@ -285,7 +288,7 @@ const SwapInterface = () => {
                 </div>
                 <div className="token-section">
                     <div className="output"></div>
-                    <TokenSelect label="Output Token" type="output" chain={chain}></TokenSelect>
+                    <TokenSelect label="Output Token" type="output"></TokenSelect>
                 </div>
                 <button className="swap">Swap Tokens</button>
                 <div className="swap-info">{getSwapInfo()}</div>
