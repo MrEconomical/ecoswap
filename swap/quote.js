@@ -12,8 +12,10 @@ for (const router of routerList) {
 // Quote swap on routers
 
 async function quoteSwap(swap) {
-    console.log("quote swap was called")
-    console.log(swap)
+    // Get best router quote
+
+    const quotes = await Promise.all(routers.map(router => router.quote(swap)))
+    console.log(quotes)
 }
 
 // Exports
