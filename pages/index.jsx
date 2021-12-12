@@ -423,6 +423,7 @@ const SwapSettings = () => {
         const gas = { ...settings.gas }
         gas[chain.id] = value
         settings.setGas(gas)
+        document.getElementById("gas-input").value = ""
     }
 
     // Set gas with text input value
@@ -480,7 +481,7 @@ const SwapSettings = () => {
                             <div className="gas-label">Normal</div>
                             <div className="gas-switch" data-checked={settings.gas[chain.id] === "fast"} onClick={() => updateGas("fast")}></div>
                             <div className="gas-label">Fast</div>
-                            <input className="gas-input" onChange={setGas}></input>
+                            <input id="gas-input" className="gas-input" onChange={setGas}></input>
                         </div>
                     </div>
                 </div>
@@ -619,6 +620,7 @@ const SwapSettings = () => {
                     width: 1rem;
                     height: 1rem;
                     background-color: var(--light-gray);
+                    border-radius: 4px;
                     margin-right: 0.5rem;
                 }
 
@@ -702,13 +704,14 @@ const SwapSettings = () => {
                     right: 0;
                     bottom: 0;
                     background-color: var(--light-gray);
+                    border-radius: 4px;
                 }
 
                 .slider:before {
                     position: absolute;
                     width: calc(1.2rem - 8px);
                     height: calc(1.2rem - 8px);
-                    left: 4px;
+                    left: 5px;
                     bottom: 4px;
                     content: "";
                     outline: none;
@@ -720,7 +723,7 @@ const SwapSettings = () => {
                 }
 
                 input:checked + .slider:before {
-                    transform: translateX(calc(1.8rem));
+                    transform: translateX(calc(1.8rem - 2px));
                 }
 
                 .referral-title {
