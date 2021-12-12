@@ -58,7 +58,7 @@ const SwapInput = ({ onChange }) => {
             }
         }
         setInputBefore(event.target.value)
-        if (swap.tokenIn) {
+        if (swap.tokenIn && swap.tokenOut) {
             onChange(unparse(event.target.value, swap.tokenIn.decimals))
         }
     }
@@ -66,10 +66,10 @@ const SwapInput = ({ onChange }) => {
     // Call quote update on token change
 
     useEffect(() => {
-        if (swap.tokenIn && inputBefore) {
+        if (swap.tokenIn && swap.tokenOut && inputBefore) {
             onChange(unparse(inputBefore, swap.tokenIn.decimals), true)
         }
-    }, [swap.tokenIn])
+    }, [swap.tokenIn, swap.tokenOut])
 
     // Component
 
@@ -337,7 +337,7 @@ const SwapInterface = () => {
         chain.swap.setTokenInAmount(BN(value))
         setUpdateTimeout(setTimeout(async () => {
             try {
-                await quoteSwap(chain.swap)
+                await quoteSwap(chain, BN)
             } catch(error) {
                 console.error(error)
             }
