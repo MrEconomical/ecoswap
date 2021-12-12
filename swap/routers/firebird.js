@@ -4,7 +4,7 @@ import axios from "axios"
 
 // Quote swap
 
-async function quote(chain, BN) {
+async function quote(chain, amountIn, BN) {
     return BN(0)
 }
 

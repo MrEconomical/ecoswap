@@ -17,14 +17,14 @@ function getEndpoint(chainId) {
 
 // Quote swap
 
-async function quote(chain, BN) {
+async function quote(chain, amountIn, BN) {
     const endpoint = getEndpoint(chain.id)
     if (!endpoint) return BN(0)
     const swap = chain.swap
     const result = await axios(`${endpoint}/quote?${querystring.encode({
         fromTokenAddress: swap.tokenIn.address,
         toTokenAddress: swap.tokenOut.address,
-        amount: swap.tokenInAmount.toString()
+        amount: amountIn.toString()
     })}`)
     return BN(result.data.toTokenAmount)
 }

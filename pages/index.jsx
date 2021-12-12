@@ -357,7 +357,7 @@ const SwapInterface = () => {
         chain.swap.setTokenOutAmount("...")
         setUpdateTimeout(setTimeout(async () => {
             try {
-                await quoteSwap(chain, BN)
+                await quoteSwap(chain, BN(value), BN)
             } catch(error) {
                 console.error(error)
             }

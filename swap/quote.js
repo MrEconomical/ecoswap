@@ -11,10 +11,10 @@ for (const router of routerList) {
 
 // Quote swap on routers
 
-async function quoteSwap(chain, BN) {
+async function quoteSwap(chain, amountIn, BN) {
     // Get best router quote
 
-    const quotes = await Promise.all(routers.map(router => router.quote(chain, BN)))
+    const quotes = await Promise.all(routers.map(router => router.quote(chain, amountIn, BN)))
     let best = [BN(0), -1]
     for (let q = 0; q < quotes.length; q ++) {
         if (quotes[q].gt(best[0])) {
