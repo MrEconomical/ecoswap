@@ -33,10 +33,11 @@ const SwapInput = () => {
 
 // Token selection component
 
-const TokenSelect = ({ tokens, token, setToken }) => {
+const TokenSelect = ({ label, token, setToken, tokens }) => {
     // Selection menu state
 
     const [ menuActive, setMenuActive ] = useState(false)
+    console.log(tokens)
 
     // Component
 
@@ -46,7 +47,25 @@ const TokenSelect = ({ tokens, token, setToken }) => {
                 {token ? token.symbol.length > 9 ? `${token.symbol.slice(0, 8)}...` : token.symbol : "Choose"}
                 <img className="arrow" src="/icons/arrow-down.svg"></img>
             </button>
-            {menuActive ? <div className="menu"></div> : <></>}
+            {menuActive ? (
+                <div className="menu">
+                    <div className="header">
+                        <div>Select {label}</div>
+                        <button className="exit" onClick={() => setMenuActive(false)}>
+                            <img className="exit-icon" src="/icons/exit.svg"></img>
+                        </button>
+                    </div>
+                    <div className="token-search">
+                        <img className="search-icon" src="/icons/search.svg"></img>
+                        <input className="search"></input>
+                    </div>
+                    <div className="tokens">
+                        {tokens.map(token => (
+                            <button className="token">{token.name}</button>
+                        ))}
+                    </div>
+                </div>
+             ) : <></>}
             <style jsx>{`
                 .select {
                     width: 50%;
@@ -73,7 +92,60 @@ const TokenSelect = ({ tokens, token, setToken }) => {
                     width: 100%;
                     height: 100%;
                     z-index: 1;
-                    background-color: black;
+                    background-color: var(--background);
+                }
+
+                .header {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    margin-bottom: 16px;
+                }
+
+                .exit {
+                    margin-left: auto;
+                }
+
+                .exit-icon {
+                    width: 0.75rem;
+                    height: 0.75rem;
+                    object-fit: contain;
+                }
+
+                .token-search {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    margin-bottom: 16px;
+                }
+
+                .search-icon {
+                    width: 0.75rem;
+                    height: 0.75rem;
+                    object-fit: contain;
+                    margin-right: 1rem;
+                }
+
+                .search {
+                    width: 100%;
+                    outline: none;
+                    border: 1px solid var(--light-gray);
+                    border-radius: 8px;
+                    padding: 6px 8px;
+                }
+
+                .search:focus {
+                    border: 1px solid var(--gray);
+                }
+
+                .tokens {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: flex-start;
                 }
             `}</style>
         </>
@@ -102,7 +174,7 @@ const SwapInterface = () => {
                 <div className="label" style={{ marginBottom: "12px" }}>Input Token</div>
                 <div className="token-section">
                     <SwapInput></SwapInput>
-                    <TokenSelect tokens={chain.tokens} token={chain.swap.tokenIn} setToken={chain.swap.setTokenIn}></TokenSelect>
+                    <TokenSelect label="Input Token" token={chain.swap.tokenIn} setToken={chain.swap.setTokenIn} tokens={chain.tokens}></TokenSelect>
                 </div>
                 <div className="middle">
                     <button className="switch">
@@ -112,7 +184,7 @@ const SwapInterface = () => {
                 </div>
                 <div className="token-section">
                     <div className="output">3</div>
-                    <TokenSelect tokens={chain.tokens} token={chain.swap.tokenOut} setToken={chain.swap.setTokenOut}></TokenSelect>
+                    <TokenSelect label="Output Token" token={chain.swap.tokenOut} setToken={chain.swap.setTokenOut} tokens={chain.tokens}></TokenSelect>
                 </div>
                 <button className="swap">Swap Tokens</button>
                 <div className="swap-info">{getSwapInfo()}</div>
