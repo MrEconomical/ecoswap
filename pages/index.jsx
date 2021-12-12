@@ -789,7 +789,12 @@ const RouterOutputs = () => {
             <div className="routers">
                 <div className="title">Aggregation Routers</div>
                 {routers.map(router => (
-                    <div className="router">{JSON.stringify(router)}</div>
+                    <div className="router">
+                        <div className="router-info">
+                            <img className="router-icon" src={`/routers/${router.id}.svg`}></img>
+                            {router.name}
+                        </div>
+                    </div>
                 ))}
             </div>
             <style jsx>{`
@@ -807,6 +812,29 @@ const RouterOutputs = () => {
                 .title {
                     font-size: 1.5rem;
                     margin-bottom: 2rem;
+                }
+
+                .router {
+                    width: 100%:
+                    display: grid;
+                    grid-template-columns: 20% 50% 30%;
+                    grid-gap: 16px;
+                    margin: 1.5rem 0;
+                }
+
+                .router-info {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    font-size: 1.2rem;
+                }
+
+                .router-icon {
+                    width: 1.2rem;
+                    height: 1.2rem;
+                    object-fit: contain;
+                    margin-right: 1rem;
                 }
             `}</style>
         </>
