@@ -11,10 +11,11 @@ for (const router of routerList) {
 
 // Get best swap from routers
 
-async function getSwap(chain, BN) {
+async function getSwap(chain, account, BN) {
     // Get best router swap
 
-    const swaps = await Promise.all(routers.map(router => router.getSwap(chain, BN)))
+    const swaps = await Promise.all(routers.map(router => router.getSwap(chain, account, BN)))
+    console.log(swaps)
     /*
     let best = [BN(0), -1]
     for (let q = 0; q < quotes.length; q ++) {

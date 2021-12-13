@@ -547,7 +547,7 @@ const SwapInterface = () => {
         if (!account || !swap.tokenIn || !swap.tokenOut || !swap.tokenInAmount) return
         let swapData
         try {
-            swapData = await getSwap(chain, BN)
+            swapData = await getSwap(chain, account, BN)
         } catch(error) {
             console.error(error)
             return

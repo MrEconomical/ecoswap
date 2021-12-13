@@ -15,17 +15,16 @@ async function quoteSwap(chain, BN) {
     // Get best router quote
 
     const quotes = await Promise.all(routers.map(router => router.quote(chain, BN)))
-    let best = [BN(0), -1]
-    for (let q = 0; q < quotes.length; q ++) {
-        if (quotes[q].gt(best[0])) {
-            best[0] = quotes[q]
-            best[1] = q
+    let best = 0
+    for (let q = 1; q < quotes.length; q ++) {
+        if (quotes[q].gt(quotes[best])) {
+            best = q
         }
     }
 
     // Update state
 
-    chain.swap.setTokenOutAmount(best[0])
+    chain.swap.setTokenOutAmount(quotes[best])
     const routerQuotes = []
     for (let q = 0; q < quotes.length; q ++) {
         routerQuotes.push({
