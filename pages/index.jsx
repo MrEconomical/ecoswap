@@ -202,10 +202,10 @@ const TokenSelect = ({ label, type }) => {
 
     function switchToken(newToken) {
         if (chain.tokens.find(token => token.address === newToken.address)) {
-            setToken(token)
+            setActiveToken(newToken)
         } else {
             chain.setTokens([...chain.tokens, newToken])
-            setToken(newToken)
+            setActiveToken(newToken)
         }
         setMenuActive(false)
     }
