@@ -50,26 +50,28 @@ function useSwap(chain) {
     // Update local storage on token change
 
     useEffect(() => {
+        const tokenInStore = tokenIn.external ? null : tokenIn
+        const tokenOutStore = tokenOut.external ? null : tokenOut
         if (!localStorage.swapStore) {
             localStorage.swapStore = JSON.stringify({
                 [chain.id]: {
-                    tokenIn,
-                    tokenOut
+                    tokenIn: tokenInStore,
+                    tokenOut: tokenOutStore
                 }
             })
         } else {
             try {
                 const store = JSON.parse(localStorage.swapStore)
                 store[chain.id] = {
-                    tokenIn,
-                    tokenOut
+                    tokenIn: tokenInStore,
+                    tokenOut: tokenOutStore
                 }
                 localStorage.swapStore = JSON.stringify(store)
             } catch {
                 localStorage.swapStore = JSON.stringify({
                     [chain.id]: {
-                        tokenIn,
-                        tokenOut
+                        tokenIn: tokenInStore,
+                        tokenOut: tokenOutStore
                     }
                 })
             }
