@@ -134,8 +134,11 @@ const TokenSelect = ({ label, type }) => {
 
     function updateTokenList(event) {
         const query = event.target.value.toLowerCase()
-        if (!query) return setTokenList(chain.tokens)
-        const tokens = chain.tokens.filter(token => token.name.toLowerCase().includes(query) || token.symbol.toLowerCase().includes(query) || token.address.toLowerCase() === query)
+        if (!query) return setTokenList(chain.tokens.filter(token => opposite ? token.address !== opposite.address : true))
+        const tokens = chain.tokens.filter(token => opposite ? token.address !== opposite.address : true &&
+                                                    (token.name.toLowerCase().includes(query) ||
+                                                    token.symbol.toLowerCase().includes(query) ||
+                                                    token.address.toLowerCase() === query))
         tokens.sort((a, b) => {
             // Sort tokens by address
 
@@ -209,14 +212,7 @@ const TokenSelect = ({ label, type }) => {
     // Update token list on data changes
 
     useEffect(() => {
-        if (opposite) {
-            const index = chain.tokens.findIndex(token => opposite.address === token.address)
-            if (index !== -1) {
-                setTokenList(chain.tokens.slice(0, index).concat(chain.tokens.slice(index + 1)))
-                return
-            }
-        }
-        setTokenList(chain.tokens)
+        setTokenList(chain.tokens.filter(token => opposite ? token.address !== opposite.address : true))
     }, [chain, opposite])
 
     // Hide menu on chain or account changes
