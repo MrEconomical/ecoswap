@@ -161,13 +161,13 @@ const TokenSelect = ({ label, type }) => {
         })
         setTokenList(tokens)
         if (web3.utils.isAddress(query) && !chain.tokens.find(token => token.address.toLowerCase() === query)) {
-            getExternalToken(query, tokens)
+            addExternalToken(query, tokens)
         }
     }
 
-    // Find external token
+    // Add external token to token list
 
-    async function getExternalToken(address, tokenList) {
+    async function addExternalToken(address, tokenList) {
         if (!account) return
         const Token = new chain.web3.eth.Contract(ERC20ABI, address)
         let name, symbol, decimals, balance
@@ -181,14 +181,16 @@ const TokenSelect = ({ label, type }) => {
         } catch {
             return
         }
+        const balances = { ...chain.tokenBalances }
+        balances[Token._address] = BN(balance)
+        chain.setTokenBalances(balances)
         const tokens = [ ...tokenList ]
         tokens.push({
             external: true,
             name,
             symbol,
-            address: web3.utils.toChecksumAddress(address),
-            decimals: +decimals,
-            balanceOverride: BN(balance)
+            address: Token._address,
+            decimals: +decimals
         })
         setTokenList(tokens)
     }
@@ -204,12 +206,6 @@ const TokenSelect = ({ label, type }) => {
         setMenuActive(false)
     }
 
-    // Hide menu on chain or account changes
-
-    useEffect(() => {
-        setMenuActive(false)
-    }, [chain, account])
-
     // Update token list on data changes
 
     useEffect(() => {
@@ -222,6 +218,25 @@ const TokenSelect = ({ label, type }) => {
         }
         setTokenList(chain.tokens)
     }, [chain, opposite])
+
+    // Hide menu on chain or account changes
+
+    useEffect(() => {
+        setMenuActive(false)
+    }, [chain, account])
+
+    // Remove unselected external tokens from token balances on menu changes
+
+    useEffect(() => {
+        if (menuActive) return
+        const balances = { ...chain.tokenBalances }
+        for (const address in balances) {
+            if (!chain.tokens.find(token => address === token.address)) {
+                delete balances[address]
+            }
+        }
+        chain.setTokenBalances(balances)
+    }, [menuActive])
 
     // Component
 
@@ -249,11 +264,7 @@ const TokenSelect = ({ label, type }) => {
                                 <img className="icon" src={`/tokens/${token.default ? token.symbol : "unknown"}.svg`}></img>
                                 <div className="info">
                                     <div className="name">{token.name} - {token.symbol}</div>
-                                    <div className="balance">{
-                                        token.balanceOverride && (!chain.tokenBalances[token.address] || chain.tokenBalances[token.address].eq(BN(0))) ?
-                                        format(parse(token.balanceOverride, token.decimals)) :
-                                        chain.tokenBalances[token.address] ? format(parse(chain.tokenBalances[token.address], token.decimals)) : "0"
-                                    }</div>
+                                    <div className="balance">{chain.tokenBalances[token.address] ? format(parse(chain.tokenBalances[token.address], token.decimals)) : "0"}</div>
                                 </div>
                             </button>
                         ))}
