@@ -122,7 +122,7 @@ const SwapInput = () => {
 const TokenSelect = ({ label, type }) => {
     // Token selection menu data
 
-    const { web3, chain, account } = useContext(EthereumContext)
+    const { web3, chain, account, BN } = useContext(EthereumContext)
     const token = chain.swap[type === "input" ? "tokenIn" : "tokenOut"]
     const setToken = chain.swap[type === "input" ? "setTokenIn" : "setTokenOut"]
     const opposite = chain.swap[type === "input" ? "tokenOut" : "tokenIn"]
@@ -168,23 +168,27 @@ const TokenSelect = ({ label, type }) => {
     // Find external token
 
     async function getExternalToken(address, tokenList) {
+        if (!account) return
         const Token = new chain.web3.eth.Contract(ERC20ABI, address)
-        let name, symbol, decimals
+        let name, symbol, decimals, balance
         try {
-            [ name, symbol, decimals ] = await Promise.all([
+            [ name, symbol, decimals, balance ] = await Promise.all([
                 Token.methods.name().call(),
                 Token.methods.symbol().call(),
-                Token.methods.decimals().call()
+                Token.methods.decimals().call(),
+                Token.methods.balanceOf(account).call()
             ])
         } catch {
             return
         }
         const tokens = [ ...tokenList ]
         tokens.push({
+            external: true,
             name,
             symbol,
             address: web3.utils.toChecksumAddress(address),
-            decimals
+            decimals: +decimals,
+            balanceOverride: BN(balance)
         })
         setTokenList(tokens)
     }
@@ -192,7 +196,11 @@ const TokenSelect = ({ label, type }) => {
     // Switch to selected token
 
     function switchToken(token) {
-        setToken(token)
+        if (!token.external) {
+            setToken(token)
+        } else {
+            console.log("is external token")
+        }
         setMenuActive(false)
     }
 
@@ -241,7 +249,11 @@ const TokenSelect = ({ label, type }) => {
                                 <img className="icon" src={`/tokens/${token.default ? token.symbol : "unknown"}.svg`}></img>
                                 <div className="info">
                                     <div className="name">{token.name} - {token.symbol}</div>
-                                    <div className="balance">{chain.tokenBalances[token.address] ? format(parse(chain.tokenBalances[token.address], token.decimals)) : "0"}</div>
+                                    <div className="balance">{
+                                        token.balanceOverride && (!chain.tokenBalances[token.address] || chain.tokenBalances[token.address].eq(BN(0))) ?
+                                        format(parse(token.balanceOverride, token.decimals)) :
+                                        chain.tokenBalances[token.address] ? format(parse(chain.tokenBalances[token.address], token.decimals)) : "0"
+                                    }</div>
                                 </div>
                             </button>
                         ))}
