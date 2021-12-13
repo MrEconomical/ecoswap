@@ -186,7 +186,6 @@ const TokenSelect = ({ label, type }) => {
             address: web3.utils.toChecksumAddress(address),
             decimals
         })
-        console.log(tokens)
         setTokenList(tokens)
     }
 
