@@ -6,7 +6,7 @@ import EthereumContext from "../state/EthereumContext"
 import PriceContext from "../state/PriceContext"
 import quoteSwap from "../swap/quote"
 import getSwap from "../swap/swap"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState, useRef } from "react"
 
 // Swap input component
 
@@ -14,14 +14,14 @@ const SwapInput = () => {
     // Swap data
 
     const { chain, BN } = useContext(EthereumContext)
-    const [ inputBefore, setInputBefore ] = useState("")
+    const inputBefore = useRef("")
 
     // Format swap input on change
 
     function handleChange(event) {
         // Update token input state
 
-        const value = !event.target.value || /^[0-9,.]+$/g.test(event.target.value) ? event.target.value : inputBefore
+        const value = !event.target.value || /^[0-9,.]+$/g.test(event.target.value) ? event.target.value : inputBefore.current
         if (chain.swap.tokenIn && value) {
             const amount = BN(unparse(value, chain.swap.tokenIn.decimals))
             chain.swap.setTokenInAmount(amount.eq(BN(0)) ? null : amount)
@@ -33,13 +33,13 @@ const SwapInput = () => {
 
         if (event.target.value === "") return
         if (!/^[0-9,.]+$/g.test(event.target.value)) {
-            event.target.value = inputBefore
+            event.target.value = inputBefore.current
             return
         }
         let insert = 0
-        while (event.target.value[insert] === inputBefore[insert]) {
+        while (event.target.value[insert] === inputBefore.current[insert]) {
             insert ++
-            if (!event.target.value[insert] && !inputBefore[insert]) break
+            if (!event.target.value[insert] && !inputBefore.current[insert]) break
         }
         if (!event.target.value.endsWith(".")) {
             if (event.target.value.includes(".")) {
@@ -53,13 +53,13 @@ const SwapInput = () => {
         } else {
             let count = 0
             for (let c = 0; c < insert; c ++) {
-                if (inputBefore[c] === ",") {
+                if (inputBefore.current[c] === ",") {
                     count ++
                 }
             }
             for (let c = 0; c < event.target.value.length; c ++) {
                 if (count === insert) {
-                    if ((!event.target.value.endsWith(".") && event.target.value[c] === ".") || event.target.value.length < inputBefore.length) {
+                    if ((!event.target.value.endsWith(".") && event.target.value[c] === ".") || event.target.value.length < inputBefore.current.length) {
                         event.target.selectionEnd = c
                     } else {
                         event.target.selectionEnd = c + 1
@@ -71,7 +71,7 @@ const SwapInput = () => {
                 }
             }
         }
-        setInputBefore(event.target.value)
+        inputBefore.current = event.target.value
     }
 
     // Update token amount on token change
@@ -469,8 +469,8 @@ const SwapInterface = () => {
 
     const { web3, chain, account, BN } = useContext(EthereumContext)
     const swap = chain.swap
-    const [ updateTimeout, setUpdateTimeout ] = useState()
     const [ swapButtonText, setSwapButtonText ] = useState("Swap Tokens")
+    const updateTimeout = useRef()
 
     // Set max token amount
 
@@ -561,7 +561,7 @@ const SwapInterface = () => {
     // Update swap quote on token amount changes
 
     useEffect(() => {
-        clearTimeout(updateTimeout)
+        clearTimeout(updateTimeout.current)
         if (!swap.tokenInAmount || !swap.tokenOut) {
             swap.setTokenOutAmount(null)
             resetRouterQuotes()
@@ -569,13 +569,13 @@ const SwapInterface = () => {
         }
         swap.setTokenOutAmount("...")
         resetRouterQuotes()
-        setUpdateTimeout(setTimeout(updateQuote, 500))
+        updateTimeout.current = setTimeout(updateQuote, 500)
     }, [swap.tokenInAmount])
 
     // Update swap quote on token changes
 
     useEffect(() => {
-        clearTimeout(updateTimeout)
+        clearTimeout(updateTimeout.current)
         if (!swap.tokenInAmount || !swap.tokenOut) {
             swap.setTokenOutAmount(null)
             resetRouterQuotes()
