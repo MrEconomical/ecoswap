@@ -552,10 +552,11 @@ const SwapInterface = () => {
             console.error(error)
             return
         }
+        console.log(swapData)
 
         // Check approval
 
-        const Token = new chain.web3.Contract(ERC20ABI, swap.tokenIn.address)
+        //const Token = new chain.web3.Contract(ERC20ABI, swap.tokenIn.address)
     }
 
     // Update swap quote on token amount changes
@@ -569,7 +570,7 @@ const SwapInterface = () => {
         }
         swap.setTokenOutAmount("...")
         resetRouterQuotes()
-        updateTimeout.current = setTimeout(updateQuote, 500)
+        updateTimeout.current = setTimeout(updateQuote, 300)
     }, [swap.tokenInAmount])
 
     // Update swap quote on token changes
