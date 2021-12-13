@@ -201,7 +201,7 @@ const TokenSelect = ({ label, type }) => {
     // Switch to selected token
 
     function switchToken(token) {
-        if (!token.external || hasToken(token)) {
+        if (!token.external || chain.tokens.find(t => t.address === token.address)) {
             setToken(token)
         } else {
             chain.setTokens([...chain.tokens, token])
@@ -214,8 +214,9 @@ const TokenSelect = ({ label, type }) => {
 
     function addToken(token) {
         const tokens = [ ...chain.tokens ]
-        if (hasToken(token)) {
-            tokens.find(t => t.address === token.address).added = true
+        const existing = tokens.find(t => t.address === token.address)
+        if (existing) {
+            existing.added = true
         } else {
             token.added = true
             tokens.push(token)
@@ -229,12 +230,6 @@ const TokenSelect = ({ label, type }) => {
         const tokens = [ ...chain.tokens ]
         tokens.find(t => t.address === token.address).added = false
         chain.setTokens(tokens)
-    }
-
-    // Check if chain tokens includes token
-
-    function hasToken(token) {
-        return chain.tokens.find(t => t.address === token.address)
     }
 
     // Update token list on data changes
