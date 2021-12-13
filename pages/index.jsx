@@ -200,7 +200,10 @@ const TokenSelect = ({ label, type }) => {
 
     // Switch to selected token
 
-    function switchToken(newToken) {
+    function switchToken(event, newToken) {
+        for (const element of event.nativeEvent.path) {
+            if (element.classList && element.classList.contains("token-control")) return
+        }
         if (chain.tokens.find(token => token.address === newToken.address)) {
             setActiveToken({...newToken})
         } else {
@@ -215,14 +218,11 @@ const TokenSelect = ({ label, type }) => {
     function addToken(newToken) {
         const tokens = [...chain.tokens]
         const existing = tokens.find(token => token.address === newToken.address)
-        console.log(existing, activeToken ? activeToken.address : null, oppositeToken ? oppositeToken.address : null)
         if (existing) {
             existing.added = true
             if (activeToken && activeToken.address === newToken.address) {
-                console.log("old active:", activeToken)
                 setActiveToken({...newToken})
             } else if (oppositeToken && oppositeToken.address === newToken.address) {
-                console.log("old opposite:", oppositeToken)
                 setOppositeToken({...newToken})
             }
         } else {
@@ -235,12 +235,13 @@ const TokenSelect = ({ label, type }) => {
     // Remove external token from token list
 
     function removeToken(oldToken) {
-        chain.setTokens([...chain.tokens].splice(chain.tokens.findIndex(token => token.address === oldToken.address)))
         if (activeToken.address === oldToken.address) {
             setActiveToken(null)
         } else if (oppositeToken.address == oldToken.address) {
             setOppositeToken(null)
         }
+        setTokenList([...tokenList].splice(tokenList.findIndex(token => token.address === oldToken.address)))
+        chain.setTokens([...chain.tokens].splice(chain.tokens.findIndex(token => token.address === oldToken.address)))
     }
 
     // Update token list on data changes
@@ -290,7 +291,7 @@ const TokenSelect = ({ label, type }) => {
                     </div>
                     <div className="tokens">
                         {tokenList.map(token => (
-                            <button className="token" key={`${chain.id}-${type}-${token.address}`} onClick={() => switchToken(token)}>
+                            <button className="token" key={`${chain.id}-${type}-${token.address}`} onClick={event => switchToken(event, token)}>
                                 <img className="icon" src={`/tokens/${token.default ? token.symbol : "unknown"}.svg`}></img>
                                 <div className="info">
                                     <div className="name">{token.name} - {token.symbol}</div>
@@ -569,6 +570,7 @@ const SwapInterface = () => {
     // Update swap quote on token changes
 
     useEffect(() => {
+        clearTimeout(updateTimeout)
         if (!swap.tokenInAmount) return
         if (!swap.tokenOut) {
             swap.setTokenOutAmount(null)
@@ -600,7 +602,7 @@ const SwapInterface = () => {
                     <div className="label" style={{ top: "12px" }}>Output Token</div>
                 </div>
                 <div className="token-section">
-                    <div className="output">{swap.tokenOutAmount ? typeof swap.tokenOutAmount === "string" ? swap.tokenOutAmount : format(parse(swap.tokenOutAmount, swap.tokenOut.decimals)) : null}</div>
+                    <div className="output">{swap.tokenOut && swap.tokenOutAmount ? typeof swap.tokenOutAmount === "string" ? swap.tokenOutAmount : format(parse(swap.tokenOutAmount, swap.tokenOut.decimals)) : null}</div>
                     <TokenSelect label="Output Token" type="output"></TokenSelect>
                 </div>
                 <button className="swap" onClick={swapTokens}>{swapButtonText}</button>
@@ -1140,7 +1142,7 @@ const RouterOutputs = () => {
                             {swap.tokenOut ? swap.tokenOut.symbol : ""}
                         </div>
                         <div className="section">
-                            {router.out ? swap.tokenOut.default ? `≈ $${formatNumber(getTokenValue(swap.tokenOut, router.out))}` : "≈ $0.00" : "..."}
+                            {swap.tokenOut && router.out ? swap.tokenOut.default ? `≈ $${formatNumber(getTokenValue(swap.tokenOut, router.out))}` : "≈ $0.00" : "..."}
                         </div>
                     </div>
                 ))}
