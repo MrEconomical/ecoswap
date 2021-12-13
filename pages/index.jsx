@@ -8,20 +8,27 @@ import { useContext, useEffect, useState } from "react"
 
 // Swap input component
 
-const SwapInput = ({ onChange }) => {
+const SwapInput = () => {
     // Swap data
 
-    const { chain } = useContext(EthereumContext)
-    const swap = chain.swap
+    const { chain, BN } = useContext(EthereumContext)
     const [ inputBefore, setInputBefore ] = useState("")
 
     // Format swap input on change
 
     function handleChange(event) {
-        if (event.target.value === "") {
-            onChange("", true)
-            return
+        // Update token input state
+
+        const value = !event.target.value || /^[0-9,.]+$/g.test(event.target.value) ? event.target.value : inputBefore
+        if (chain.swap.tokenIn) {
+            chain.swap.setTokenInAmount(value ? BN(unparse(value, chain.swap.tokenIn.decimals)) : null)
+        } else {
+            chain.swap.setTokenInAmount(null)
         }
+
+        // Dynamic input
+
+        if (event.target.value === "") return
         if (!/^[0-9,.]+$/g.test(event.target.value)) {
             event.target.value = inputBefore
             return
@@ -62,29 +69,25 @@ const SwapInput = ({ onChange }) => {
             }
         }
         setInputBefore(event.target.value)
-        if (swap.tokenIn && swap.tokenOut) {
-            onChange(unparse(event.target.value, swap.tokenIn.decimals))
-        } else {
-            onChange("", true)
-        }
     }
+
+    // Update token amount on token change
+
+    useEffect(() => {
+        const value = document.getElementById("swap-input").value
+        if (chain.swap.tokenIn && value) {
+            chain.swap.setTokenInAmount(unparse(value, chain.swap.tokenIn.decimals))
+        } else {
+            chain.swap.setTokenInAmount(null)
+        }
+    }, [chain.swap.tokenIn])
 
     // Reset input on chain change
 
     useEffect(() => {
+        chain.swap.setTokenInAmount(null)
         document.getElementById("swap-input").value = ""
-        onChange("", true)
     }, [chain])
-
-    // Call quote update on token change
-
-    useEffect(() => {
-        if (swap.tokenIn && swap.tokenOut) {
-            onChange(unparse(inputBefore, swap.tokenIn.decimals), true)
-        } else {
-            onChange("", true)
-        }
-    }, [swap.tokenIn, swap.tokenOut])
 
     // Component
 
@@ -342,27 +345,7 @@ const SwapInterface = () => {
 
     const { chain, BN } = useContext(EthereumContext)
     const prices = useContext(PriceContext)
-
     const [ updateTimeout, setUpdateTimeout ] = useState()
-
-    // Update swap quote
-
-    function updateSwapQuote(value, force) {
-        clearTimeout(updateTimeout)
-        chain.swap.setTokenInAmount(BN(value))
-        if (BN(value).eq(BN(0))) {
-            chain.swap.setTokenOutAmount(null)
-            return
-        }
-        chain.swap.setTokenOutAmount("...")
-        setUpdateTimeout(setTimeout(async () => {
-            try {
-                await quoteSwap(chain, BN(value), BN)
-            } catch(error) {
-                console.error(error)
-            }
-        }, force ? 0 : 500))
-    }
 
     // Switch input and output tokens
 
@@ -378,6 +361,40 @@ const SwapInterface = () => {
         return `1 ... = ...`
     }
 
+    // Update swap quote
+
+    async function updateQuote() {
+        try {
+            await quoteSwap(chain, BN)
+        } catch(error) {
+            console.error(error)
+        }
+    }
+
+    // Update swap quote on token amount changes
+
+    useEffect(() => {
+        clearTimeout(updateTimeout)
+        if (!chain.swap.tokenInAmount || !chain.swap.tokenOut) {
+            chain.swap.setTokenOutAmount(null)
+            return
+        }
+        chain.swap.setTokenOutAmount("...")
+        setUpdateTimeout(setTimeout(updateQuote, 500))
+    }, [chain.swap.tokenInAmount])
+
+    // Update swap quote on token changes
+
+    useEffect(() => {
+        if (!chain.swap.tokenInAmount) return
+        if (!chain.swap.tokenOut) {
+            chain.swap.setTokenOutAmount(null)
+            return
+        }
+        chain.swap.setTokenOutAmount("...")
+        updateQuote()
+    }, [chain.swap.tokenOut])
+
     // Component
 
     return (
@@ -385,7 +402,7 @@ const SwapInterface = () => {
             <div className="interface">
                 <div className="label" style={{ marginBottom: "12px" }}>Input Token</div>
                 <div className="token-section">
-                    <SwapInput onChange={updateSwapQuote}></SwapInput>
+                    <SwapInput></SwapInput>
                     <TokenSelect label="Input Token" type="input"></TokenSelect>
                 </div>
                 <div className="middle">
@@ -889,9 +906,20 @@ const RouterOutputs = () => {
                 <div className="title">Aggregation Routers</div>
                 {swap.routers.map(router => (
                     <div className="router" key={router.id}>
-                        <div className="router-info">
-                            <img className="router-icon" src={`/routers/${router.id}.svg`}></img>
+                        <div className="section">
+                            <img className="icon" src={`/routers/${router.id}.svg`}></img>
                             {router.name}
+                        </div>
+                        <div className="section">
+                            {swap.tokenIn ? (
+                                <img className="icon" src={swap.tokenIn.default ? `/tokens/${swap.tokenIn.symbol}.svg` : "/tokens/unknown.svg"}></img>
+                            ) : <></>}
+                            {`${swap.tokenIn && swap.tokenInAmount ? format(parse(swap.tokenInAmount, swap.tokenIn.decimals)) : "..."} `}
+                            {swap.tokenIn ? swap.tokenIn.symbol : ""}
+                            <div className="arrow">➔</div>
+                            {swap.tokenOut ? (
+                                <img className="icon" src={swap.tokenOut.default ? `/tokens/${swap.tokenOut.symbol}.svg` : "/tokens/unknown.svg"}></img>
+                            ) : <></>}
                         </div>
                     </div>
                 ))}
@@ -921,7 +949,7 @@ const RouterOutputs = () => {
                     margin: 1.5rem 0;
                 }
 
-                .router-info {
+                .section {
                     display: flex;
                     flex-direction: row;
                     justify-content: flex-start;
@@ -929,11 +957,15 @@ const RouterOutputs = () => {
                     font-size: 1.2rem;
                 }
 
-                .router-icon {
+                .icon {
                     width: 1.2rem;
                     height: 1.2rem;
                     object-fit: contain;
                     margin-right: 1rem;
+                }
+
+                .arrow {
+                    margin: 0 1rem;
                 }
             `}</style>
         </>
