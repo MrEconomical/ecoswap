@@ -896,7 +896,8 @@ const SwapSettings = () => {
 const RouterOutputs = () => {
     // Swap data
 
-    const swap = useContext(EthereumContext).chain.swap
+    const { chain, web3 } = useContext(EthereumContext)
+    const swap = chain.swap
 
     // Component
 
@@ -920,6 +921,8 @@ const RouterOutputs = () => {
                             {swap.tokenOut ? (
                                 <img className="icon" src={swap.tokenOut.default ? `/tokens/${swap.tokenOut.symbol}.svg` : "/tokens/unknown.svg"}></img>
                             ) : <></>}
+                            {`${swap.tokenOut ? router.out ? format(parse(router.out, swap.tokenOut.decimals)) : "—" : "..."} `}
+                            {swap.tokenOut ? swap.tokenOut.symbol : ""}
                         </div>
                     </div>
                 ))}
