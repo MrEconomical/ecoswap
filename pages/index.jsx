@@ -135,7 +135,7 @@ const TokenSelect = ({ label, type }) => {
     function updateTokenList(event) {
         const query = event.target.value.toLowerCase()
         if (!query) return setTokenList(chain.tokens.filter(token => opposite ? token.address !== opposite.address : true))
-        const tokens = chain.tokens.filter(token => opposite ? token.address !== opposite.address : true &&
+        const tokens = chain.tokens.filter(token => (opposite ? token.address !== opposite.address : true) &&
                                                     (token.name.toLowerCase().includes(query) ||
                                                     token.symbol.toLowerCase().includes(query) ||
                                                     token.address.toLowerCase() === query))
