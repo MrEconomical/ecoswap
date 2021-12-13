@@ -33,6 +33,22 @@ async function quote(chain, BN) {
     return BN(result.data.buyAmount)
 }
 
+// Get swap
+
+async function getSwap(chain, BN) {
+    const endpoint = getEndpoint(chain.id)
+    if (!endpoint) return null
+    const swap = chain.swap
+    const result = await axios(`${endpoint}/swap/v1/quote?${querystring.encode({
+        sellToken: swap.tokenIn.address,
+        buyToken: swap.tokenOut.address,
+        sellAmount: swap.tokenInAmount.toString(),
+        slippagePercentage: chain.swapSettings.slippage / 100,
+        gasPrice: null
+    })}`)
+    return result
+}
+
 // Exports
 
-export { quote }
+export { quote, getSwap }

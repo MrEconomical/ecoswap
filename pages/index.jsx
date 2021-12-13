@@ -1,9 +1,11 @@
 // Files and modules
 
+import ERC20ABI from "../abis/ERC20"
+import { parse, unparse, format, formatNumber } from "../helpers/number"
 import EthereumContext from "../state/EthereumContext"
 import PriceContext from "../state/PriceContext"
 import quoteSwap from "../swap/quote"
-import { parse, unparse, format, formatNumber } from "../helpers/number"
+import getSwap from "../swap/swap"
 import { useContext, useEffect, useState } from "react"
 
 // Swap input component
@@ -348,6 +350,7 @@ const SwapInterface = () => {
     const { web3, chain, BN } = useContext(EthereumContext)
     const swap = chain.swap
     const [ updateTimeout, setUpdateTimeout ] = useState()
+    const [ swapButtonText, setSwapButtonText ] = useState("Swap Tokens")
 
     // Set max token amount
 
@@ -416,6 +419,25 @@ const SwapInterface = () => {
         swap.setRouters(routers)
     }
 
+    // Swap tokens
+
+    async function swapTokens() {
+        // Get swap transaction data
+
+        if (!this.tokenIn || !this.tokenOut || !this.tokenInAmount) return
+        let swapData
+        try {
+            swapData = await getSwap(chain, BN)
+        } catch(error) {
+            console.error(error)
+            return
+        }
+
+        // Check approval
+
+        const Token = new chain.web3.Contract(ERC20ABI, this.tokenIn.address)
+    }
+
     // Update swap quote on token amount changes
 
     useEffect(() => {
@@ -467,7 +489,7 @@ const SwapInterface = () => {
                     <div className="output">{swap.tokenOutAmount ? typeof swap.tokenOutAmount === "string" ? swap.tokenOutAmount : format(parse(swap.tokenOutAmount, swap.tokenOut.decimals)) : null}</div>
                     <TokenSelect label="Output Token" type="output"></TokenSelect>
                 </div>
-                <button className="swap">Swap Tokens</button>
+                <button className="swap" onClick={swapTokens}>{swapButtonText}</button>
                 <div className="swap-info">{getSwapInfo()}</div>
                 <div className="swap-info" style={{ marginBottom: "0" }}>{getSwapInfo(true)}</div>
             </div>

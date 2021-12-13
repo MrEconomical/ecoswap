@@ -29,6 +29,12 @@ async function quote(chain, BN) {
     return BN(result.data.toTokenAmount)
 }
 
+// Get swap
+
+async function getSwap(chain, BN) {
+    
+}
+
 // Exports
 
-export { quote }
+export { quote, getSwap }
