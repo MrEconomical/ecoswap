@@ -202,10 +202,10 @@ const TokenSelect = ({ label, type }) => {
 
     function switchToken(newToken) {
         if (chain.tokens.find(token => token.address === newToken.address)) {
-            setActiveToken(newToken)
+            setActiveToken({...newToken})
         } else {
             chain.setTokens([...chain.tokens, newToken])
-            setActiveToken(newToken)
+            setActiveToken({...newToken})
         }
         setMenuActive(false)
     }
@@ -215,12 +215,15 @@ const TokenSelect = ({ label, type }) => {
     function addToken(newToken) {
         const tokens = [...chain.tokens]
         const existing = tokens.find(token => token.address === newToken.address)
+        console.log(existing, activeToken ? activeToken.address : null, oppositeToken ? oppositeToken.address : null)
         if (existing) {
             existing.added = true
-            if (activeToken.address === newToken.address) {
-                setActiveToken(existing)
-            } else if (oppositeToken.address === newToken.address) {
-                setOppositeToken(existing)
+            if (activeToken && activeToken.address === newToken.address) {
+                console.log("old active:", activeToken)
+                setActiveToken({...existing})
+            } else if (oppositeToken && oppositeToken.address === newToken.address) {
+                console.log("old opposite:", oppositeToken)
+                setOppositeToken({...existing})
             }
         } else {
             newToken.added = true
@@ -479,8 +482,8 @@ const SwapInterface = () => {
 
     function switchTokens() {
         const newInput = swap.tokenOut
-        swap.setTokenOut(swap.tokenIn)
-        swap.setTokenIn(newInput)
+        swap.setTokenOut({...swap.tokenIn})
+        swap.setTokenIn({...newInput})
     }
 
     // Calculate swap info
