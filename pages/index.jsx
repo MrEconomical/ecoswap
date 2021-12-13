@@ -220,10 +220,10 @@ const TokenSelect = ({ label, type }) => {
             existing.added = true
             if (activeToken && activeToken.address === newToken.address) {
                 console.log("old active:", activeToken)
-                setActiveToken({...existing})
+                setActiveToken({...newToken})
             } else if (oppositeToken && oppositeToken.address === newToken.address) {
                 console.log("old opposite:", oppositeToken)
-                setOppositeToken({...existing})
+                setOppositeToken({...newToken})
             }
         } else {
             newToken.added = true
@@ -235,8 +235,7 @@ const TokenSelect = ({ label, type }) => {
     // Remove external token from token list
 
     function removeToken(oldToken) {
-        const tokens = [...chain.tokens].splice(chain.tokens.findIndex(token => token.address === oldToken.address))
-        chain.setTokens(tokens)
+        chain.setTokens([...chain.tokens].splice(chain.tokens.findIndex(token => token.address === oldToken.address)))
         if (activeToken.address === oldToken.address) {
             setActiveToken(null)
         } else if (oppositeToken.address == oldToken.address) {
@@ -260,7 +259,7 @@ const TokenSelect = ({ label, type }) => {
 
     useEffect(() => {
         if (menuActive) return
-        const balances = { ...chain.tokenBalances }
+        const balances = {...chain.tokenBalances}
         for (const address in balances) {
             if (!chain.tokens.find(token => address === token.address)) {
                 delete balances[address]
@@ -763,7 +762,7 @@ const SwapSettings = () => {
     // Toggle router enabled
 
     function toggleRouter(router) {
-        const routers = { ...settings.routers }
+        const routers = {...settings.routers}
         routers[router].enabled = !routers[router].enabled
         settings.setRouters(routers)
     }
