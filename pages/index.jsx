@@ -346,9 +346,19 @@ const SwapInterface = () => {
     // Swap data
 
     const { web3, chain, BN } = useContext(EthereumContext)
-    const prices = useContext(PriceContext)
     const swap = chain.swap
     const [ updateTimeout, setUpdateTimeout ] = useState()
+
+    // Set max token amount
+
+    function setMax() {
+        if (!swap.tokenIn) return
+        const balance = chain.tokenBalances[swap.tokenIn.address]
+        if (balance.gt(BN(0))) {
+            document.getElementById("swap-input").value = format(parse(balance, swap.tokenIn.decimals))
+            swap.setTokenInAmount(balance)
+        }
+    }
 
     // Switch input and output tokens
 
@@ -439,7 +449,10 @@ const SwapInterface = () => {
     return (
         <>
             <div className="interface">
-                <div className="label" style={{ marginBottom: "12px" }}>Input Token</div>
+                <div className="header">
+                    <button className="max-token" onClick={setMax}>Max {swap.tokenIn ? format(parse(chain.tokenBalances[swap.tokenIn.address], swap.tokenIn.decimals)) : "..."} {swap.tokenIn ? swap.tokenIn.symbol : ""}</button>
+                    <div className="label">Input Token</div>
+                </div>
                 <div className="token-section">
                     <SwapInput></SwapInput>
                     <TokenSelect label="Input Token" type="input"></TokenSelect>
@@ -469,6 +482,23 @@ const SwapInterface = () => {
                     border-right: 0.5px solid var(--gray);
                     padding: 32px 32px 32px 0;
                     margin-right: 32px;
+                }
+
+                .header {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: flex-end;
+                    margin-bottom: 12px;
+                }
+
+                .max-token {
+                    color: var(--dark-gray);
+                }
+
+                .max-token:hover {
+                    text-decoration: underline;
                 }
 
                 .label {
