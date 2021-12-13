@@ -240,8 +240,8 @@ const TokenSelect = ({ label, type }) => {
         } else if (oppositeToken.address == oldToken.address) {
             setOppositeToken(null)
         }
-        setTokenList([...tokenList].splice(tokenList.findIndex(token => token.address === oldToken.address)))
-        chain.setTokens([...chain.tokens].splice(chain.tokens.findIndex(token => token.address === oldToken.address)))
+        setTokenList([...tokenList].splice(tokenList.findIndex(token => token.address === oldToken.address), 1))
+        chain.setTokens([...chain.tokens].splice(chain.tokens.findIndex(token => token.address === oldToken.address), 1))
     }
 
     // Update token list on data changes
@@ -571,8 +571,7 @@ const SwapInterface = () => {
 
     useEffect(() => {
         clearTimeout(updateTimeout)
-        if (!swap.tokenInAmount) return
-        if (!swap.tokenOut) {
+        if (!swap.tokenInAmount || !swap.tokenOut) {
             swap.setTokenOutAmount(null)
             resetRouterQuotes()
             return
