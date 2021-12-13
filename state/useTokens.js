@@ -35,7 +35,7 @@ function useTokens(chainId) {
         // Load external tokens
 
         const externalTokens = JSON.parse(localStorage.externalTokens)[chainId]
-        setTokens([ ...tokens, ...externalTokens ])
+        setTokens([...tokens, ...externalTokens])
     }, [])
 
     // Update local storage on token changes excluding initial render

@@ -127,6 +127,7 @@ const TokenSelect = ({ label, type }) => {
     const setActiveToken = chain.swap[type === "input" ? "setTokenIn" : "setTokenOut"]
     const oppositeToken = chain.swap[type === "input" ? "tokenOut" : "tokenIn"]
     const setOppositeToken = chain.swap[type === "input" ? "setTokenOut" : "setTokenIn"]
+
     const [ menuActive, setMenuActive ] = useState(false)
     const [ tokenList, setTokenList ] = useState(chain.tokens)
 
@@ -154,6 +155,7 @@ const TokenSelect = ({ label, type }) => {
             const symbolA = a.symbol.toLowerCase()
             const nameB = b.name.toLowerCase()
             const symbolB = b.symbol.toLowerCase()
+
             if ((symbolA.includes(query) && !symbolB.includes(query)) || (nameA.includes(query) && !nameB.includes(query))) return -1
             if ((symbolB.includes(query) && !symbolA.includes(query)) || (nameB.includes(query) && !nameA.includes(query))) return 1
             if (symbolA.includes(query) && symbolB.includes(query)) {
@@ -162,6 +164,7 @@ const TokenSelect = ({ label, type }) => {
                 return nameA.indexOf(query) < nameB.indexOf(query) ? -1 : 1
             }
         })
+
         setTokenList(tokens)
         if (web3.utils.isAddress(query) && !chain.tokens.find(token => token.address.toLowerCase() === query)) {
             addExternalToken(query, tokens)
@@ -172,6 +175,7 @@ const TokenSelect = ({ label, type }) => {
 
     async function addExternalToken(address, tokenList) {
         if (!account) return
+
         const Token = new chain.web3.eth.Contract(ERC20ABI, address)
         let name, symbol, decimals, balance
         try {
@@ -184,10 +188,12 @@ const TokenSelect = ({ label, type }) => {
         } catch {
             return
         }
+
         chain.setTokenBalances({
             ...chain.tokenBalances,
             [Token._address]: BN(balance)
         })
+
         setTokenList([...tokenList, {
             external: true,
             added: false,
@@ -213,7 +219,7 @@ const TokenSelect = ({ label, type }) => {
     // Add external token to token list
 
     function addToken(newToken) {
-        const tokens = [ ...chain.tokens ]
+        const tokens = [...chain.tokens]
         const existing = tokens.find(token => token.address === newToken.address)
         if (existing) {
             existing.added = true
@@ -232,7 +238,7 @@ const TokenSelect = ({ label, type }) => {
     // Remove external token from token list
 
     function removeToken(oldToken) {
-        const tokens = [ ...chain.tokens ]
+        const tokens = [...chain.tokens]
         tokens.find(token => token.address === oldToken.address).added = false
         chain.setTokens(tokens)
     }
@@ -520,7 +526,7 @@ const SwapInterface = () => {
     // Reset router quotes
 
     function resetRouterQuotes() {
-        const routers = [ ...swap.routers ]
+        const routers = [...swap.routers]
         for (const router of routers) {
             router.out = null
         }
