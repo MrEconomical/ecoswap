@@ -14,7 +14,7 @@ function unparse(num, decimals) {
     return `${trimmed.includes(".") ? trimmed.slice(0, trimmed.indexOf(".")) : trimmed}${float}`
 }
 
-// Format number
+// Format string number
 
 function format(num, decimals = 4) {
     const value = (typeof num === "number" ? num.toString() : num).replace(/,/g, "") || "0"
@@ -22,6 +22,15 @@ function format(num, decimals = 4) {
     return `${split[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")}${split[1] ? `.${split[1].match(new RegExp(`^0*\\d{0,${decimals}}`, "g"))[0]}` : ""}`
 }
 
+// Format number
+
+function formatNumber(num, decimals = 2) {
+    return (+num).toLocaleString(undefined, {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+    })
+}
+
 // Exports
 
-export { parse, unparse, format }
+export { parse, unparse, format, formatNumber }

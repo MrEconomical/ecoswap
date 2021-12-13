@@ -3,7 +3,7 @@
 import EthereumContext from "../state/EthereumContext"
 import PriceContext from "../state/PriceContext"
 import quoteSwap from "../swap/quote"
-import { parse, unparse, format } from "../helpers/number"
+import { parse, unparse, format, formatNumber } from "../helpers/number"
 import { useContext, useEffect, useState } from "react"
 
 // Swap input component
@@ -366,7 +366,7 @@ const SwapInterface = () => {
                 return `1 ... = ...`
             } else if (!swap.tokenIn) {
                 return `1 ${swap.tokenOut.symbol} = ...`
-            } else if (!web3.utils.isBN(swap.tokenOutAmount)) {
+            } else if (!swap.tokenInAmount || !web3.utils.isBN(swap.tokenOutAmount)) {
                 return `1 ${swap.tokenOut.symbol} = ... ${swap.tokenIn.symbol}`
             } else {
                 const ratio = swap.tokenInAmount.mul(BN(10).pow(BN(swap.tokenOut.decimals))).mul(BN(10000)).div(swap.tokenOutAmount).div(BN(10).pow(BN(swap.tokenIn.decimals)))
@@ -377,7 +377,7 @@ const SwapInterface = () => {
                 return `1 ... = ...`
             } else if (!swap.tokenOut) {
                 return `1 ${swap.tokenIn.symbol} = ...`
-            } else if (!web3.utils.isBN(swap.tokenOutAmount)) {
+            } else if (!swap.tokenInAmount || !web3.utils.isBN(swap.tokenOutAmount)) {
                 return `1 ${swap.tokenIn.symbol} = ... ${swap.tokenOut.symbol}`
             } else {
                 const ratio = swap.tokenOutAmount.mul(BN(10).pow(BN(swap.tokenIn.decimals))).mul(BN(10000)).div(swap.tokenInAmount).div(BN(10).pow(BN(swap.tokenOut.decimals)))
@@ -936,14 +936,22 @@ const RouterOutputs = () => {
     // Swap data
 
     const { chain } = useContext(EthereumContext)
+    const prices = useContext(PriceContext)
     const swap = chain.swap
+
+    // Get token value
+
+    function getTokenValue(token, amount) {
+        if (!prices[token.symbol]) return 0
+        return +parse(amount, token.decimals) * prices[token.symbol]
+    }
 
     // Component
 
     return (
         <>
             <div className="routers">
-                <div className="title">Aggregation Routers</div>
+                <div className="title">Aggregator Quotes</div>
                 {swap.routers.map(router => (
                     <div className="router" key={router.id}>
                         <div className="section">
@@ -962,6 +970,9 @@ const RouterOutputs = () => {
                             ) : <></>}
                             {`${swap.tokenOut && router.out ? format(parse(router.out, swap.tokenOut.decimals)) : "..."} `}
                             {swap.tokenOut ? swap.tokenOut.symbol : ""}
+                        </div>
+                        <div className="section">
+                            {router.out ? swap.tokenIn.default ? `≈ $${formatNumber(getTokenValue(swap.tokenOut, router.out))}` : "≈ $0.00" : "..."}
                         </div>
                     </div>
                 ))}
