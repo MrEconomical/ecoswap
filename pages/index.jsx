@@ -206,9 +206,12 @@ const TokenSelect = ({ label, type }) => {
         }
         if (chain.tokens.find(token => token.address === newToken.address)) {
             setActiveToken({...newToken})
+            setTokenList(chain.tokens.filter(token => oppositeToken ? token.address !== oppositeToken.address : true))
         } else {
-            chain.setTokens([...chain.tokens, newToken])
+            const tokens = [...chain.tokens, newToken]
+            chain.setTokens(tokens)
             setActiveToken({...newToken})
+            setTokenList(tokens.filter(token => oppositeToken ? token.address !== oppositeToken.address : true))
         }
         setMenuActive(false)
     }
@@ -240,8 +243,10 @@ const TokenSelect = ({ label, type }) => {
         } else if (oppositeToken.address == oldToken.address) {
             setOppositeToken(null)
         }
-        setTokenList([...tokenList].splice(tokenList.findIndex(token => token.address === oldToken.address), 1))
-        chain.setTokens([...chain.tokens].splice(chain.tokens.findIndex(token => token.address === oldToken.address), 1))
+        const tokenListIndex = tokenList.findIndex(token => token.address === oldToken.address)
+        setTokenList(tokenList.slice(0, tokenListIndex).concat(tokenList.slice(tokenListIndex + 1)))
+        const chainTokensIndex = chain.tokens.findIndex(token => token.address === oldToken.address)
+        chain.setTokens(chain.tokens.slice(0, chainTokensIndex).concat(chain.tokens.slice(chainTokensIndex + 1)))
     }
 
     // Update token list on data changes
