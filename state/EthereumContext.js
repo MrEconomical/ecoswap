@@ -110,7 +110,14 @@ const EthereumContextProvider = ({ children }) => {
 
         // Update state
 
-        chain.setTokenBalances(balances)
+        if (
+            Object.keys(chain.tokenBalances).every(token => balances[token]) &&
+            Object.keys(balances).every(token => chain.tokenBalances[token])
+        ) {
+            chain.setTokenBalances(balances)
+        } else {
+            updateBalances()
+        }
     }
 
     // Fetch token balance
@@ -152,6 +159,23 @@ const EthereumContextProvider = ({ children }) => {
             }
         }
     }, [])
+
+    // Update token balances on token changes
+
+    useEffect(() => {
+        const balances = { ...chain.tokenBalances }
+        for (const token of chain.tokens) {
+            if (!balances[token.address]) {
+                balances[token.address] = BN(0)
+            }
+        }
+        for (const address in balances) {
+            if (!chain.tokens.find(token => address === token.address)) {
+                delete balances[address]
+            }
+        }
+        chain.setTokenBalances(balances)
+    }, [chain.tokens])
 
     // Update token balances on loop
 

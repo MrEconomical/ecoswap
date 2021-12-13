@@ -128,7 +128,6 @@ const TokenSelect = ({ label, type }) => {
     const opposite = chain.swap[type === "input" ? "tokenOut" : "tokenIn"]
     const [ menuActive, setMenuActive ] = useState(false)
     const [ tokenList, setTokenList ] = useState(chain.tokens)
-    console.log(chain.tokens, tokenList)
 
     // Update token search with query
 

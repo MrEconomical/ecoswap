@@ -35,7 +35,6 @@ function useTokens(chainId) {
         // Load external tokens
 
         const externalTokens = JSON.parse(localStorage.externalTokens)[chainId]
-        console.log("init external tokens:", externalTokens)
         setTokens([ ...tokens, ...externalTokens ])
     }, [])
 
@@ -53,7 +52,6 @@ function useTokens(chainId) {
         } else {
             try {
                 const savedTokens = JSON.parse(localStorage.externalTokens)
-                console.log("in the update hook:", chainId, savedTokens, externalTokens)
                 savedTokens[chainId] = externalTokens
                 localStorage.externalTokens = JSON.stringify(savedTokens)
             } catch {
