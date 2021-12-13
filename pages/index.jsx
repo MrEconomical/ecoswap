@@ -123,9 +123,10 @@ const TokenSelect = ({ label, type }) => {
     // Token selection menu data
 
     const { web3, chain, account, BN } = useContext(EthereumContext)
-    const token = chain.swap[type === "input" ? "tokenIn" : "tokenOut"]
-    const setToken = chain.swap[type === "input" ? "setTokenIn" : "setTokenOut"]
-    const opposite = chain.swap[type === "input" ? "tokenOut" : "tokenIn"]
+    const activeToken = chain.swap[type === "input" ? "tokenIn" : "tokenOut"]
+    const setActiveToken = chain.swap[type === "input" ? "setTokenIn" : "setTokenOut"]
+    const oppositeToken = chain.swap[type === "input" ? "tokenOut" : "tokenIn"]
+    const setOppositeToken = chain.swap[type === "input" ? "setTokenOut" : "setTokenIn"]
     const [ menuActive, setMenuActive ] = useState(false)
     const [ tokenList, setTokenList ] = useState(chain.tokens)
 
@@ -133,8 +134,8 @@ const TokenSelect = ({ label, type }) => {
 
     function updateTokenList(event) {
         const query = event.target.value.toLowerCase()
-        if (!query) return setTokenList(chain.tokens.filter(token => opposite ? token.address !== opposite.address : true))
-        const tokens = chain.tokens.filter(token => (opposite ? token.address !== opposite.address : true) &&
+        if (!query) return setTokenList(chain.tokens.filter(token => oppositeToken ? token.address !== oppositeToken.address : true))
+        const tokens = chain.tokens.filter(token => (oppositeToken ? token.address !== oppositeToken.address : true) &&
                                                     (token.name.toLowerCase().includes(query) ||
                                                     token.symbol.toLowerCase().includes(query) ||
                                                     token.address.toLowerCase() === query))
@@ -199,42 +200,47 @@ const TokenSelect = ({ label, type }) => {
 
     // Switch to selected token
 
-    function switchToken(token) {
-        if (!token.external || chain.tokens.find(t => t.address === token.address)) {
+    function switchToken(newToken) {
+        if (chain.tokens.find(token => token.address === newToken.address)) {
             setToken(token)
         } else {
-            chain.setTokens([...chain.tokens, token])
-            setToken(token)
+            chain.setTokens([...chain.tokens, newToken])
+            setToken(newToken)
         }
         setMenuActive(false)
     }
 
     // Add external token to token list
 
-    function addToken(token) {
+    function addToken(newToken) {
         const tokens = [ ...chain.tokens ]
-        const existing = tokens.find(t => t.address === token.address)
+        const existing = tokens.find(token => token.address === newToken.address)
         if (existing) {
             existing.added = true
+            if (activeToken.address === newToken.address) {
+                setActiveToken(existing)
+            } else if (oppositeToken.address === newToken.address) {
+                setOppositeToken(existing)
+            }
         } else {
-            token.added = true
-            tokens.push(token)
+            newToken.added = true
+            tokens.push(newToken)
         }
         chain.setTokens(tokens)
     }
 
     // Remove external token from token list
 
-    function removeToken(token) {
+    function removeToken(oldToken) {
         const tokens = [ ...chain.tokens ]
-        tokens.find(t => t.address === token.address).added = false
+        tokens.find(token => token.address === oldToken.address).added = false
         chain.setTokens(tokens)
     }
 
     // Update token list on data changes
 
     useEffect(() => {
-        setTokenList(chain.tokens.filter(token => opposite ? token.address !== opposite.address : true))
+        setTokenList(chain.tokens.filter(token => oppositeToken ? token.address !== oppositeToken.address : true))
     }, [chain, opposite])
 
     // Hide menu on chain or account changes
@@ -261,7 +267,7 @@ const TokenSelect = ({ label, type }) => {
     return (
         <>
             <button className="select" onClick={() => setMenuActive(true)}>
-                {token ? token.symbol.length > 9 ? `${token.symbol.slice(0, 8)}...` : token.symbol : "Choose"}
+                {activeToken ? activeToken.symbol.length > 9 ? `${activeToken.symbol.slice(0, 8)}...` : activeToken.symbol : "Choose"}
                 <img className="arrow" src="/icons/arrow-down.svg"></img>
             </button>
             {menuActive ? (
