@@ -345,22 +345,43 @@ const TokenSelect = ({ label, type }) => {
 const SwapInterface = () => {
     // Swap data
 
-    const { chain, BN } = useContext(EthereumContext)
+    const { web3, chain, BN } = useContext(EthereumContext)
     const prices = useContext(PriceContext)
+    const swap = chain.swap
     const [ updateTimeout, setUpdateTimeout ] = useState()
 
     // Switch input and output tokens
 
     function switchTokens() {
-        const newInput = chain.swap.tokenOut
-        chain.swap.setTokenOut(chain.swap.tokenIn)
-        chain.swap.setTokenIn(newInput)
+        const newInput = swap.tokenOut
+        swap.setTokenOut(swap.tokenIn)
+        swap.setTokenIn(newInput)
     }
 
     // Calculate swap info
 
-    function getSwapInfo() {
-        return `1 ... = ...`
+    function getSwapInfo(reverse) {
+        if (reverse) {
+            if (!swap.tokenOut) {
+                return `1 ... = ...`
+            } else if (!swap.tokenIn) {
+                return `1 ${swap.tokenOut.symbol} = ...`
+            } else if (!web3.utils.isBN(swap.tokenOutAmount)) {
+                return `1 ${swap.tokenOut.symbol} = ... ${swap.tokenIn.symbol}`
+            } else {
+                return "..."
+            }
+        } else {
+            if (!swap.tokenIn) {
+                return `1 ... = ...`
+            } else if (!swap.tokenOut) {
+                return `1 ${swap.tokenIn.symbol} = ...`
+            } else if (!web3.utils.isBN(swap.tokenOutAmount)) {
+                return `1 ${swap.tokenIn.symbol} = ... ${swap.tokenOut.symbol}`
+            } else {
+                return "..."
+            }
+        }
     }
 
     // Update swap quote
@@ -376,40 +397,40 @@ const SwapInterface = () => {
     // Reset router quotes
 
     function resetRouterQuotes() {
-        const routers = [ ...chain.swap.routers ]
+        const routers = [ ...swap.routers ]
         for (const router of routers) {
             router.out = null
         }
-        chain.swap.setRouters(routers)
+        swap.setRouters(routers)
     }
 
     // Update swap quote on token amount changes
 
     useEffect(() => {
         clearTimeout(updateTimeout)
-        if (!chain.swap.tokenInAmount || !chain.swap.tokenOut) {
-            chain.swap.setTokenOutAmount(null)
+        if (!swap.tokenInAmount || !swap.tokenOut) {
+            swap.setTokenOutAmount(null)
             resetRouterQuotes()
             return
         }
-        chain.swap.setTokenOutAmount("...")
+        swap.setTokenOutAmount("...")
         resetRouterQuotes()
         setUpdateTimeout(setTimeout(updateQuote, 500))
-    }, [chain.swap.tokenInAmount])
+    }, [swap.tokenInAmount])
 
     // Update swap quote on token changes
 
     useEffect(() => {
-        if (!chain.swap.tokenInAmount) return
-        if (!chain.swap.tokenOut) {
-            chain.swap.setTokenOutAmount(null)
+        if (!swap.tokenInAmount) return
+        if (!swap.tokenOut) {
+            swap.setTokenOutAmount(null)
             resetRouterQuotes()
             return
         }
-        chain.swap.setTokenOutAmount("...")
+        swap.setTokenOutAmount("...")
         resetRouterQuotes()
         updateQuote()
-    }, [chain.swap.tokenOut])
+    }, [swap.tokenOut])
 
     // Component
 
@@ -428,12 +449,12 @@ const SwapInterface = () => {
                     <div className="label" style={{ top: "12px" }}>Output Token</div>
                 </div>
                 <div className="token-section">
-                    <div className="output">{chain.swap.tokenOutAmount ? typeof chain.swap.tokenOutAmount === "string" ? chain.swap.tokenOutAmount : format(parse(chain.swap.tokenOutAmount, chain.swap.tokenOut.decimals)) : null}</div>
+                    <div className="output">{swap.tokenOutAmount ? typeof swap.tokenOutAmount === "string" ? swap.tokenOutAmount : format(parse(swap.tokenOutAmount, swap.tokenOut.decimals)) : null}</div>
                     <TokenSelect label="Output Token" type="output"></TokenSelect>
                 </div>
                 <button className="swap">Swap Tokens</button>
                 <div className="swap-info">{getSwapInfo()}</div>
-                <div className="swap-info" style={{ marginBottom: "0" }}>{getSwapInfo()}</div>
+                <div className="swap-info" style={{ marginBottom: "0" }}>{getSwapInfo(true)}</div>
             </div>
             <style jsx>{`
                 .interface {
