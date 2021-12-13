@@ -169,23 +169,6 @@ const EthereumContextProvider = ({ children }) => {
         }
     }, [chain, account])
 
-    // Update token balances on tokens change
-
-    useEffect(() => {
-        const balances = { ...chain.tokenBalances }
-        for (const token of chain.tokens) {
-            if (!balances[token.address]) {
-                balances[token.address] = BN(0)
-            }
-        }
-        for (const address in balances) {
-            if (!chain.tokens.find(token => address === token.address)) {
-                delete balances[address]
-            }
-        }
-        chain.setTokenBalances(balances)
-    }, [chain.tokens])
-
     // Component
 
     return (
