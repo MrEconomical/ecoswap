@@ -190,6 +190,7 @@ const TokenSelect = ({ label, type }) => {
         })
         setTokenList([...tokenList, {
             external: true,
+            added: false,
             name,
             symbol,
             address: Token._address,
@@ -207,6 +208,12 @@ const TokenSelect = ({ label, type }) => {
             setToken(token)
         }
         setMenuActive(false)
+    }
+
+    // Add external token to token list
+
+    function addToken(token) {
+
     }
 
     // Update token list on data changes
@@ -260,7 +267,16 @@ const TokenSelect = ({ label, type }) => {
                                 <img className="icon" src={`/tokens/${token.default ? token.symbol : "unknown"}.svg`}></img>
                                 <div className="info">
                                     <div className="name">{token.name} - {token.symbol}</div>
-                                    <div className="balance">{chain.tokenBalances[token.address] ? format(parse(chain.tokenBalances[token.address], token.decimals)) : "0"}</div>
+                                    <div className="token-menu">
+                                        <div className="balance">
+                                            {chain.tokenBalances[token.address] ? format(parse(chain.tokenBalances[token.address], token.decimals)) : "0"}
+                                        </div>
+                                        {token.external ? token.added ? (
+                                            <div className="token-control" onClick={() => removeToken(token)}>- Remove</div>
+                                        ) : (
+                                            <div className="token-control" onClick={() => addToken(token)}>+ Add</div>
+                                        ) : <></>}
+                                    </div>
                                 </div>
                             </button>
                         ))}
@@ -362,7 +378,8 @@ const TokenSelect = ({ label, type }) => {
                     border: 1px solid var(--background);
                     border-radius: 8px;
                     padding: 12px;
-                    margin-right: 8px;
+                    margin-left: 4px;
+                    margin-right: 4px;
                 }
 
                 .token:hover {
@@ -388,8 +405,24 @@ const TokenSelect = ({ label, type }) => {
                     margin-bottom: 3px;
                 }
 
+                .token-menu {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                }
+
                 .balance {
                     color: var(--gray);
+                }
+
+                .token-control {
+                    margin-left: auto;
+                }
+
+                .token-control:hover {
+                    text-decoration: underline;
                 }
             `}</style>
         </>

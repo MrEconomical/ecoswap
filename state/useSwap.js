@@ -50,8 +50,8 @@ function useSwap(chain) {
     // Update local storage on token change
 
     useEffect(() => {
-        const tokenInStore = tokenIn.external ? null : tokenIn
-        const tokenOutStore = tokenOut.external ? null : tokenOut
+        const tokenInStore = !tokenIn || (tokenIn.external && !tokenIn.added) ? null : tokenIn
+        const tokenOutStore = !tokenOut || (tokenOut.external && !tokenOut.added) ? null : tokenOut
         if (!localStorage.swapStore) {
             localStorage.swapStore = JSON.stringify({
                 [chain.id]: {
