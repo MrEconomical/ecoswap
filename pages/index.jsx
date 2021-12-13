@@ -203,8 +203,8 @@ const TokenSelect = ({ label, type }) => {
         if (!token.external) {
             setToken(token)
         } else {
-            chain
-            console.log("is external token")
+            chain.setTokens([...chain.tokens, token])
+            setToken(token)
         }
         setMenuActive(false)
     }
@@ -1080,7 +1080,7 @@ const RouterOutputs = () => {
                             {swap.tokenOut ? swap.tokenOut.symbol : ""}
                         </div>
                         <div className="section">
-                            {router.out ? swap.tokenIn.default ? `≈ $${formatNumber(getTokenValue(swap.tokenOut, router.out))}` : "≈ $0.00" : "..."}
+                            {router.out ? swap.tokenOut.default ? `≈ $${formatNumber(getTokenValue(swap.tokenOut, router.out))}` : "≈ $0.00" : "..."}
                         </div>
                     </div>
                 ))}
