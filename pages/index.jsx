@@ -162,7 +162,6 @@ const TokenSelect = ({ label, type }) => {
                 return nameA.indexOf(query) < nameB.indexOf(query) ? -1 : 1
             }
         })
-
         setTokenList(tokens)
         if (web3.utils.isAddress(query) && !chain.tokens.find(token => token.address.toLowerCase() === query)) {
             addExternalToken(query, tokens)
@@ -233,9 +232,13 @@ const TokenSelect = ({ label, type }) => {
     // Remove external token from token list
 
     function removeToken(oldToken) {
-        const tokens = [...chain.tokens]
-        tokens.find(token => token.address === oldToken.address).added = false
+        const tokens = [...chain.tokens].splice(chain.tokens.findIndex(token => token.address === oldToken.address))
         chain.setTokens(tokens)
+        if (activeToken.address === oldToken.address) {
+            setActiveToken(null)
+        } else if (oppositeToken.address == oldToken.address) {
+            setOppositeToken(null)
+        }
     }
 
     // Update token list on data changes
