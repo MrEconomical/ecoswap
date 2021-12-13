@@ -242,7 +242,7 @@ const TokenSelect = ({ label, type }) => {
 
     useEffect(() => {
         setTokenList(chain.tokens.filter(token => oppositeToken ? token.address !== oppositeToken.address : true))
-    }, [chain, opposite])
+    }, [chain, oppositeToken])
 
     // Hide menu on chain or account changes
 
