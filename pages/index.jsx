@@ -20,8 +20,9 @@ const SwapInput = () => {
         // Update token input state
 
         const value = !event.target.value || /^[0-9,.]+$/g.test(event.target.value) ? event.target.value : inputBefore
-        if (chain.swap.tokenIn) {
-            chain.swap.setTokenInAmount(value ? BN(unparse(value, chain.swap.tokenIn.decimals)) : null)
+        if (chain.swap.tokenIn && value) {
+            const amount = BN(unparse(value, chain.swap.tokenIn.decimals))
+            chain.swap.setTokenInAmount(amount.eq(BN(0)) ? null : amount)
         } else {
             chain.swap.setTokenInAmount(null)
         }
@@ -76,7 +77,8 @@ const SwapInput = () => {
     useEffect(() => {
         const value = document.getElementById("swap-input").value
         if (chain.swap.tokenIn && value) {
-            chain.swap.setTokenInAmount(unparse(value, chain.swap.tokenIn.decimals))
+            const amount = BN(unparse(value, chain.swap.tokenIn.decimals))
+            chain.swap.setTokenInAmount(amount.eq(BN(0)) ? null : amount)
         } else {
             chain.swap.setTokenInAmount(null)
         }
@@ -371,15 +373,27 @@ const SwapInterface = () => {
         }
     }
 
+    // Reset router quotes
+
+    function resetRouterQuotes() {
+        const routers = [ ...chain.swap.routers ]
+        for (const router of routers) {
+            router.out = null
+        }
+        chain.swap.setRouters(routers)
+    }
+
     // Update swap quote on token amount changes
 
     useEffect(() => {
         clearTimeout(updateTimeout)
         if (!chain.swap.tokenInAmount || !chain.swap.tokenOut) {
             chain.swap.setTokenOutAmount(null)
+            resetRouterQuotes()
             return
         }
         chain.swap.setTokenOutAmount("...")
+        resetRouterQuotes()
         setUpdateTimeout(setTimeout(updateQuote, 500))
     }, [chain.swap.tokenInAmount])
 
@@ -389,9 +403,11 @@ const SwapInterface = () => {
         if (!chain.swap.tokenInAmount) return
         if (!chain.swap.tokenOut) {
             chain.swap.setTokenOutAmount(null)
+            resetRouterQuotes()
             return
         }
         chain.swap.setTokenOutAmount("...")
+        resetRouterQuotes()
         updateQuote()
     }, [chain.swap.tokenOut])
 
@@ -896,7 +912,7 @@ const SwapSettings = () => {
 const RouterOutputs = () => {
     // Swap data
 
-    const { chain, web3 } = useContext(EthereumContext)
+    const { chain } = useContext(EthereumContext)
     const swap = chain.swap
 
     // Component
@@ -921,7 +937,7 @@ const RouterOutputs = () => {
                             {swap.tokenOut ? (
                                 <img className="icon" src={swap.tokenOut.default ? `/tokens/${swap.tokenOut.symbol}.svg` : "/tokens/unknown.svg"}></img>
                             ) : <></>}
-                            {`${swap.tokenOut ? router.out ? format(parse(router.out, swap.tokenOut.decimals)) : "—" : "..."} `}
+                            {`${swap.tokenOut && router.out ? format(parse(router.out, swap.tokenOut.decimals)) : "..."} `}
                             {swap.tokenOut ? swap.tokenOut.symbol : ""}
                         </div>
                     </div>
