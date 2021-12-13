@@ -369,7 +369,8 @@ const SwapInterface = () => {
             } else if (!web3.utils.isBN(swap.tokenOutAmount)) {
                 return `1 ${swap.tokenOut.symbol} = ... ${swap.tokenIn.symbol}`
             } else {
-                return "..."
+                const ratio = swap.tokenInAmount.mul(BN(10).pow(BN(swap.tokenOut.decimals))).mul(BN(10000)).div(swap.tokenOutAmount).div(BN(10).pow(BN(swap.tokenIn.decimals)))
+                return `1 ${swap.tokenOut.symbol} = ${format(parse(ratio, 4))} ${swap.tokenIn.symbol}`
             }
         } else {
             if (!swap.tokenIn) {
@@ -379,7 +380,8 @@ const SwapInterface = () => {
             } else if (!web3.utils.isBN(swap.tokenOutAmount)) {
                 return `1 ${swap.tokenIn.symbol} = ... ${swap.tokenOut.symbol}`
             } else {
-                return "..."
+                const ratio = swap.tokenOutAmount.mul(BN(10).pow(BN(swap.tokenIn.decimals))).mul(BN(10000)).div(swap.tokenInAmount).div(BN(10).pow(BN(swap.tokenOut.decimals)))
+                return `1 ${swap.tokenIn.symbol} = ${format(parse(ratio, 4))} ${swap.tokenOut.symbol}`
             }
         }
     }
