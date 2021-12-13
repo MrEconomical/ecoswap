@@ -122,7 +122,7 @@ const SwapInput = () => {
 const TokenSelect = ({ label, type }) => {
     // Token selection menu data
 
-    const { chain, account } = useContext(EthereumContext)
+    const { web3, chain, account } = useContext(EthereumContext)
     const token = chain.swap[type === "input" ? "tokenIn" : "tokenOut"]
     const setToken = chain.swap[type === "input" ? "setTokenIn" : "setTokenOut"]
     const opposite = chain.swap[type === "input" ? "tokenOut" : "tokenIn"]
@@ -135,8 +135,16 @@ const TokenSelect = ({ label, type }) => {
     function updateTokenList(event) {
         const query = event.target.value.toLowerCase()
         if (!query) return setTokenList(chain.tokens)
-        const tokens = chain.tokens.filter(token => token.name.toLowerCase().includes(query) || token.symbol.toLowerCase().includes(query))
+        const tokens = chain.tokens.filter(token => token.name.toLowerCase().includes(query) || token.symbol.toLowerCase().includes(query) || token.address.toLowerCase() === query)
         tokens.sort((a, b) => {
+            // Sort tokens by address
+
+            if (a.address.toLowerCase() === query) {
+                return -1
+            } else if (b.address.toLowerCase() === query) {
+                return 1
+            }
+
             // Sort tokens by index of match
 
             const nameA = a.name.toLowerCase()
@@ -151,6 +159,34 @@ const TokenSelect = ({ label, type }) => {
                 return nameA.indexOf(query) < nameB.indexOf(query) ? -1 : 1
             }
         })
+        setTokenList(tokens)
+        if (web3.utils.isAddress(query) && !chain.tokens.find(token => token.address.toLowerCase() === query)) {
+            getExternalToken(query, tokens)
+        }
+    }
+
+    // Find external token
+
+    async function getExternalToken(address, tokenList) {
+        const Token = new chain.web3.eth.Contract(ERC20ABI, address)
+        let name, symbol, decimals
+        try {
+            [ name, symbol, decimals ] = await Promise.all([
+                Token.methods.name().call(),
+                Token.methods.symbol().call(),
+                Token.methods.decimals().call()
+            ])
+        } catch {
+            return
+        }
+        const tokens = [ ...tokenList ]
+        tokens.push({
+            name,
+            symbol,
+            address: web3.utils.toChecksumAddress(address),
+            decimals
+        })
+        console.log(tokens)
         setTokenList(tokens)
     }
 
