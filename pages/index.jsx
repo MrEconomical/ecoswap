@@ -575,13 +575,21 @@ const SwapInterface = () => {
 
     // Update swap quote on token changes
 
+    const tokenOut = useRef(swap.tokenOut ? swap.tokenOut.address : null)
     useEffect(() => {
         clearTimeout(updateTimeout.current)
+        if (!swap.tokenOut) {
+            tokenOut.current = null
+        } else if (!swap.tokenInAmount) {
+            tokenOut.current = swap.tokenOut.address
+        }
         if (!swap.tokenInAmount || !swap.tokenOut) {
             swap.setTokenOutAmount(null)
             resetRouterQuotes()
             return
         }
+        if (tokenOut.current === swap.tokenOut.address) return
+        tokenOut.current = swap.tokenOut.address
         swap.setTokenOutAmount("...")
         resetRouterQuotes()
         updateQuote()
