@@ -1155,13 +1155,12 @@ const RouterOutputs = () => {
             <style jsx>{`
                 .routers {
                     width: 100%;
-                    height: 100%;
                     display: flex;
                     flex-direction: column;
                     justify-content: flex-start;
                     align-items: flex-start;
                     border-top: 0.5px solid var(--gray);
-                    padding: 32px 0;
+                    padding-top: 32px;
                 }
 
                 .title {
@@ -1210,6 +1209,7 @@ const Swap = () => (
                 <SwapSettings></SwapSettings>
             </div>
             <RouterOutputs></RouterOutputs>
+            <div className="disclaimer">Trading is risky! EcoSwap is not responsible for any trading losses or financial losses while using the app. DYOR before buying any token or making any trade to avoid getting rekt. EcoSwap is beta software and may contain bugs. Bug reports in the EcoSwap Discord server are appreciated!</div>
         </div>
         <style jsx>{`
             .content {
@@ -1229,6 +1229,13 @@ const Swap = () => (
                 justify-content: flex-start;
                 align-items: flex-start;
                 margin-bottom: 16px;
+            }
+
+            .disclaimer {
+                width: 100%;
+                font-size: 0.9rem;
+                color: var(--gray);
+                margin-top: 32px;
             }
         `}</style>
     </>
