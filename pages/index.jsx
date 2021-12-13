@@ -126,9 +126,9 @@ const TokenSelect = ({ label, type }) => {
     const token = chain.swap[type === "input" ? "tokenIn" : "tokenOut"]
     const setToken = chain.swap[type === "input" ? "setTokenIn" : "setTokenOut"]
     const opposite = chain.swap[type === "input" ? "tokenOut" : "tokenIn"]
-
     const [ menuActive, setMenuActive ] = useState(false)
     const [ tokenList, setTokenList ] = useState(chain.tokens)
+    console.log(chain.tokens, tokenList)
 
     // Update token search with query
 
@@ -575,7 +575,7 @@ const SwapInterface = () => {
         <>
             <div className="interface">
                 <div className="header">
-                    <button className="max-token" onClick={setMax}>Max {swap.tokenIn ? format(parse(chain.tokenBalances[swap.tokenIn.address], swap.tokenIn.decimals)) : "..."} {swap.tokenIn ? swap.tokenIn.symbol : ""}</button>
+                    <button className="max-token" onClick={setMax}>Max {swap.tokenIn && chain.tokenBalances[swap.tokenIn.address] ? format(parse(chain.tokenBalances[swap.tokenIn.address], swap.tokenIn.decimals)) : "..."} {swap.tokenIn ? swap.tokenIn.symbol : ""}</button>
                     <div className="label">Input Token</div>
                 </div>
                 <div className="token-section">

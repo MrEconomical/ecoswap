@@ -1,6 +1,6 @@
 // Files and modules
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 
 // Chain tokens hook
 
@@ -35,18 +35,25 @@ function useTokens(chainId) {
         // Load external tokens
 
         const externalTokens = JSON.parse(localStorage.externalTokens)[chainId]
+        console.log("init external tokens:", externalTokens)
         setTokens([ ...tokens, ...externalTokens ])
     }, [])
 
-    // Update local storage on token changes
+    // Update local storage on token changes excluding initial render
 
+    const render = useRef(true)
     useEffect(() => {
+        if (render.current) {
+            render.current = false
+            return
+        }
         const externalTokens = tokens.filter(token => token.external && token.added)
         if (!localStorage.externalTokens) {
             localStorage.externalTokens = JSON.stringify({ [chainId]: externalTokens })
         } else {
             try {
                 const savedTokens = JSON.parse(localStorage.externalTokens)
+                console.log("in the update hook:", chainId, savedTokens, externalTokens)
                 savedTokens[chainId] = externalTokens
                 localStorage.externalTokens = JSON.stringify(savedTokens)
             } catch {
