@@ -184,18 +184,17 @@ const TokenSelect = ({ label, type }) => {
         } catch {
             return
         }
-        const balances = { ...chain.tokenBalances }
-        balances[Token._address] = BN(balance)
-        chain.setTokenBalances(balances)
-        const tokens = [ ...tokenList ]
-        tokens.push({
+        chain.setTokenBalances({
+            ...chain.tokenBalances,
+            [Token._address]: BN(balance)
+        })
+        setTokenList([...tokenList, {
             external: true,
             name,
             symbol,
             address: Token._address,
             decimals: +decimals
-        })
-        setTokenList(tokens)
+        }])
     }
 
     // Switch to selected token
@@ -204,6 +203,7 @@ const TokenSelect = ({ label, type }) => {
         if (!token.external) {
             setToken(token)
         } else {
+            chain
             console.log("is external token")
         }
         setMenuActive(false)
@@ -681,9 +681,10 @@ const SwapSettings = () => {
 
     function updateGas(value) {
         if (settings.gas[chain.id] === value) return
-        const gas = { ...settings.gas }
-        gas[chain.id] = value
-        settings.setGas(gas)
+        settings.setGas({
+            ...settings.gas,
+            [chain.id]: value
+        })
         document.getElementById("gas-input").value = ""
     }
 
@@ -692,9 +693,10 @@ const SwapSettings = () => {
     function setGas(event) {
         if (isNaN(+event.target.value) || +event.target.value <= 0) return
         if (event.target.value.endsWith(".")) return
-        const gas = { ...settings.gas }
-        gas[chain.id] = +event.target.value
-        settings.setGas(gas)
+        settings.setGas({
+            ...settings.gas,
+            [chain.id]: +event.target.value
+        })
     }
 
     // Toggle router enabled
