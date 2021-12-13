@@ -35,7 +35,7 @@ function useSwapSettings(chains) {
         }
     }
 
-    // Run initial client side update
+    // Get swap settings from local storage
 
     useEffect(() => {
         if (!localStorage.swapSettings) {

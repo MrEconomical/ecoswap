@@ -23,7 +23,7 @@ function useSwap(chain) {
         }
     }
 
-    // Run initial client side update
+    // Get swap tokens from local storage
 
     useEffect(() => {
         // Initialize swap store
@@ -33,8 +33,10 @@ function useSwap(chain) {
         } else {
             try {
                 const store = JSON.parse(localStorage.swapStore)
-                if (!store[chain.id]) store[chain.id] = getDefault()
-                localStorage.swapStore = JSON.stringify(store)
+                if (!store[chain.id]) {
+                    store[chain.id] = getDefault()
+                    localStorage.swapStore = JSON.stringify(store)
+                }
             } catch {
                 localStorage.swapStore = JSON.stringify({ [chain.id]: getDefault() })
             }
@@ -47,7 +49,7 @@ function useSwap(chain) {
         setTokenOut(store.tokenOut)
     }, [])
 
-    // Update local storage on token change
+    // Update local storage on token changes
 
     useEffect(() => {
         const tokenInStore = !tokenIn || (tokenIn.external && !tokenIn.added) ? null : tokenIn

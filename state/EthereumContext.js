@@ -130,7 +130,7 @@ const EthereumContextProvider = ({ children }) => {
         }
     }
 
-    // Run initial client side update
+    // Update client side data
 
     useEffect(() => {
         setEnabled(typeof ethereum !== "undefined")

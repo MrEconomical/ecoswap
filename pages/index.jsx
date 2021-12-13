@@ -213,7 +213,17 @@ const TokenSelect = ({ label, type }) => {
     // Add external token to token list
 
     function addToken(token) {
+        const tokens = [ ...chain.tokens ]
+        tokens.find(t => t.address === token.address).added = true
+        chain.setTokens(tokens)
+    }
 
+    // Remove external token from token list
+
+    function removeToken(token) {
+        const tokens = [ ...chain.tokens ]
+        tokens.find(t => t.address === token.address).added = false
+        chain.setTokens(tokens)
     }
 
     // Update token list on data changes
