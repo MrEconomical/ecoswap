@@ -14,6 +14,7 @@ for (const router of routerList) {
 async function quoteSwap(chain, BN) {
     // Get best router quote
 
+    console.log("starting state:", chain.swap.tokenIn.address, chain.swap.tokenOut.address)
     const quotes = await Promise.all(routers.map(router => router.quote(chain, BN)))
     let best = 0
     for (let q = 1; q < quotes.length; q ++) {
@@ -44,6 +45,7 @@ async function quoteSwap(chain, BN) {
         }
     })
     chain.swap.setRouters(routerQuotes)
+    console.log("ending state:", chain.swap.tokenIn.address, chain.swap.tokenOut.address)
 }
 
 // Exports

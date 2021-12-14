@@ -470,6 +470,8 @@ const SwapInterface = () => {
     const { enabled, web3, chain, account, BN } = useContext(EthereumContext)
     const swap = chain.swap
     const [ swapButtonText, setSwapButtonText ] = useState("Swap Tokens")
+    const amountIn = useRef(swap.tokenInAmount)
+    const tokenOut = useRef(swap.tokenOut ? swap.tokenOut.address : null)
     const updateTimeout = useRef()
     const ethereumState = useRef({
         chainId: chain.id,
@@ -526,6 +528,7 @@ const SwapInterface = () => {
     // Update swap quote
 
     async function updateQuote() {
+        console.log("updating quote")
         try {
             await quoteSwap(chain, BN)
         } catch(error) {
@@ -631,43 +634,28 @@ const SwapInterface = () => {
         }
     }
 
-    // Update swap quote on token amount changes
-
-    useEffect(() => {
-        clearTimeout(updateTimeout.current)
-        if (!swap.tokenInAmount || !swap.tokenOut) {
-            swap.setTokenOutAmount(null)
-            resetRouterQuotes()
-            return
-        }
-        swap.setTokenOutAmount("...")
-        resetRouterQuotes()
-        updateTimeout.current = setTimeout(updateQuote, 300)
-    }, [swap.tokenInAmount])
-
     // Update swap quote on token changes
 
-    const tokenOut = useRef(swap.tokenOut ? swap.tokenOut.address : null)
     useEffect(() => {
         clearTimeout(updateTimeout.current)
-        if (!swap.tokenOut) {
-            tokenOut.current = null
-        } else if (!swap.tokenInAmount) {
-            tokenOut.current = swap.tokenOut.address
-        }
         if (!swap.tokenInAmount || !swap.tokenOut) {
             swap.setTokenOutAmount(null)
             resetRouterQuotes()
+            amountIn.current = swap.tokenInAmount
+            tokenOut.current = swap.tokenOut ? swap.tokenOut.address : null
             return
         }
-        if (tokenOut.current === swap.tokenOut.address) return
-        tokenOut.current = swap.tokenOut.address
+        if (swap.tokenInAmount.eq(amountIn.current) && swap.tokenOut.address === tokenOut.current) return
         swap.setTokenOutAmount("...")
         resetRouterQuotes()
-        updateQuote()
-    }, [swap.tokenOut])
-
-    // Update Ethereum state on chain or account changes
+        if (swap.tokenOut.address !== tokenOut.current) {
+            updateQuote()
+        } else {
+            updateTimeout.current = setTimeout(updateQuote, 300)
+        }
+        amountIn.current = swap.tokenInAmount
+        tokenOut.current = swap.tokenOut.address
+    }, [swap.tokenInAmount, swap.tokenOut])
 
     useEffect(() => {
         ethereumState.current = {
