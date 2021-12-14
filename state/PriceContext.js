@@ -21,7 +21,11 @@ const PriceContextProvider = ({ children }) => {
                 const markets = (await axios("https://api.binance.com/api/v3/ticker/price")).data
                 for (const market of markets) {
                     if (market.symbol.endsWith("USDT")) {
-                        prices[market.symbol.slice(0, -4)] = +market.price
+                        const token = market.symbol.slice(0, -4)
+                        prices[token] = +market.price
+                        if (["ETH", "MATIC", "FTM", "AVAX", "BNB"].includes(token)) {
+                            prices[`W${token}`] = +market.price
+                        }
                     }
                 }
                 setPrices(prices)

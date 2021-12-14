@@ -49,7 +49,7 @@ async function getSwap(chain, account, BN) {
     // Return best swap
 
     return {
-        router: routerList[best].id,
+        routerName: routerList[best].name,
         ...swaps[best]
     }
 }

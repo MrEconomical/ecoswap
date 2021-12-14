@@ -545,6 +545,7 @@ const SwapInterface = () => {
         // Get swap transaction data
 
         if (!account || !swap.tokenIn || !swap.tokenOut || !swap.tokenInAmount) return
+        if (chain.tokenBalances[swap.tokenIn.address].lt(swap.tokenInAmount)) return
         swap.setTokenOutAmount("...")
         resetRouterQuotes()
         const swapData = await getSwap(chain, account, BN)
@@ -552,7 +553,11 @@ const SwapInterface = () => {
 
         // Check approval
 
-        //const Token = new chain.web3.Contract(ERC20ABI, swap.tokenIn.address)
+        if (swap.tokenIn.address !== "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
+            const Token = new chain.web3.Contract(ERC20ABI, swap.tokenIn.address)
+            const approved = BN(await Token.methods.allowance(account, swapData.tx.to))
+            console.log(approved)
+        }
     }
 
     // Update swap quote on token amount changes
