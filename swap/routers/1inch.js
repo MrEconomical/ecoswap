@@ -36,7 +36,7 @@ async function quote(chain, BN) {
 
 // Get swap
 
-async function getSwap(chain, account, BN) {
+async function getSwap(chain, account, BN, disableEstimate = false) {
     const endpoint = getEndpoint(chain.id)
     if (!endpoint) return
     const swap = chain.swap
@@ -47,7 +47,8 @@ async function getSwap(chain, account, BN) {
             amount: swap.tokenInAmount.toString(),
             fromAddress: account,
             slippage: chain.swapSettings.slippage,
-            referrerAddress: chain.swapSettings.referral
+            referrerAddress: chain.swapSettings.referral,
+            disableEstimate
         })}`)
         return {
             out: BN(result.data.toTokenAmount),
@@ -58,6 +59,18 @@ async function getSwap(chain, account, BN) {
             }
         }
     } catch(error) {
+        if (
+            !disableEstimate &&
+            error.response &&
+            error.response.data &&
+            error.response.data.description &&
+            (error.response.data.description.startsWith("insufficient funds for gas * price + value") ||
+            error.response.data.description.startsWith("Not enough allowance"))
+        ) {
+            // Retry without error checking
+
+            return await getSwap(chain, account, BN, true)
+        }
         console.error(error)
     }
 }
