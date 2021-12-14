@@ -573,6 +573,7 @@ const SwapInterface = () => {
                         }]
                     })
                     setSwapButtonText(`Approve ${swap.tokenIn.symbol} on ${swapData.routerName}...`)
+                    const sent = Date.now()
                     const interval = setInterval(async () => {
                         try {
                             // Poll approve transaction
@@ -582,8 +583,11 @@ const SwapInterface = () => {
                                 return
                             }
                             const transaction = await chain.web3.eth.getTransactionReceipt(approveTx)
-                            console.log(transaction)
-                            if (!transaction) return
+                            if (!transaction) {
+                                if (Date.now() - sent < 60000) return
+                                clearInterval(interval)
+                                setSwapButtonText("Swap Tokens")
+                            }
                             if (transaction.status || transaction.status === false) {
                                 clearInterval(interval)
                                 setSwapButtonText("Swap Tokens")
