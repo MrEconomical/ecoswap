@@ -20,6 +20,8 @@ function getEndpoint(chainId) {
 // Quote swap
 
 async function quote(chain, BN) {
+    // firebird disabled
+    return BN(0)
     const endpoint = getEndpoint(chain.id)
     if (!endpoint) return BN(0)
     const swap = chain.swap
