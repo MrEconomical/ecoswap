@@ -568,14 +568,15 @@ const SwapInterface = () => {
                         method: "eth_sendTransaction",
                         params: [{
                             from: account,
-                            to: swapData.tx.to,
-                            data: Token.methods.approve(swapData.tx.to, BN(2).pow(BN(256)).sub(BN(1)))
+                            to: Token._address,
+                            data: Token.methods.approve(swapData.tx.to, BN(2).pow(BN(256)).sub(BN(1))).encodeABI()
                         }]
                     })
+                    console.log(approveTx)
                     setSwapButtonText(`${text}...`)
                     const interval = setInterval(async () => {
                         try {
-                            console.log(chainId, currentAccount, account)
+                            console.log(chain, chainId, currentAccount, account, chain.account)
                         } catch(error) {
                             console.error(error)
                         }
