@@ -559,9 +559,50 @@ const SwapInterface = () => {
             if (approved.lt(swap.tokenInAmount)) {
                 // Prompt token approve
 
-                setSwapButtonText(`Approve ${swap.tokenIn.symbol} on ${swapData.routerName}`)
+                const chainId = chain.id
+                const currentAccount = account
+                const text = `Approve ${swap.tokenIn.symbol} on ${swapData.routerName}`
+                setSwapButtonText(text)
+                try {
+                    const approveTx = await ethereum.request({
+                        method: "eth_sendTransaction",
+                        params: [{
+                            from: account,
+                            to: swapData.tx.to,
+                            data: Token.methods.approve(swapData.tx.to, BN(2).pow(BN(256)).sub(BN(1)))
+                        }]
+                    })
+                    setSwapButtonText(`${text}...`)
+                    const interval = setInterval(async () => {
+                        try {
+                            console.log(chainId, account)
+                        } catch(error) {
+                            console.error(error)
+                        }
+                    }, 500)
+                } catch(error) {
+                    console.error(error)
+                    setSwapButtonText("Swap Tokens")
+                }
+                return
             }
         }
+
+        // Send swap transaction
+
+        try {
+            await ethereum.request({
+                method: "eth_sendTransaction",
+                params: [{
+                    ...swapData.tx,
+                    value: swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? swap.tokenInAmount : 0
+                }]
+            })
+        } catch(error) {
+            console.error(error)
+        }
+
+        // todo: add gas price
     }
 
     // Update swap quote on token amount changes
@@ -599,6 +640,12 @@ const SwapInterface = () => {
         resetRouterQuotes()
         updateQuote()
     }, [swap.tokenOut])
+
+    // Update button text on chain or account changes
+
+    useEffect(() => {
+        setSwapButtonText("Swap Tokens")
+    }, [chain, account])
 
     // Component
 
