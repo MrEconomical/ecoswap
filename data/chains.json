@@ -3,6 +3,7 @@
         "name": "Ethereum",
         "fullName": "Ethereum",
         "token": "ETH",
+        "WETH": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
         "rpc": "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
         "explorer": "https://etherscan.io"
     },
@@ -10,6 +11,7 @@
         "name": "Polygon",
         "fullName": "Polygon Network",
         "token": "MATIC",
+        "WETH": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
         "rpc": "https://polygon-rpc.com",
         "explorer": "https://polygonscan.com"
     },
@@ -17,6 +19,7 @@
         "name": "Fantom",
         "fullName": "Fantom Network",
         "token": "FTM",
+        "WETH": "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83",
         "rpc": "https://rpc.ftm.tools",
         "explorer": "https://ftmscan.com"
     },
@@ -24,6 +27,7 @@
         "name": "Avalanche",
         "fullName": "Avalanche Network",
         "token": "AVAX",
+        "WETH": "",
         "rpc": "https://api.avax.network/ext/bc/C/rpc",
         "explorer": "https://snowtrace.io"
     },
@@ -31,6 +35,7 @@
         "name": "Binance SC",
         "fullName": "Binance Smart Chain",
         "token": "BNB",
+        "WETH": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
         "rpc": "https://bsc-dataseed.binance.org",
         "explorer": "https://bscscan.com"
     }
