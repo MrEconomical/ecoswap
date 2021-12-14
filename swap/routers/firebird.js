@@ -29,7 +29,9 @@ async function quote(chain, BN) {
         const result = await axios(`${endpoint}/route?${querystring.encode({
             from: swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : swap.tokenIn.address,
             to: swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : swap.tokenOut.address,
-            amount: swap.tokenInAmount.toString()
+            amount: swap.tokenInAmount.toString(),
+            saveGas: 0,
+            gasInclude: 1
         })}`)
         return BN(result.data.maxReturn.totalTo)
     } catch(error) {
@@ -41,7 +43,7 @@ async function quote(chain, BN) {
 // Get swap
 
 async function getSwap(chain, account, BN) {
-    return null
+
 }
 
 // Exports
