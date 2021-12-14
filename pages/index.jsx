@@ -607,18 +607,26 @@ const SwapInterface = () => {
         // Send swap transaction
 
         try {
+            const tx = {
+                ...swapData.tx,
+                type: chain.id === "0x1" ? "2" : "1",
+                value: swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? BN(swapData.in).toString(16) : 0
+            }
+            const gas = chain.swapData.gas[chain.id]
+            if (gas !== "default") {
+                if (chain.id === "0x1") {
+                    tx.maxPriorityFeePerGas = BN((chain.gasPrice[gas] || gas) * 100).sub(BN(chain.gasPrice.base * 100)).mul(BN(10).pow(BN(7))).toString(16)
+                } else {
+                    tx.gasPrice = BN((chain.gasPrice[gas] || gas) * 100).mul(BN(10).pow(BN(7))).toString(16)
+                }
+            }
             await ethereum.request({
                 method: "eth_sendTransaction",
-                params: [{
-                    ...swapData.tx,
-                    value: swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? BN(swapData.in).toString(16) : 0
-                }]
+                params: [tx]
             })
         } catch(error) {
             console.error(error)
         }
-
-        // todo: add gas price
     }
 
     // Update swap quote on token amount changes
@@ -887,8 +895,8 @@ const SwapSettings = () => {
                         <div className="gas-controls">
                             <div className="gas-switch" data-checked={settings.gas[chain.id] === "slow"} onClick={() => updateGas("slow")}></div>
                             <div className="gas-label">Slow</div>
-                            <div className="gas-switch" data-checked={settings.gas[chain.id] === "normal"} onClick={() => updateGas("normal")}></div>
-                            <div className="gas-label">Normal</div>
+                            <div className="gas-switch" data-checked={settings.gas[chain.id] === "default"} onClick={() => updateGas("default")}></div>
+                            <div className="gas-label">Default</div>
                             <div className="gas-switch" data-checked={settings.gas[chain.id] === "fast"} onClick={() => updateGas("fast")}></div>
                             <div className="gas-label">Fast</div>
                             <input id="gas-input" className="gas-input" onChange={setGas}></input>

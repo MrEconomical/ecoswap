@@ -6,8 +6,9 @@ import axios from "axios"
 
 function useGasPrice(chainId) {
     return {
+        base: 40,
         slow: 50,
-        normal: 100,
+        default: 100,
         fast: 150
     }
 }
