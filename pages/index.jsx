@@ -1297,9 +1297,9 @@ const Swap = () => (
                 height: calc(100vh - 120px);
                 display: flex;
                 flex-direction: column;
-                justify-content: flex-start;
+                justify-content: center;
                 align-items: flex-start;
-                padding: 40px 0;
+                padding: 40px 0 60px 0;
             }
 
             .top {
