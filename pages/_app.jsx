@@ -17,7 +17,6 @@ const Metadata = ({ page }) => {
             <meta property="og:title" content={title}></meta>
             <meta property="og:type" content="website"></meta>
             <meta property="og:image" content="/ecoswap.png"></meta>
-            {/*<meta property="og:url" content=""></meta>*/}
             <meta property="og:description" content="A privacy-centered DEX aggregator, bringing you a fast, lightweight swap experience with the best rates on Ethereum, Polygon, Fantom, Avalanche, and the Binance Smart Chain"></meta>
             <title>{title}</title>
             <link rel="icon" href="/ecoswap-square.png"></link>
