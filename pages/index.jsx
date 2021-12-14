@@ -471,6 +471,10 @@ const SwapInterface = () => {
     const swap = chain.swap
     const [ swapButtonText, setSwapButtonText ] = useState("Swap Tokens")
     const updateTimeout = useRef()
+    const ethereumState = useRef({
+        chainId: chain.id,
+        account
+    })
 
     // Set max token amount
 
@@ -487,8 +491,8 @@ const SwapInterface = () => {
 
     function switchTokens() {
         const newInput = swap.tokenOut
-        swap.setTokenOut({...swap.tokenIn})
-        swap.setTokenIn({...newInput})
+        swap.setTokenOut(swap.tokenIn ? {...swap.tokenIn} : null)
+        swap.setTokenIn(newInput ? {...newInput} : null)
     }
 
     // Calculate swap info
@@ -549,7 +553,6 @@ const SwapInterface = () => {
         swap.setTokenOutAmount("...")
         resetRouterQuotes()
         const swapData = await getSwap(chain, account, BN)
-        console.log(swapData)
 
         // Check approval
 
@@ -559,10 +562,7 @@ const SwapInterface = () => {
             if (approved.lt(swap.tokenInAmount)) {
                 // Prompt token approve
 
-                const chainId = chain.id
-                const currentAccount = account
-                const text = `Approve ${swap.tokenIn.symbol} on ${swapData.routerName}`
-                setSwapButtonText(text)
+                setSwapButtonText(`Approve ${swap.tokenIn.symbol} on ${swapData.routerName}`)
                 try {
                     const approveTx = await ethereum.request({
                         method: "eth_sendTransaction",
@@ -572,11 +572,21 @@ const SwapInterface = () => {
                             data: Token.methods.approve(swapData.tx.to, BN(2).pow(BN(256)).sub(BN(1))).encodeABI()
                         }]
                     })
-                    console.log(approveTx)
-                    setSwapButtonText(`${text}...`)
+                    setSwapButtonText(`Approve ${swap.tokenIn.symbol} on ${swapData.routerName}...`)
                     const interval = setInterval(async () => {
                         try {
-                            console.log(chain, chainId, currentAccount, account, chain.account)
+                            // Poll approve transaction
+
+                            if (chain.id !== ethereumState.current.chainId || account !== ethereumState.current.account) {
+                                clearInterval(interval)
+                                return
+                            }
+                            const transaction = await chain.web3.eth.getTransactionReceipt(approveTx)
+                            console.log(transaction)
+                            if (transaction.status || transaction.status === false) {
+                                clearInterval(interval)
+                                setSwapButtonText("Swap Tokens")
+                            }
                         } catch(error) {
                             console.error(error)
                         }
@@ -642,9 +652,13 @@ const SwapInterface = () => {
         updateQuote()
     }, [swap.tokenOut])
 
-    // Update button text on chain or account changes
+    // Update Ethereum state on chain or account changes
 
     useEffect(() => {
+        ethereumState.current = {
+            chainId: chain.id,
+            account
+        }
         setSwapButtonText("Swap Tokens")
     }, [chain, account])
 
