@@ -470,6 +470,7 @@ const SwapInterface = () => {
     const { enabled, web3, chain, account, BN } = useContext(EthereumContext)
     const swap = chain.swap
     const [ swapButtonText, setSwapButtonText ] = useState("Swap Tokens")
+    const tokenIn = useRef(swap.tokenIn ? swap.tokenIn.address : null)
     const amountIn = useRef(swap.tokenInAmount)
     const tokenOut = useRef(swap.tokenOut ? swap.tokenOut.address : null)
     const updateTimeout = useRef()
@@ -638,14 +639,15 @@ const SwapInterface = () => {
 
     useEffect(() => {
         clearTimeout(updateTimeout.current)
-        if (!swap.tokenInAmount || !swap.tokenOut) {
+        if (!swap.tokenIn || !swap.tokenInAmount || !swap.tokenOut) {
             swap.setTokenOutAmount(null)
             resetRouterQuotes()
+            tokenIn.current = swap.tokenIn ? swap.tokenIn.address : null
             amountIn.current = swap.tokenInAmount
             tokenOut.current = swap.tokenOut ? swap.tokenOut.address : null
             return
         }
-        if (swap.tokenInAmount.eq(amountIn.current) && swap.tokenOut.address === tokenOut.current) return
+        if (swap.tokenIn.address === tokenIn.current && swap.tokenInAmount.eq(amountIn.current) && swap.tokenOut.address === tokenOut.current) return
         swap.setTokenOutAmount("...")
         resetRouterQuotes()
         if (swap.tokenOut.address !== tokenOut.current) {
@@ -653,9 +655,10 @@ const SwapInterface = () => {
         } else {
             updateTimeout.current = setTimeout(updateQuote, 300)
         }
+        tokenIn.current = swap.tokenIn.address
         amountIn.current = swap.tokenInAmount
         tokenOut.current = swap.tokenOut.address
-    }, [swap.tokenInAmount, swap.tokenOut])
+    }, [swap.tokenIn, swap.tokenInAmount, swap.tokenOut])
 
     useEffect(() => {
         ethereumState.current = {
