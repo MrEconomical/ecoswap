@@ -467,7 +467,7 @@ const TokenSelect = ({ label, type }) => {
 const SwapInterface = () => {
     // Swap data
 
-    const { web3, chain, account, BN } = useContext(EthereumContext)
+    const { enabled, web3, chain, account, BN } = useContext(EthereumContext)
     const swap = chain.swap
     const [ swapButtonText, setSwapButtonText ] = useState("Swap Tokens")
     const updateTimeout = useRef()
@@ -544,7 +544,7 @@ const SwapInterface = () => {
     async function swapTokens() {
         // Get swap transaction data
 
-        if (!account || !swap.tokenIn || !swap.tokenOut || !swap.tokenInAmount) return
+        if (!enabled || !account || !swap.tokenIn || !swap.tokenOut || !swap.tokenInAmount) return
         if (chain.tokenBalances[swap.tokenIn.address].lt(swap.tokenInAmount)) return
         swap.setTokenOutAmount("...")
         resetRouterQuotes()
