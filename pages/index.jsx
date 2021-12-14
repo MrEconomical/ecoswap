@@ -575,7 +575,7 @@ const SwapInterface = () => {
                     setSwapButtonText(`${text}...`)
                     const interval = setInterval(async () => {
                         try {
-                            console.log(chainId, account)
+                            console.log(chainId, currentAccount, account)
                         } catch(error) {
                             console.error(error)
                         }
@@ -595,7 +595,7 @@ const SwapInterface = () => {
                 method: "eth_sendTransaction",
                 params: [{
                     ...swapData.tx,
-                    value: swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? swap.tokenInAmount : 0
+                    value: swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? BN(swapData.in).toString(16) : 0
                 }]
             })
         } catch(error) {

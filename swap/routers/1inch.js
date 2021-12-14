@@ -66,6 +66,7 @@ async function getSwap(chain, account, BN) {
         ])
         if (!withEstimate.error) {
             return {
+                in: BN(withEstimate.data.fromTokenAmount),
                 out: BN(withEstimate.data.toTokenAmount),
                 tx: {
                     from: account,
@@ -85,6 +86,7 @@ async function getSwap(chain, account, BN) {
             withEstimate.error.response.data.description.startsWith("Not enough allowance"))
         ) {
             return {
+                in: BN(withoutEstimate.data.fromTokenAmount),
                 out: BN(withoutEstimate.data.toTokenAmount),
                 tx: {
                     from: account,

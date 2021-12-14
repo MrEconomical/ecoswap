@@ -56,6 +56,7 @@ async function getSwap(chain, account, BN) {
             slippagePercentage: chain.swapSettings.slippage / 100
         })}`)
         return {
+            in: BN(result.data.sellAmount),
             out: BN(result.data.buyAmount),
             tx: {
                 from: account,
