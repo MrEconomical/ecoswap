@@ -26,6 +26,8 @@ async function quote(chain, BN) {
     // todo: fix wrapping eth to weth and unwrapping weth to eth
     if (swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" && swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") return BN(0)
     try {
+        // Request swap quote
+        
         const result = await axios(`${endpoint}/route?${querystring.encode({
             from: swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : swap.tokenIn.address,
             to: swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : swap.tokenOut.address,
