@@ -583,6 +583,7 @@ const SwapInterface = () => {
                             }
                             const transaction = await chain.web3.eth.getTransactionReceipt(approveTx)
                             console.log(transaction)
+                            if (!transaction) return
                             if (transaction.status || transaction.status === false) {
                                 clearInterval(interval)
                                 setSwapButtonText("Swap Tokens")
