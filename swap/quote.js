@@ -24,12 +24,12 @@ async function quoteSwap(chain, BN) {
 
     // Update state
 
-    chain.swap.setTokenOutAmount(quotes[best])
+    chain.swap.setTokenOutAmount(quotes[best].gt(BN(0)) ? quotes[best] : "No quote")
     const routerQuotes = []
     for (let q = 0; q < quotes.length; q ++) {
         routerQuotes.push({
             ...routerList[q],
-            out: quotes[q].gt(BN(0)) ? quotes[q] : null
+            out: quotes[q].gt(BN(0)) ? quotes[q] : false
         })
     }
     routerQuotes.sort((a, b) => {

@@ -1155,7 +1155,7 @@ const RouterOutputs = () => {
                             {swap.tokenOut ? swap.tokenOut.symbol : ""}
                         </div>
                         <div className="section">
-                            {swap.tokenOut && router.out ? swap.tokenOut.default ? `≈ $${formatNumber(getTokenValue(swap.tokenOut, router.out))}` : "≈ $0.00" : "..."}
+                            {swap.tokenOut && router.out ? swap.tokenOut.default ? `≈ $${formatNumber(getTokenValue(swap.tokenOut, router.out))}` : "≈ $0.00" : router.out === false ? "—" : "..."}
                         </div>
                     </div>
                 ))}

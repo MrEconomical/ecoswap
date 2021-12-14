@@ -31,7 +31,7 @@ async function quote(chain, BN) {
 
 // Get swap
 
-async function getSwap(chain, BN) {
+async function getSwap(chain, account, BN) {
     
 }
 
