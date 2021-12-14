@@ -612,14 +612,16 @@ const SwapInterface = () => {
                 type: chain.id === "0x1" ? "2" : "1",
                 value: swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? BN(swapData.in).toString(16) : 0
             }
-            const gas = chain.swapData.gas[chain.id]
+            const gas = chain.swapSettings.gas[chain.id]
             if (gas !== "default") {
                 if (chain.id === "0x1") {
+                    tx.maxFeePerGas = BN((chain.gasPrice[gas] || gas) * 100).mul(BN(10).pow(BN(7))).toString(16),
                     tx.maxPriorityFeePerGas = BN((chain.gasPrice[gas] || gas) * 100).sub(BN(chain.gasPrice.base * 100)).mul(BN(10).pow(BN(7))).toString(16)
                 } else {
                     tx.gasPrice = BN((chain.gasPrice[gas] || gas) * 100).mul(BN(10).pow(BN(7))).toString(16)
                 }
             }
+            console.log(tx)
             await ethereum.request({
                 method: "eth_sendTransaction",
                 params: [tx]
