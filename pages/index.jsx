@@ -545,13 +545,9 @@ const SwapInterface = () => {
         // Get swap transaction data
 
         if (!account || !swap.tokenIn || !swap.tokenOut || !swap.tokenInAmount) return
-        let swapData
-        try {
-            swapData = await getSwap(chain, account, BN)
-        } catch(error) {
-            console.error(error)
-            return
-        }
+        swap.setTokenOutAmount("...")
+        resetRouterQuotes()
+        const swapData = await getSwap(chain, account, BN)
         console.log(swapData)
 
         // Check approval

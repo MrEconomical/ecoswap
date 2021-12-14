@@ -46,7 +46,8 @@ async function getSwap(chain, account, BN) {
             toTokenAddress: swap.tokenOut.address,
             amount: swap.tokenInAmount.toString(),
             fromAddress: account,
-            slippage: chain.swapSettings.slippage
+            slippage: chain.swapSettings.slippage,
+            referrerAddress: chain.swapSettings.referral
         })}`)
         return {
             out: BN(result.data.toTokenAmount),
