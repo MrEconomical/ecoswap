@@ -11,7 +11,7 @@ function useSwapSettings(chains) {
     const [ slippage, setSlippage ] = useState(0.5)
     const initialGas = {}
     for (const chainId in chains) {
-        initialGas[chainId] = "normal"
+        initialGas[chainId] = "default"
     }
     const [ gas, setGas ] = useState(initialGas)
     const initialRouters = {}
