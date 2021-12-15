@@ -246,7 +246,11 @@ const Footer = () => (
         <style jsx>{`
             .footer {
                 width: 100%;
-                height: 40px;
+                height: 60px;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
                 font-size: 0.9rem;
                 padding: 0 max(calc(50vw - 500px), 20px);
             }

@@ -712,7 +712,7 @@ const SwapInterface = () => {
                     <button className="switch" onClick={switchTokens}>
                         <img className="arrows" src="/icons/switch.svg"></img>
                     </button>
-                    <div className="label" style={{ top: "12px" }}>Output Token</div>
+                    <div className="label output-label">Output Token</div>
                 </div>
                 <div className="token-section">
                     <div className="output">{swap.tokenOut && swap.tokenOutAmount ? typeof swap.tokenOutAmount === "string" ? swap.tokenOutAmount : format(parse(swap.tokenOutAmount, swap.tokenOut.decimals)) : null}</div>
@@ -797,6 +797,10 @@ const SwapInterface = () => {
                     object-fit: contain;
                 }
 
+                .output-label {
+                    top: 12px;
+                }
+
                 .output {
                     width: 45%;
                     min-height: calc(1.44rem + 18px);
@@ -824,6 +828,29 @@ const SwapInterface = () => {
 
                 .swap-info {
                     margin-bottom: 6px;
+                }
+
+                @media only screen and (max-width: 1000px), (max-height: 900px) {
+                    .interface {
+                        width: 280px;
+                        padding: 24px 24px 24px 0;
+                    }
+
+                    .header {
+                        margin-bottom: 8px;
+                    }
+
+                    .middle {
+                        margin: 16px 0;
+                    }
+
+                    .output-label {
+                        top: 8px;
+                    }
+
+                    .swap {
+                        margin: 16px 0;
+                    }
                 }
             `}</style>
         </>
@@ -1057,6 +1084,7 @@ const SwapSettings = () => {
                 .gas-switch {
                     width: 1rem;
                     height: 1rem;
+                    flex-shrink: 0;
                     background-color: var(--light-gray);
                     border-radius: 4px;
                     margin-right: 0.5rem;
@@ -1322,12 +1350,12 @@ const Swap = () => (
         <style jsx>{`
             .content {
                 width: 100%;
-                height: calc(100vh - 120px);
+                height: calc(100vh - 140px);
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: flex-start;
-                padding: 40px 0 60px 0;
+                padding-bottom: 20px;
             }
 
             .top {
@@ -1336,14 +1364,16 @@ const Swap = () => (
                 flex-direction: row;
                 justify-content: flex-start;
                 align-items: flex-start;
-                margin-bottom: 16px;
             }
 
             .disclaimer {
                 width: 100%;
                 font-size: 0.9rem;
                 color: var(--gray);
-                margin-top: 32px;
+                margin-top: 24px;
+            }
+
+            @media only screen and (max-width: 1000px), (max-height: 900px) {
             }
         `}</style>
     </>
