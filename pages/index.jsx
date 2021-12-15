@@ -729,7 +729,7 @@ const SwapInterface = () => {
                     <div className="label output-label">Output Token</div>
                 </div>
                 <div className="token-section">
-                    <div className="output">{swap.tokenOut && swap.tokenOutAmount ? typeof swap.tokenOutAmount === "string" ? swap.tokenOutAmount : format(parse(swap.tokenOutAmount, swap.tokenOut.decimals)) : null}</div>
+                    <input className="output" value={swap.tokenOut && swap.tokenOutAmount ? typeof swap.tokenOutAmount === "string" ? swap.tokenOutAmount : format(parse(swap.tokenOutAmount, swap.tokenOut.decimals)) : ""} readOnly></input>
                     <TokenSelect label="Output Token" type="output"></TokenSelect>
                 </div>
                 <button className="swap" onClick={swapTokens}>{swapButtonText}</button>
