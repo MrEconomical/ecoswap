@@ -1050,7 +1050,7 @@ const SwapSettings = () => {
                 }
 
                 .slippage-input {
-                    width: 60px;
+                    width: 3.75rem;
                     outline: none;
                     border: 1px solid var(--light-gray);
                     border-radius: 8px;
@@ -1090,7 +1090,7 @@ const SwapSettings = () => {
                 }
 
                 .gas-input {
-                    width: 60px;
+                    width: 3.75rem;
                     outline: none;
                     border: 1px solid var(--light-gray);
                     border-radius: 8px;
@@ -1252,12 +1252,20 @@ const SwapSettings = () => {
                         margin-right: 16px;
                     }
 
+                    .slippage-input {
+                        padding: 4px 6px;
+                    }
+
                     .gas-switch {
                         margin-right: 6px;
                     }
 
                     .gas-label {
                         margin-right: 16px;
+                    }
+
+                    .gas-input {
+                        padding: 4px 6px;
                     }
 
                     .section-title {
