@@ -22,6 +22,12 @@ const NavLink = ({ name, href }) => (
             .link:hover {
                 text-decoration: underline;
             }
+
+            @media only screen and (max-width: 1000px), (max-height: 900px) {
+                .link {
+                    margin-left: 24px;
+                }
+            }
         `}</style>
     </>
 )
@@ -264,7 +270,7 @@ const NavBar = () => (
             .title {
                 font-size: 1.1rem;
                 font-weight: bold;
-                margin-bottom: 2px;
+                margin-bottom: 1px;
             }
 
             @media only screen and (max-width: 1000px), (max-height: 900px) {
