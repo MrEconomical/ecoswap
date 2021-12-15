@@ -1,9 +1,30 @@
 // Files and modules
 
 import EthereumContext, { chains } from "../state/EthereumContext"
+import Link from "next/link"
 import { useEffect, useContext, useState } from "react"
 
 const chainIds = Object.keys(chains)
+
+// Navigation link component
+
+const NavLink = ({ name, href }) => (
+    <>
+        <Link href={href}>
+            <a className="link">{name}</a>
+        </Link>
+        <style jsx>{`
+            .link {
+                font-size: 1.1rem;
+                margin-left: 48px;
+            }
+
+            .link:hover {
+                text-decoration: underline;
+            }
+        `}</style>
+    </>
+)
 
 // Wallet manager component
 
@@ -206,8 +227,13 @@ const WalletManager = () => {
 const NavBar = () => (
     <>
         <nav className="nav">
-            <img className="icon" src="/ecoswap.png"></img>
-            <div className="title">EcoSwap</div>
+            <Link href="/">
+                <a className="header">
+                    <img className="icon" src="/ecoswap.png"></img>
+                    <div className="title">EcoSwap</div>
+                </a>
+            </Link>
+            <NavLink name="About" href="/about"></NavLink>
             <WalletManager></WalletManager>
         </nav>
         <style jsx>{`
@@ -221,11 +247,18 @@ const NavBar = () => (
                 padding: 0 max(calc(50vw - 500px), 20px);
             }
 
+            .header {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 12px;
+            }
+
             .icon {
                 width: 40px;
                 height: 40px;
                 object-fit: contain;
-                margin-right: 12px;
             }
 
             .title {
