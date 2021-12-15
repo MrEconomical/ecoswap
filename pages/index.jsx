@@ -1432,6 +1432,9 @@ const Swap = () => (
             }
 
             @media only screen and (max-width: 1000px), (max-height: 900px) {
+                .content {
+                    height: calc(100vh - 100px);
+                }
             }
         `}</style>
     </>

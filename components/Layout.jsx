@@ -232,6 +232,12 @@ const NavBar = () => (
                 font-size: 1.1rem;
                 font-weight: bold;
             }
+
+            @media only screen and (max-width: 1000px), (max-height: 900px) {
+                .nav {
+                    height: 60px;
+                }
+            }
         `}</style>
     </>
 )
@@ -253,6 +259,12 @@ const Footer = () => (
                 align-items: center;
                 font-size: 0.9rem;
                 padding: 0 max(calc(50vw - 500px), 20px);
+            }
+
+            @media only screen and (max-width: 1000px), (max-height: 900px) {
+                .footer {
+                    height: 40px;
+                }
             }
         `}</style>
     </>
