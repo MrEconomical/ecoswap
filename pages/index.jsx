@@ -1331,11 +1331,11 @@ const RouterOutputs = () => {
                             {swap.tokenOut ? (
                                 <img className="icon" src={swap.tokenOut.default ? `/tokens/${swap.tokenOut.symbol}.svg` : "/tokens/unknown.svg"}></img>
                             ) : <></>}
-                            {`${swap.tokenOut && router.out ? format(parse(router.out, swap.tokenOut.decimals)) : router.out === false ? "—" : "..."} `}
+                            {`${router.out === false || !chain.swapSettings.routers[router.id].enabled ? "—" : swap.tokenOut && router.out ? format(parse(router.out, swap.tokenOut.decimals)) : "..."} `}
                             {swap.tokenOut ? swap.tokenOut.symbol : ""}
                         </div>
                         <div className="section">
-                            {swap.tokenOut && router.out ? swap.tokenOut.default ? `≈ $${formatNumber(getTokenValue(swap.tokenOut, router.out))}` : "≈ $0.00" : router.out === false ? "—" : "..."}
+                            {router.out === false || !chain.swapSettings.routers[router.id].enabled ? "—" : swap.tokenOut && router.out ? swap.tokenOut.default ? `≈ $${formatNumber(getTokenValue(swap.tokenOut, router.out))}` : "Price Unknown" : "..."}
                         </div>
                     </div>
                 ))}
