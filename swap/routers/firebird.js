@@ -22,6 +22,7 @@ function getEndpoint(chainId) {
 async function quote(chain, BN) {
     // firebird disabled
     return BN(0)
+    if (!chain.swapSettings.routers["firebird"].enabled) return BN(0)
     const endpoint = getEndpoint(chain.id)
     if (!endpoint) return BN(0)
     const swap = chain.swap
@@ -47,7 +48,8 @@ async function quote(chain, BN) {
 // Get swap
 
 async function getSwap(chain, account, BN) {
-
+    return
+    if (!chain.swapSettings.routers["firebird"].enabled) return
 }
 
 // Exports

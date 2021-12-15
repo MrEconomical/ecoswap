@@ -18,6 +18,7 @@ function getEndpoint(chainId) {
 // Quote swap
 
 async function quote(chain, BN) {
+    if (!chain.swapSettings.routers["1inch"].enabled) return BN(0)
     const endpoint = getEndpoint(chain.id)
     if (!endpoint) return BN(0)
     const swap = chain.swap
@@ -39,6 +40,7 @@ async function quote(chain, BN) {
 // Get swap
 
 async function getSwap(chain, account, BN) {
+    if (!chain.swapSettings.routers["1inch"].enabled) return
     const endpoint = getEndpoint(chain.id)
     if (!endpoint) return
     const swap = chain.swap
