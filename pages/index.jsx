@@ -537,7 +537,6 @@ const SwapInterface = () => {
     // Update swap quote
 
     async function updateQuote() {
-        console.log("updating quote", chain.swap.tokenIn, chain.swap.tokenOut)
         try {
             await quoteSwap(chain, BN)
         } catch(error) {
@@ -565,6 +564,7 @@ const SwapInterface = () => {
         swap.setTokenOutAmount("...")
         resetRouterQuotes()
         const swapData = await getSwap(chain, account, BN)
+        if (!swapData) return
 
         // Check approval
 
