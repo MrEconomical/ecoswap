@@ -991,6 +991,7 @@ const SwapSettings = () => {
                     flex-direction: column;
                     justify-content: flex-start;
                     align-items: flex-start;
+                    gap: 32px;
                     padding-top: 32px;
                 }
 
@@ -1000,26 +1001,11 @@ const SwapSettings = () => {
                     flex-direction: row;
                     justify-content: flex-start;
                     align-items: flex-start;
-                    margin-bottom: 32px;
-                }
-
-                .section {
-                    width: 100%;
-                    height: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: flex-start;
-                    align-items: flex-start;
-                    margin-bottom: 32px;
                 }
 
                 .slippage-section {
                     width: 40%;
                     margin-right: 32px;
-                }
-
-                .gas-section {
-                    width: calc(60% - 32px);
                 }
 
                 .section-title {
@@ -1075,6 +1061,10 @@ const SwapSettings = () => {
                     border: 1px solid var(--gray);
                 }
 
+                .gas-section {
+                    width: calc(60% - 32px);
+                }
+
                 .gas-controls {
                     display: flex;
                     flex-direction: row;
@@ -1111,6 +1101,14 @@ const SwapSettings = () => {
                     border: 1px solid var(--gray);
                 }
 
+                .section {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                }
+
                 .routers {
                     width: 100%;
                     display: grid;
@@ -1145,7 +1143,7 @@ const SwapSettings = () => {
                 }
 
                 .router-status {
-                    min-width: 70px;
+                    min-width: 4.3rem;
                     color: var(--dark-gray);
                     margin-right: 16px;
                 }
@@ -1240,7 +1238,46 @@ const SwapSettings = () => {
 
                 @media only screen and (max-width: 1000px), (max-height: 900px) {
                     .settings {
+                        width: calc(100% - 304px);
+                        gap: 24px;
                         padding-top: 24px;
+                    }
+
+                    .slippage-section {
+                        width: 30%;
+                        margin-right: 24px;
+                    }
+
+                    .slippage-slider {
+                        margin-right: 16px;
+                    }
+
+                    .gas-switch {
+                        margin-right: 6px;
+                    }
+
+                    .gas-label {
+                        margin-right: 16px;
+                    }
+
+                    .section-title {
+                        margin-bottom: 16px;
+                    }
+
+                    .router-title {
+                        margin-bottom: 8px;
+                    }
+
+                    .router-status {
+                        margin-right: 12px;
+                    }
+
+                    .referral-title {
+                        margin-bottom: 4px;
+                    }
+
+                    .referral-label {
+                        margin-bottom: 16px;
                     }
                 }
             `}</style>
@@ -1336,6 +1373,20 @@ const RouterOutputs = () => {
 
                 .arrow {
                     margin: 0 16px;
+                }
+
+                @media only screen and (max-width: 1000px), (max-height: 900px) {
+                    .routers {
+                        padding-top: 24px;
+                    }
+
+                    .title {
+                        margin-bottom: 16px;
+                    }
+
+                    .router {
+                        margin: 16px 0;
+                    }
                 }
             `}</style>
         </>
