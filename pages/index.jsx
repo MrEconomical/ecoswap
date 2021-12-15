@@ -474,6 +474,8 @@ const SwapInterface = () => {
     const amountIn = useRef(swap.tokenInAmount)
     const tokenOut = useRef(swap.tokenOut ? swap.tokenOut.address : null)
     const updateTimeout = useRef()
+    const quoteStart = useRef()
+    const swapPending = useRef(false)
     const ethereumState = useRef({
         chainId: chain.id,
         account
@@ -537,10 +539,9 @@ const SwapInterface = () => {
 
     // Update swap quote
 
-    const start = useRef()
     async function updateQuote() {
         try {
-            start.current = {
+            quoteStart.current = {
                 in: swap.tokenIn ? swap.tokenIn.address : null,
                 inAmount: swap.tokenInAmount,
                 out: swap.tokenOut ? swap.tokenOut.address : null
@@ -548,11 +549,11 @@ const SwapInterface = () => {
             const updates = await quoteSwap(chain, BN)
             if (
                 swap.tokenIn &&
-                swap.tokenIn.address === start.current.in &&
+                swap.tokenIn.address === quoteStart.current.in &&
                 swap.tokenInAmount &&
-                swap.tokenInAmount.eq(start.current.inAmount) &&
+                swap.tokenInAmount.eq(quoteStart.current.inAmount) &&
                 swap.tokenOut &&
-                swap.tokenOut.address === start.current.out
+                swap.tokenOut.address === quoteStart.current.out
             ) {
                 swap.setTokenOutAmount(updates.tokenOutAmount)
                 swap.setRouters(updates.routers)
@@ -636,6 +637,7 @@ const SwapInterface = () => {
 
         // Send swap transaction
 
+        swapPending.current = true
         try {
             const tx = {
                 ...swapData.tx,
@@ -658,6 +660,7 @@ const SwapInterface = () => {
         } catch(error) {
             console.error(error)
         }
+        swapPending.current = false
     }
 
     // Update swap data on token changes
@@ -683,6 +686,17 @@ const SwapInterface = () => {
         tokenIn.current = swap.tokenIn.address
         amountIn.current = swap.tokenInAmount
         tokenOut.current = swap.tokenOut.address
+    }, [swap.tokenIn, swap.tokenInAmount, swap.tokenOut])
+
+    // Refresh quotes on interval
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (swap.tokenIn && swap.tokenInAmount && swap.tokenOut && !swapPending.current) {
+                updateQuote()
+            }
+        }, 3000)
+        return () => clearInterval(interval)
     }, [swap.tokenIn, swap.tokenInAmount, swap.tokenOut])
 
     // Update swap button text on Ethereum state changes
