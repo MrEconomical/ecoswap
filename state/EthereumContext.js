@@ -147,13 +147,14 @@ const EthereumContextProvider = ({ children }) => {
         }
     }
 
-    // Update client side data
+    // Update client side data on loop
 
     useEffect(() => {
         updateEthereumState()
         setTimeout(updateEthereumState, 500)
         setTimeout(updateEthereumState, 1000)
-        setTimeout(updateEthereumState, 3000)
+        const interval = setInterval(updateEthereumState, 3000)
+        return () => clearInterval(interval)
     }, [])
 
     // Set MetaMask listeners
