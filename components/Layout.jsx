@@ -115,7 +115,7 @@ const WalletManager = () => {
                     border: 1px solid var(--light-dark);
                     border-radius: 8px;
                     padding: 8px 36px;
-                    margin-right: 1rem;
+                    margin-right: 16px;
                 }
 
                 .chain:hover {
@@ -126,12 +126,12 @@ const WalletManager = () => {
                     width: 0.9rem;
                     height: 0.9rem;
                     object-fit: contain;
-                    margin-right: 0.75rem;
+                    margin-right: 12px;
                 }
 
                 .chain-select {
                     position: absolute;
-                    top: calc(8px * 2 + 1.1rem + 1rem);
+                    top: calc(16px + 1.1rem + 16px);
                     left: 0;
                     display: flex;
                     flex-direction: column;
@@ -168,7 +168,7 @@ const WalletManager = () => {
                     width: 0.7rem;
                     height: 0.7rem;
                     object-fit: contain;
-                    margin-right: 0.65rem;
+                    margin-right: 10px;
                 }
 
                 .connect {
@@ -194,7 +194,7 @@ const WalletManager = () => {
                     width: 0.8rem;
                     height: 0.8rem;
                     object-fit: contain;
-                    margin-right: 0.75rem;
+                    margin-right: 12px;
                 }
             `}</style>
         </>

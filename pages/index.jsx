@@ -332,7 +332,7 @@ const TokenSelect = ({ label, type }) => {
                     width: 0.9rem;
                     height: 0.9rem;
                     object-fit: contain;
-                    margin-left: 0.5rem;
+                    margin-left: 8px;
                 }
 
                 .menu {
@@ -377,7 +377,7 @@ const TokenSelect = ({ label, type }) => {
                     width: 0.75rem;
                     height: 0.75rem;
                     object-fit: contain;
-                    margin-right: 1rem;
+                    margin-right: 16px;
                 }
 
                 .search {
@@ -423,7 +423,7 @@ const TokenSelect = ({ label, type }) => {
                     width: 2.5rem;
                     height: 2.5rem;
                     object-fit: contain;
-                    margin-right: 1rem;
+                    margin-right: 16px;
                 }
 
                 .info {
@@ -834,6 +834,7 @@ const SwapInterface = () => {
                     .interface {
                         width: 280px;
                         padding: 24px 24px 24px 0;
+                        margin-right: 24px;
                     }
 
                     .header {
@@ -999,7 +1000,7 @@ const SwapSettings = () => {
                     flex-direction: row;
                     justify-content: flex-start;
                     align-items: flex-start;
-                    margin-bottom: 2rem;
+                    margin-bottom: 32px;
                 }
 
                 .section {
@@ -1009,7 +1010,7 @@ const SwapSettings = () => {
                     flex-direction: column;
                     justify-content: flex-start;
                     align-items: flex-start;
-                    margin-bottom: 2rem;
+                    margin-bottom: 32px;
                 }
 
                 .slippage-section {
@@ -1027,7 +1028,7 @@ const SwapSettings = () => {
                     justify-content: flex-start;
                     align-items: center;
                     font-size: 1.2rem;
-                    margin-bottom: 1.2rem;
+                    margin-bottom: 20px;
                 }
 
                 .title-value {
@@ -1050,7 +1051,7 @@ const SwapSettings = () => {
                     appearance: none;
                     background-color: var(--light-gray);
                     outline: none;
-                    margin-right: 1.5rem;
+                    margin-right: 24px;
                 }
 
                 .slippage-slider::-webkit-slider-thumb {
@@ -1087,7 +1088,7 @@ const SwapSettings = () => {
                     flex-shrink: 0;
                     background-color: var(--light-gray);
                     border-radius: 4px;
-                    margin-right: 0.5rem;
+                    margin-right: 8px;
                 }
 
                 .gas-switch[data-checked="true"] {
@@ -1095,7 +1096,7 @@ const SwapSettings = () => {
                 }
 
                 .gas-label {
-                    margin-right: 1.5rem;
+                    margin-right: 24px;
                 }
 
                 .gas-input {
@@ -1133,20 +1134,20 @@ const SwapSettings = () => {
 
                 .router-title {
                     font-size: 1.2rem;
-                    margin-bottom: 0.6rem;
+                    margin-bottom: 12px;
                 }
 
                 .router-icon {
                     width: 1.2rem;
                     height: 1.2rem;
                     object-fit: contain;
-                    margin-right: 0.75rem;
+                    margin-right: 12px;
                 }
 
                 .router-status {
                     min-width: 70px;
                     color: var(--dark-gray);
-                    margin-right: 1rem;
+                    margin-right: 16px;
                 }
 
                 .switch {
@@ -1193,7 +1194,7 @@ const SwapSettings = () => {
                 }
 
                 .referral-title {
-                    margin-bottom: 0.2rem;
+                    margin-bottom: 4px;
                 }
 
                 .referral-value {
@@ -1203,7 +1204,7 @@ const SwapSettings = () => {
                 .referral-label {
                     font-size: 0.8rem;
                     color: var(--dark-gray);
-                    margin-bottom: 1.2rem;
+                    margin-bottom: 20px;
                 }
 
                 .referral {
@@ -1220,7 +1221,7 @@ const SwapSettings = () => {
                     border: 1px solid var(--light-gray);
                     border-radius: 8px;
                     padding: 6px 8px;
-                    margin-right: 1rem;
+                    margin-right: 16px;
                 }
 
                 .referral-input:focus {
@@ -1235,6 +1236,12 @@ const SwapSettings = () => {
 
                 .set-referral:hover {
                     background-color: var(--light);
+                }
+
+                @media only screen and (max-width: 1000px), (max-height: 900px) {
+                    .settings {
+                        padding-top: 24px;
+                    }
                 }
             `}</style>
         </>
@@ -1301,7 +1308,7 @@ const RouterOutputs = () => {
 
                 .title {
                     font-size: 1.5rem;
-                    margin-bottom: 1.5rem;
+                    margin-bottom: 24px;
                 }
 
                 .router {
@@ -1309,7 +1316,7 @@ const RouterOutputs = () => {
                     display: grid;
                     grid-template-columns: 2fr 5fr 3fr;
                     grid-gap: 16px;
-                    margin: 1.5rem 0;
+                    margin: 24px 0;
                 }
 
                 .section {
@@ -1324,11 +1331,11 @@ const RouterOutputs = () => {
                     width: 1.2rem;
                     height: 1.2rem;
                     object-fit: contain;
-                    margin-right: 1rem;
+                    margin-right: 16px;
                 }
 
                 .arrow {
-                    margin: 0 1rem;
+                    margin: 0 16px;
                 }
             `}</style>
         </>
