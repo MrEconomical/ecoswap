@@ -57,12 +57,14 @@ const EthereumContextProvider = ({ children }) => {
 
         chains[id].swap = useSwap(chains[id])
         chains[id].swapSettings = swapSettings
-        chains[id].gasPrice = useGasPrice(id)
     }
 
     const [ enabled, setEnabled ] = useState(false) // non-responsive
     const [ chain, setChain ] = useState(chains["0x1"])
     const [ account, setAccount ] = useState(null)
+    for (const id in chains) {
+        chains[id].gasPrice = useGasPrice(id, chain)
+    }
 
     // Update active account
 
