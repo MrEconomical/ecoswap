@@ -4,6 +4,7 @@ import Layout from "../components/Layout"
 import { EthereumContextProvider } from "../state/EthereumContext"
 import { PriceContextProvider } from "../state/PriceContext"
 import Head from "next/head"
+import Error from "next/error"
 
 // Site metadata
 
@@ -26,91 +27,96 @@ const Metadata = ({ page }) => {
 
 // Site content
 
-const App = ({ Component, pageProps }) => (
-    <>
-        <Metadata page={pageProps.page}></Metadata>
-        <EthereumContextProvider>
-            <PriceContextProvider>
-                <Layout>
-                    <Component {...pageProps}></Component>
-                </Layout>
-            </PriceContextProvider>
-        </EthereumContextProvider>
-        <style jsx global>{`
-            @font-face {
-                font-family: "Gilroy";
-                src: url("/fonts/Gilroy-Medium.woff2") format("woff2");
-            }
-
-            :root {
-                --background: #FFFFFF;
-                --accent: #48BF53;
-                --light-dark: #C8EBCB;
-                --light: #ECF8Ed;
-                --black: #16191E;
-                --dark-gray: #56595E;
-                --gray: #96999E;
-                --light-gray: #C6C9CE;
-            }
-
-            * {
-                font-family: "Gilroy";
-                color: var(--black);
-                box-sizing: border-box;
-            }
-
-            body {
-                background-color: var(--background);
-                margin: 0;
-            }
-
-            h1 {
-                font-size: initial;
-                margin: 0;
-            }
-
-            h2 {
-                font-size: initial;
-                margin: 0;
-            }
-
-            a {
-                color: initial;
-                text-decoration: initial;
-                cursor: pointer;
-            }
-
-            button {
-                cursor: pointer;
-                background-color: transparent;
-                border: none;
-                padding: 0;
-            }
-
-            ::-webkit-scrollbar {
-                width: 10px;
-            }
-
-            ::-webkit-scrollbar-track {
-                background-color: #E6E9EE;
-            }
-
-            ::-webkit-scrollbar-thumb {
-                background-color: #96999E;
-            }
-
-            ::-webkit-scrollbar-thumb:hover {
-                background-color: #76797E;
-            }
-
-            @media only screen and (max-width: 1000px), (max-height: 900px) {
-                html {
-                    font-size: 14px;
+const App = ({ Component, pageProps }) => {
+    if (pageProps.statusCode) {
+        return <Error statusCode={pageProps.statusCode}></Error>
+    }
+    return (
+        <>
+            <Metadata page={pageProps.page}></Metadata>
+            <EthereumContextProvider>
+                <PriceContextProvider>
+                    <Layout>
+                        <Component {...pageProps}></Component>
+                    </Layout>
+                </PriceContextProvider>
+            </EthereumContextProvider>
+            <style jsx global>{`
+                @font-face {
+                    font-family: "Gilroy";
+                    src: url("/fonts/Gilroy-Medium.woff2") format("woff2");
                 }
-            }
-        `}</style>
-    </>
-)
+
+                :root {
+                    --background: #FFFFFF;
+                    --accent: #48BF53;
+                    --light-dark: #C8EBCB;
+                    --light: #ECF8Ed;
+                    --black: #16191E;
+                    --dark-gray: #56595E;
+                    --gray: #96999E;
+                    --light-gray: #C6C9CE;
+                }
+
+                * {
+                    font-family: "Gilroy";
+                    color: var(--black);
+                    box-sizing: border-box;
+                }
+
+                body {
+                    background-color: var(--background);
+                    margin: 0;
+                }
+
+                h1 {
+                    font-size: initial;
+                    margin: 0;
+                }
+
+                h2 {
+                    font-size: initial;
+                    margin: 0;
+                }
+
+                a {
+                    color: initial;
+                    text-decoration: initial;
+                    cursor: pointer;
+                }
+
+                button {
+                    cursor: pointer;
+                    background-color: transparent;
+                    border: none;
+                    padding: 0;
+                }
+
+                ::-webkit-scrollbar {
+                    width: 10px;
+                }
+
+                ::-webkit-scrollbar-track {
+                    background-color: #E6E9EE;
+                }
+
+                ::-webkit-scrollbar-thumb {
+                    background-color: #96999E;
+                }
+
+                ::-webkit-scrollbar-thumb:hover {
+                    background-color: #76797E;
+                }
+
+                @media only screen and (max-width: 1000px), (max-height: 900px) {
+                    html {
+                        font-size: 14px;
+                    }
+                }
+            `}</style>
+        </>
+    )
+}
 
 // Exports
 
