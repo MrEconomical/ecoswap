@@ -8,16 +8,44 @@ import { useEffect, useState, useRef } from "react"
 function useGasPrice(chainId, chain) {
     // Gas state data
 
-    const [ base, setBase ] = useState(0)
     const [ slow, setSlow ] = useState(0)
     const [ normal, setNormal ] = useState(0)
     const [ fast, setFast ] = useState(0)
+    const [ priorityFee, setPriorityFee ] = useState({
+        slow: 0,
+        default: 0,
+        fast: 0
+    })
     const initialized = useRef(false)
 
     // Update gas prices
 
-    function updateGas() {
-        console.log("update gas called", chainId)
+    async function updateGas() {
+        try {
+            if (chainId === "0x1") {
+                const data = (await axios(`https://api.zapper.fi/v1/gas-price?network=ethereum&eip1559=true&api_key=96e0cc51-a62e-42ca-acee-910ea7d2a241`)).data
+                setSlow(data.standard.maxFeePerGas)
+                setNormal(data.fast.maxFeePerGas)
+                setFast(data.instant.maxFeePerGas)
+                setPriorityFee({
+                    slow: data.standard.maxPriorityFeePerGas,
+                    default: data.fast.maxPriorityFeePerGas,
+                    fast: data.instant.maxPriorityFeePerGas
+                })
+            } else {
+                const data = (await axios(`https://api.zapper.fi/v1/gas-price?network=${
+                    chainId === "0x89" ? "polygon" :
+                    chainId === "0xfa" ? "fantom" :
+                    chainId === "0xa86a" ? "avalanche" :
+                    chainId === "0x38" ? "binance-smart-chain" : null
+                }&api_key=96e0cc51-a62e-42ca-acee-910ea7d2a241`)).data
+                setSlow(data.standard)
+                setNormal(data.fast)
+                setFast(data.instant)
+            }
+        } catch(error) {
+            console.error(error)
+        }
     }
 
     // Update gas price fetch loop on chain changes
@@ -36,10 +64,10 @@ function useGasPrice(chainId, chain) {
     // Gas data
 
     return {
-        base,
         slow,
         default: normal,
-        fast
+        fast,
+        priorityFee
     }
 }
 
