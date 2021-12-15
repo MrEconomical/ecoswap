@@ -81,6 +81,14 @@ const EthereumContextProvider = ({ children }) => {
         }
     }
 
+    // Update all client side data
+
+    function updateEthereumState() {
+        setEnabled(typeof ethereum !== "undefined")
+        updateAccount()
+        updateChain()
+    }
+
     // Update token balances
 
     async function updateBalances() {
@@ -142,9 +150,10 @@ const EthereumContextProvider = ({ children }) => {
     // Update client side data
 
     useEffect(() => {
-        setEnabled(typeof ethereum !== "undefined")
-        updateAccount()
-        updateChain()
+        updateEthereumState()
+        setTimeout(updateEthereumState, 500)
+        setTimeout(updateEthereumState, 1000)
+        setTimeout(updateEthereumState, 3000)
     }, [])
 
     // Set MetaMask listeners
