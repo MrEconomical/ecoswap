@@ -943,6 +943,12 @@ const SwapSettings = () => {
         }
     }
 
+    // Clear referral address
+
+    function clearReferral() {
+        settings.setReferral(null)
+    }
+
     // Component
 
     return (
@@ -1003,7 +1009,8 @@ const SwapSettings = () => {
                     <div className="referral-label">Referral address will not work if it is the same as the account swapping tokens</div>
                     <div className="referral">
                         <input id="referral-input" className="referral-input"></input>
-                        <button className="set-referral" onClick={setReferral}>Set</button>
+                        <button className="referral-button set-referral" onClick={setReferral}>Set</button>
+                        <button className="referral-button" onClick={clearReferral}>Clear</button>
                     </div>
                 </div>
             </div>
@@ -1250,14 +1257,18 @@ const SwapSettings = () => {
                     border: 1px solid var(--gray);
                 }
 
-                .set-referral {
+                .referral-button {
                     border: 1px solid var(--light-dark);
                     border-radius: 8px;
                     padding: 6px 16px;
                 }
 
-                .set-referral:hover {
+                .referral-button:hover {
                     background-color: var(--light);
+                }
+
+                .set-referral {
+                    margin-right: 16px;
                 }
 
                 @media only screen and (max-width: 1000px), (max-height: 900px) {
@@ -1268,7 +1279,7 @@ const SwapSettings = () => {
                     }
 
                     .slippage-section {
-                        width: 30%;
+                        width: 35%;
                         margin-right: 24px;
                     }
 
@@ -1310,6 +1321,14 @@ const SwapSettings = () => {
 
                     .referral-label {
                         margin-bottom: 16px;
+                    }
+
+                    .referral-input {
+                        padding: 4px 6px;
+                    }
+
+                    .referral-button {
+                        padding: 4px 16px;
                     }
                 }
             `}</style>
