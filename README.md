@@ -2,4 +2,4 @@
 
 ⚠️ This software is still under early alpha development
 
-Alpha build active at https://ecoswap-exchange.netlify.app
+Alpha build active at https://ecoswap.exchange
