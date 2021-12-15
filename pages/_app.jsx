@@ -79,6 +79,10 @@ const App = ({ Component, pageProps }) => {
                     margin: 0;
                 }
 
+                p {
+                    margin: 0;
+                }
+
                 a {
                     color: initial;
                     text-decoration: initial;
