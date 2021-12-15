@@ -879,6 +879,8 @@ const SwapSettings = () => {
     
     const { web3, chain } = useContext(EthereumContext)
     const settings = chain.swapSettings
+    const slippageInput = useRef("")
+    const gasInput = useRef("")
 
     // Update slippage with slider value
 
@@ -889,7 +891,11 @@ const SwapSettings = () => {
     // Set slippage with text input value
 
     function setSlippage(event) {
-        if (isNaN(+event.target.value) || +event.target.value <= 0 || event.target.value >= 50) return
+        if (isNaN(+event.target.value) || event.target.value.includes(" ")) {
+            event.target.value = slippageInput.current
+        }
+        slippageInput.current = event.target.value
+        if (+event.target.value <= 0 || event.target.value >= 50) return
         if (event.target.value.endsWith(".")) return
         settings.setSlippage(+event.target.value)
     }
@@ -908,7 +914,11 @@ const SwapSettings = () => {
     // Set gas with text input value
 
     function setGas(event) {
-        if (isNaN(+event.target.value) || +event.target.value <= 0) return
+        if (isNaN(+event.target.value) || event.target.value.includes(" ")) {
+            event.target.value = gasInput.current
+        }
+        gasInput.current = event.target.value
+        if (+event.target.value <= 0) return
         if (event.target.value.endsWith(".")) return
         settings.setGas({
             ...settings.gas,
