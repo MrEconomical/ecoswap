@@ -504,6 +504,7 @@ const SwapInterface = () => {
             swap.setTokenInAmount(null)
             swap.setTokenIn(null)
         }
+        swap.setTokenOutAmount("...")
     }
 
     // Calculate swap info
@@ -536,9 +537,26 @@ const SwapInterface = () => {
 
     // Update swap quote
 
+    const start = useRef()
     async function updateQuote() {
         try {
-            await quoteSwap(chain, BN)
+            start.current = {
+                in: swap.tokenIn ? swap.tokenIn.address : null,
+                inAmount: swap.tokenInAmount,
+                out: swap.tokenOut ? swap.tokenOut.address : null
+            }
+            const updates = await quoteSwap(chain, BN)
+            if (
+                swap.tokenIn &&
+                swap.tokenIn.address === start.current.in &&
+                swap.tokenInAmount &&
+                swap.tokenInAmount.eq(start.current.inAmount) &&
+                swap.tokenOut &&
+                swap.tokenOut.address === start.current.out
+            ) {
+                swap.setTokenOutAmount(updates.tokenOutAmount)
+                swap.setRouters(updates.routers)
+            }
         } catch(error) {
             console.error(error)
         }

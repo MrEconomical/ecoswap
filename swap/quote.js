@@ -22,9 +22,8 @@ async function quoteSwap(chain, BN) {
         }
     }
 
-    // Update state
+    // State updates
 
-    chain.swap.setTokenOutAmount(quotes[best].gt(BN(0)) ? quotes[best] : "No quote")
     const routerQuotes = []
     for (let q = 0; q < quotes.length; q ++) {
         routerQuotes.push({
@@ -43,7 +42,10 @@ async function quoteSwap(chain, BN) {
             return a.out.gt(b.out) ? -1 : 1
         }
     })
-    chain.swap.setRouters(routerQuotes)
+    return {
+        tokenOutAmount: quotes[best].gt(BN(0)) ? quotes[best] : "No quote",
+        routers: routerQuotes
+    }
 }
 
 // Exports
