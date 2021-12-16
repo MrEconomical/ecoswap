@@ -1048,7 +1048,6 @@ const SwapSettings = () => {
 
                 .slippage-section {
                     width: 40%;
-                    margin-right: 32px;
                 }
 
                 .section-title {
@@ -1106,6 +1105,7 @@ const SwapSettings = () => {
 
                 .gas-section {
                     width: calc(60% - 32px);
+                    margin-left: 32px;
                 }
 
                 .gas-controls {
@@ -1290,9 +1290,12 @@ const SwapSettings = () => {
                         padding-top: 24px;
                     }
 
+                    .section-title {
+                        margin-bottom: 16px;
+                    }
+
                     .slippage-section {
                         width: 35%;
-                        margin-right: 24px;
                     }
 
                     .slippage-slider {
@@ -1301,6 +1304,11 @@ const SwapSettings = () => {
 
                     .slippage-input {
                         padding: 4px 6px;
+                    }
+
+                    .gas-section {
+                        width: calc(60% - 24px);
+                        margin-left: 24px;
                     }
 
                     .gas-switch {
@@ -1313,10 +1321,6 @@ const SwapSettings = () => {
 
                     .gas-input {
                         padding: 4px 6px;
-                    }
-
-                    .section-title {
-                        margin-bottom: 16px;
                     }
 
                     .router-title {
@@ -1341,6 +1345,20 @@ const SwapSettings = () => {
 
                     .referral-button {
                         padding: 4px 16px;
+                    }
+                }
+
+                @media only screen and (min-width: 1000px) and (max-height: 900px) {
+                    .gas-section {
+                        width: calc(60% - 48px);
+                        margin-left: 48px;
+                    }
+                }
+
+                @media only screen and (min-width: 1000px) and (max-height: 800px) {
+                    .gas-section {
+                        width: calc(60% - 64px);
+                        margin-left: 64px;
                     }
                 }
             `}</style>
@@ -1416,7 +1434,7 @@ const RouterOutputs = () => {
                     display: grid;
                     grid-template-columns: 2fr 5fr 3fr;
                     grid-gap: 16px;
-                    margin: 24px 0;
+                    padding: 24px 0;
                 }
 
                 .section {
@@ -1448,7 +1466,17 @@ const RouterOutputs = () => {
                     }
 
                     .router {
-                        margin: 16px 0;
+                        padding: 16px 0;
+                    }
+                }
+
+                @media only screen and (max-width: 800px), (max-height: 800px) {
+                    .title {
+                        margin-bottom: 12px;
+                    }
+
+                    .router {
+                        padding: 12px 0;
                     }
                 }
             `}</style>
@@ -1497,6 +1525,16 @@ const Swap = () => (
             @media only screen and (max-width: 1000px), (max-height: 900px) {
                 .content {
                     height: calc(100vh - 100px);
+                }
+
+                .disclaimer {
+                    margin-top: 18px;
+                }
+            }
+
+            @media only screen and (max-width: 800px), (max-height: 800px) {
+                .disclaimer {
+                    margin-top: 12px;
                 }
             }
         `}</style>

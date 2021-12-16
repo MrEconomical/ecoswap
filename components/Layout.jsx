@@ -268,13 +268,11 @@ const NavBar = () => (
                 flex-direction: row;
                 justify-content: flex-start;
                 align-items: center;
-                gap: 12px;
+                gap: 16px;
             }
 
             .icon {
-                width: 40px;
-                height: 40px;
-                object-fit: contain;
+                height: 2.5rem;
             }
 
             .title {
