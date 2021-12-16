@@ -1,6 +1,7 @@
 // Files and modules
 
 import EthereumContext, { chains } from "../state/EthereumContext"
+import useWindowSize from "../state/useWindowSize"
 import Link from "next/link"
 import { useEffect, useContext, useState } from "react"
 
@@ -28,6 +29,12 @@ const NavLink = ({ name, href }) => (
                     margin-left: 32px;
                 }
             }
+
+            @media only screen and (max-width: 550px) {
+                .link {
+                    margin-left: 20px;
+                }
+            }
         `}</style>
     </>
 )
@@ -38,6 +45,7 @@ const WalletManager = () => {
     // Wallet data
 
     const { enabled, chain, account } = useContext(EthereumContext)
+    const { width } = useWindowSize()
     const [ chainSelectActive, setChainSelectActive ] = useState(false)
 
     // Connect to MetaMask
@@ -102,12 +110,12 @@ const WalletManager = () => {
             <div className="wallet">
                 <button id="select-chain" className="chain" onClick={() => setChainSelectActive(!chainSelectActive)}>
                     <img className="chain-icon" src={`/chains/${chain.id}.svg`}></img>
-                    {chain.name}
+                    <div className="chain-name">{chain.name}</div>
                 </button>
                 <button className="connect" onClick={requestConnect}>
                     <div className="connect-content">
                         <img className="connect-icon" src="/icons/wallet.svg"></img>
-                        {enabled ? account ? `${account.slice(0, 6)}...${account.slice(-4)}` : "Connect Wallet" : "Enable Ethereum"}
+                        {enabled ? account ? `${account.slice(0, width >= 550 ? 6 : 5)}...${account.slice(width >= 550 ? -4 : -3)}` : "Connect Wallet" : "Enable Ethereum"}
                     </div>
                 </button>
                 {chainSelectActive ? (
@@ -138,6 +146,7 @@ const WalletManager = () => {
                     flex-direction: row;
                     justify-content: center;
                     align-items: center;
+                    gap: 12px;
                     font-size: 1.1rem;
                     border: 1px solid var(--light-dark);
                     border-radius: 8px;
@@ -150,10 +159,7 @@ const WalletManager = () => {
                 }
 
                 .chain-icon {
-                    width: 0.9rem;
                     height: 0.9rem;
-                    object-fit: contain;
-                    margin-right: 12px;
                 }
 
                 .chain-select {
@@ -215,13 +221,11 @@ const WalletManager = () => {
                     flex-direction: row;
                     justify-content: center;
                     align-items: center;
+                    gap: 12px;
                 }
 
                 .connect-icon {
-                    width: 0.8rem;
                     height: 0.8rem;
-                    object-fit: contain;
-                    margin-right: 12px;
                 }
 
                 @media only screen and (max-width: 1000px), (max-height: 900px) {
@@ -235,8 +239,22 @@ const WalletManager = () => {
                 }
 
                 @media only screen and (max-width: 800px), (max-height: 800px) {
-                    .chain-icon {
-                        margin-right: 8px;
+                    .chain {
+                        gap: 8px;
+                    }
+
+                    .connect-content {
+                        gap: 8px;
+                    }
+                }
+
+                @media only screen and (max-width: 550px) {
+                    .chain {
+                        padding: 8px;
+                    }
+
+                    .chain-name {
+                        display: none;
                     }
                 }
             `}</style>
@@ -296,6 +314,12 @@ const NavBar = () => (
             @media only screen and (max-height: 900px) {
                 .title {
                     margin-bottom: 0;
+                }
+            }
+
+            @media only screen and (max-width: 550px) {
+                .title {
+                    display: none;
                 }
             }
         `}</style>
