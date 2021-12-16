@@ -6,6 +6,7 @@ import EthereumContext from "../state/EthereumContext"
 import PriceContext from "../state/PriceContext"
 import quoteSwap from "../swap/quote"
 import getSwap from "../swap/swap"
+import useWindowSize from "../state/useWindowSize"
 import { useContext, useEffect, useState, useRef } from "react"
 
 // Swap input component
@@ -894,6 +895,14 @@ const SwapInterface = () => {
                         margin-right: 20px;
                     }
                 }
+
+                @media only screen and (max-width: 700px) {
+                    .interface {
+                        padding: 0;
+                        border-right: none;
+                        margin-right: 0;
+                    }
+                }
             `}</style>
         </>
     )
@@ -1524,60 +1533,75 @@ const RouterOutputs = () => {
 
 // Swap page
 
-const Swap = () => (
-    <>
-        <div className="content">
-            <div className="top">
-                <SwapInterface></SwapInterface>
-                <SwapSettings></SwapSettings>
+const Swap = () => {
+    // Responsive window size
+
+    const { width } = useWindowSize()
+
+    // Component
+
+    return (
+        <>
+            <div className="content">
+                <div className="top">
+                    <SwapInterface></SwapInterface>
+                    <SwapSettings></SwapSettings>
+                </div>
+                <RouterOutputs></RouterOutputs>
+                <div className="disclaimer">Trading is risky! EcoSwap is not responsible for any trading losses or financial losses while using the app. DYOR before buying any token or making any trade to avoid getting rekt. EcoSwap is beta software and may contain bugs. Bug reports in the EcoSwap Discord server are appreciated!</div>
             </div>
-            <RouterOutputs></RouterOutputs>
-            <div className="disclaimer">Trading is risky! EcoSwap is not responsible for any trading losses or financial losses while using the app. DYOR before buying any token or making any trade to avoid getting rekt. EcoSwap is beta software and may contain bugs. Bug reports in the EcoSwap Discord server are appreciated!</div>
-        </div>
-        <style jsx>{`
-            .content {
-                width: 100%;
-                height: calc(100vh - 140px);
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: flex-start;
-                padding-bottom: 20px;
-            }
-
-            .top {
-                width: 100%;
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: flex-start;
-            }
-
-            .disclaimer {
-                width: 100%;
-                font-size: 0.9rem;
-                color: var(--gray);
-                margin-top: 24px;
-            }
-
-            @media only screen and (max-width: 1000px), (max-height: 900px) {
+            <style jsx>{`
                 .content {
-                    height: calc(100vh - 100px);
+                    width: 100%;
+                    height: calc(100vh - 140px);
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: flex-start;
+                    padding-bottom: 20px;
+                }
+
+                .top {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: flex-start;
                 }
 
                 .disclaimer {
-                    margin-top: 18px;
+                    width: 100%;
+                    font-size: 0.9rem;
+                    color: var(--gray);
+                    margin-top: 24px;
                 }
-            }
 
-            @media only screen and (max-width: 800px), (max-height: 800px) {
-                .disclaimer {
-                    margin-top: 12px;
+                @media only screen and (max-width: 1000px), (max-height: 900px) {
+                    .content {
+                        height: calc(100vh - 100px);
+                    }
+
+                    .disclaimer {
+                        margin-top: 18px;
+                    }
                 }
-            }
-        `}</style>
-    </>
-)
+
+                @media only screen and (max-width: 800px), (max-height: 800px) {
+                    .disclaimer {
+                        margin-top: 12px;
+                    }
+                }
+
+                @media only screen and (max-width: 700px) {
+                    .content {
+                        height: auto;
+                        padding: 40px 0;
+                    }
+                }
+            `}</style>
+        </>
+    )
+}
 
 // Exports
 
