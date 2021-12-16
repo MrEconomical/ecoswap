@@ -115,7 +115,7 @@ const WalletManager = () => {
                 <button className="connect" onClick={requestConnect}>
                     <div className="connect-content">
                         <img className="connect-icon" src="/icons/wallet.svg"></img>
-                        {width >= 550 ? enabled ? account ? `${account.slice(0, 6)}...${account.slice(-4)}` : "Connect Wallet" : "Enable Ethereum" :
+                        {width > 550 ? enabled ? account ? `${account.slice(0, 6)}...${account.slice(-4)}` : "Connect Wallet" : "Enable Ethereum" :
                                         enabled ? account ? `${account.slice(0, 4)}...${account.slice(-2)}` : "Connect" : "Enable"}
                     </div>
                 </button>
