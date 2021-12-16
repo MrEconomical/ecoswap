@@ -233,6 +233,12 @@ const WalletManager = () => {
                         padding: 6px 24px;
                     }
                 }
+
+                @media only screen and (max-width: 800px), (max-height: 800px) {
+                    .chain-icon {
+                        margin-right: 8px;
+                    }
+                }
             `}</style>
         </>
     )
