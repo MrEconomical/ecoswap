@@ -1404,6 +1404,13 @@ const SwapSettings = () => {
                         margin-left: 64px;
                     }
                 }
+
+                @media only screen and (max-width: 700px) {
+                    .settings {
+                        width: 100%;
+                        padding-top: 0;
+                    }
+                }
             `}</style>
         </>
     )
@@ -1526,6 +1533,13 @@ const RouterOutputs = () => {
                         padding: 12px 0;
                     }
                 }
+
+                @media only screen and (max-width: 700px) {
+                    .routers {
+                        padding-top: 0;
+                        border-top: none;
+                    }
+                }
             `}</style>
         </>
     )
@@ -1543,11 +1557,24 @@ const Swap = () => {
     return (
         <>
             <div className="content">
-                <div className="top">
-                    <SwapInterface></SwapInterface>
-                    <SwapSettings></SwapSettings>
-                </div>
-                <RouterOutputs></RouterOutputs>
+                {width >= 700 ? (
+                    <>
+                        <div className="top">
+                            <SwapInterface></SwapInterface>
+                            <SwapSettings></SwapSettings>
+                        </div>
+                        <RouterOutputs></RouterOutputs>
+                    </>
+                ) : (
+                    <>
+                        <SwapInterface></SwapInterface>
+                        <div className="divider"></div>
+                        <RouterOutputs></RouterOutputs>
+                        <div className="divider"></div>
+                        <SwapSettings></SwapSettings>
+                        <div className="divider"></div>
+                    </>
+                )}
                 <div className="disclaimer">Trading is risky! EcoSwap is not responsible for any trading losses or financial losses while using the app. DYOR before buying any token or making any trade to avoid getting rekt. EcoSwap is beta software and may contain bugs. Bug reports in the EcoSwap Discord server are appreciated!</div>
             </div>
             <style jsx>{`
@@ -1595,7 +1622,19 @@ const Swap = () => {
                 @media only screen and (max-width: 700px) {
                     .content {
                         height: auto;
-                        padding: 40px 0;
+                        align-items: center;
+                        padding: 32px 0;
+                    }
+
+                    .divider {
+                        width: 100%;
+                        height: 0.5px;
+                        background-color: var(--gray);
+                        margin: 32px 0;
+                    }
+
+                    .disclaimer {
+                        margin-top: 0;
                     }
                 }
             `}</style>
