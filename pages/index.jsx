@@ -1456,6 +1456,10 @@ const SwapSettings = () => {
                         width: 100%;
                     }
 
+                    .slippage-slider {
+                        max-width: 200px;
+                    }
+
                     .gas-section {
                         width: 100%;
                         margin-left: 0;
@@ -1477,6 +1481,7 @@ const RouterOutputs = () => {
 
     const { chain } = useContext(EthereumContext)
     const prices = useContext(PriceContext)
+    const { width } = useWindowSize()
     const swap = chain.swap
 
     // Get token value
@@ -1496,20 +1501,20 @@ const RouterOutputs = () => {
                     <div className="router" key={router.id}>
                         <div className="section">
                             <img className="icon" src={`/routers/${router.id}.svg`}></img>
-                            {router.name}
+                            <div className="router-name">{router.name}</div>
                         </div>
                         <div className="section">
                             {swap.tokenIn ? (
                                 <img className="icon" src={swap.tokenIn.default ? `/tokens/${swap.tokenIn.symbol}.svg` : "/tokens/unknown.svg"}></img>
                             ) : <></>}
                             {`${swap.tokenIn && swap.tokenInAmount ? format(parse(swap.tokenInAmount, swap.tokenIn.decimals)) : "..."} `}
-                            {swap.tokenIn ? swap.tokenIn.symbol : ""}
+                            {swap.tokenIn && width >= 550 ? swap.tokenIn.symbol : ""}
                             <div className="arrow">➔</div>
                             {swap.tokenOut ? (
                                 <img className="icon" src={swap.tokenOut.default ? `/tokens/${swap.tokenOut.symbol}.svg` : "/tokens/unknown.svg"}></img>
                             ) : <></>}
                             {`${router.out === false || !chain.swapSettings.routers[router.id].enabled ? "—" : swap.tokenOut && router.out ? format(parse(router.out, swap.tokenOut.decimals)) : "..."} `}
-                            {swap.tokenOut ? swap.tokenOut.symbol : ""}
+                            {swap.tokenOut && width >= 550 ? swap.tokenOut.symbol : ""}
                         </div>
                         <div className="section">
                             {router.out === false || !chain.swapSettings.routers[router.id].enabled ? "—" : swap.tokenOut && router.out ? swap.tokenOut.default ? `≈ $${formatNumber(getTokenValue(swap.tokenOut, router.out))}` : "Price Unknown" : "..."}
@@ -1546,6 +1551,7 @@ const RouterOutputs = () => {
                     flex-direction: row;
                     justify-content: flex-start;
                     align-items: center;
+                    gap: 16px;
                     font-size: 1.2rem;
                 }
 
@@ -1553,7 +1559,6 @@ const RouterOutputs = () => {
                     width: 1.2rem;
                     height: 1.2rem;
                     object-fit: contain;
-                    margin-right: 16px;
                 }
 
                 .arrow {
@@ -1592,6 +1597,26 @@ const RouterOutputs = () => {
                     .routers {
                         padding-top: 0;
                         border-top: none;
+                    }
+                }
+
+                @media only screen and (max-width: 550px) {
+                    .router {
+                        grid-template-columns: calc(1.2rem + 4px) 5fr 2fr;
+                        gap: 12px;
+                    }
+
+                    .section {
+                        gap: 8px;
+                        font-size: 1rem;
+                    }
+
+                    .arrow {
+                        margin: 0;
+                    }
+
+                    .router-name {
+                        display: none;
                     }
                 }
             `}</style>
