@@ -278,7 +278,7 @@ const NavBar = () => (
             .title {
                 font-size: 1.1rem;
                 font-weight: bold;
-                margin-bottom: 1px;
+                margin-bottom: 0.5px;
             }
 
             @media only screen and (max-width: 1000px), (max-height: 900px) {
