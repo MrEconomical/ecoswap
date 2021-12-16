@@ -469,6 +469,14 @@ const TokenSelect = ({ label, type }) => {
                         margin-right: 12px;
                     }
                 }
+
+                @media only screen and (max-width: 800px), (max-height: 800px) {
+                    .menu {
+                        top: 20px;
+                        width: calc(100% - 20px);
+                        height: calc(100% - 40px);
+                    }
+                }
             `}</style>
         </>
     )
@@ -877,6 +885,13 @@ const SwapInterface = () => {
 
                     .swap {
                         margin: 16px 0;
+                    }
+                }
+
+                @media only screen and (max-width: 800px), (max-height: 800px) {
+                    .interface {
+                        padding: 20px 20px 20px 0;
+                        margin-right: 20px;
                     }
                 }
             `}</style>
@@ -1356,6 +1371,10 @@ const SwapSettings = () => {
                 }
 
                 @media only screen and (min-width: 1000px) and (max-height: 800px) {
+                    .settings {
+                        padding-top: 20px;
+                    }
+                    
                     .gas-section {
                         width: calc(60% - 64px);
                         margin-left: 64px;
@@ -1471,6 +1490,10 @@ const RouterOutputs = () => {
                 }
 
                 @media only screen and (max-width: 800px), (max-height: 800px) {
+                    .routers {
+                        padding-top: 20px;
+                    }
+
                     .title {
                         margin-bottom: 12px;
                     }
