@@ -867,7 +867,7 @@ const SwapInterface = () => {
 
                 @media only screen and (max-width: 1000px), (max-height: 900px) {
                     .interface {
-                        width: 100%;
+                        width: 280px;
                         padding: 24px 24px 24px 0;
                         margin-right: 24px;
                     }
@@ -898,7 +898,7 @@ const SwapInterface = () => {
 
                 @media only screen and (max-width: 700px) {
                     .interface {
-                        max-width: 280px;
+                        width: 100%;
                         padding: 0;
                         border-right: none;
                         margin-right: 0;
