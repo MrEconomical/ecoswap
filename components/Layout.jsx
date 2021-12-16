@@ -326,6 +326,14 @@ const Footer = () => (
                 .footer {
                     height: 40px;
                 }
+
+                .links {
+                    gap: 16px;
+                }
+
+                .link {
+                    height: 15px;
+                }
             }
         `}</style>
     </>
