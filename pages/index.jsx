@@ -508,7 +508,7 @@ const SwapInterface = () => {
         if (!swap.tokenIn) return
         const balance = chain.tokenBalances[swap.tokenIn.address]
         if (balance.gt(BN(0))) {
-            document.getElementById("swap-input").value = format(parse(balance, swap.tokenIn.decimals))
+            document.getElementById("swap-input").value = format(parse(balance, swap.tokenIn.decimals), swap.tokenIn.decimals)
             swap.setTokenInAmount(balance)
         }
     }
