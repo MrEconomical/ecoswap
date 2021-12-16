@@ -25,7 +25,7 @@ const NavLink = ({ name, href }) => (
 
             @media only screen and (max-width: 1000px), (max-height: 900px) {
                 .link {
-                    margin-left: 24px;
+                    margin-left: 32px;
                 }
             }
         `}</style>
@@ -222,6 +222,16 @@ const WalletManager = () => {
                     height: 0.8rem;
                     object-fit: contain;
                     margin-right: 12px;
+                }
+
+                @media only screen and (max-width: 1000px), (max-height: 900px) {
+                    .chain {
+                        padding: 6px 24px;
+                    }
+
+                    .connect {
+                        padding: 6px 24px;
+                    }
                 }
             `}</style>
         </>

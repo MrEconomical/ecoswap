@@ -879,6 +879,13 @@ const SwapInterface = () => {
                         margin: 16px 0;
                     }
                 }
+
+                @media only screen and (max-width: 800px), (max-height: 800px) {
+                    .interface {
+                        padding: 16px 16px 16px 0;
+                        margin-right: 16px;
+                    }
+                }
             `}</style>
         </>
     )

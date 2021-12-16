@@ -117,6 +117,12 @@ const App = ({ Component, pageProps }) => {
                         font-size: 14px;
                     }
                 }
+
+                @media only screen and (max-width: 800px), (max-height: 800px) {
+                    html {
+                        font-size: 12px;
+                    }
+                }
             `}</style>
         </>
     )
