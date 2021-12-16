@@ -1363,6 +1363,25 @@ const SwapSettings = () => {
                     }
                 }
 
+                @media only screen and (max-width: 800px), (max-height: 800px) {
+                    .settings {
+                        padding-top: 20px;
+                    }
+
+                    .gas-section {
+                        width: calc(60% - 16px);
+                        margin-left: 16px;
+                    }
+
+                    .gas-switch {
+                        margin-right: 5px;
+                    }
+
+                    .gas-label {
+                        margin-right: 12px;
+                    }
+                }
+
                 @media only screen and (min-width: 1000px) and (max-height: 900px) {
                     .gas-section {
                         width: calc(60% - 48px);
@@ -1371,10 +1390,6 @@ const SwapSettings = () => {
                 }
 
                 @media only screen and (min-width: 1000px) and (max-height: 800px) {
-                    .settings {
-                        padding-top: 20px;
-                    }
-                    
                     .gas-section {
                         width: calc(60% - 64px);
                         margin-left: 64px;
