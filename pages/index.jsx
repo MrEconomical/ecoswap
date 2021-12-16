@@ -898,7 +898,7 @@ const SwapInterface = () => {
 
                 @media only screen and (max-width: 700px) {
                     .interface {
-                        width: 100%;
+                        max-width: 280px;
                         padding: 0;
                         border-right: none;
                         margin-right: 0;
@@ -1077,7 +1077,7 @@ const SwapSettings = () => {
                     <div className="referral-label">Input address to receive swap surplus or other referral rewards from aggregators. Referral address will not work if it is the same as the account swapping tokens.</div>
                     <div className="referral">
                         <input id="referral-input" className="referral-input"></input>
-                        <button className="referral-button set-referral" onClick={setReferral}>Set</button>
+                        <button className="referral-button" onClick={setReferral}>Set</button>
                         <button className="referral-button" onClick={clearReferral}>Clear</button>
                     </div>
                 </div>
@@ -1310,15 +1310,16 @@ const SwapSettings = () => {
                     flex-direction: row;
                     justify-content: flex-start;
                     align-items: center;
+                    gap: 16px;
                 }
 
                 .referral-input {
                     width: 60%;
                     outline: none;
+                    font-size: 1rem;
                     border: 1px solid var(--light-gray);
                     border-radius: 8px;
                     padding: 6px 8px;
-                    margin-right: 16px;
                 }
 
                 .referral-input:focus {
@@ -1326,6 +1327,7 @@ const SwapSettings = () => {
                 }
 
                 .referral-button {
+                    font-size: 1rem;
                     border: 1px solid var(--light-dark);
                     border-radius: 8px;
                     padding: 6px 16px;
@@ -1333,10 +1335,6 @@ const SwapSettings = () => {
 
                 .referral-button:hover {
                     background-color: var(--light);
-                }
-
-                .set-referral {
-                    margin-right: 16px;
                 }
 
                 @media only screen and (max-width: 1000px), (max-height: 900px) {
@@ -1421,6 +1419,10 @@ const SwapSettings = () => {
                     .gas-label {
                         margin-right: 12px;
                     }
+
+                    .referral-label {
+                        margin-bottom: 12px;
+                    }
                 }
 
                 @media only screen and (min-width: 1000px) and (max-height: 900px) {
@@ -1452,12 +1454,12 @@ const SwapSettings = () => {
                 }
 
                 @media only screen and (max-width: 550px) {
-                    .slippage-section {
-                        width: 100%;
+                    .settings {
+                        max-width: 280px;
                     }
 
-                    .slippage-slider {
-                        max-width: 200px;
+                    .slippage-section {
+                        width: 100%;
                     }
 
                     .gas-section {
@@ -1465,8 +1467,25 @@ const SwapSettings = () => {
                         margin-left: 0;
                     }
 
+                    .gas-label {
+                        margin-right: 16px;
+                    }
+
                     .routers {
                         grid-template-columns: repeat(2, 1fr);
+                    }
+
+                    .referral {
+                        gap: 12px;
+                    }
+
+                    .referral-input {
+                        font-size: 0.9rem;
+                    }
+
+                    .referral-button {
+                        font-size: 0.9rem;
+                        padding: 4px 8px;
                     }
                 }
             `}</style>
@@ -1542,7 +1561,7 @@ const RouterOutputs = () => {
                     width: 100%;
                     display: grid;
                     grid-template-columns: 2fr 5fr 3fr;
-                    grid-gap: 16px;
+                    gap: 8px 16px;
                     padding: 24px 0;
                 }
 
