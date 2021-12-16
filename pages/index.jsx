@@ -1459,8 +1459,8 @@ const RouterOutputs = () => {
                 }
 
                 .title {
-                    font-size: 1.5rem;
-                    margin-bottom: 24px;
+                    font-size: 1.2rem;
+                    margin-bottom: 16px;
                 }
 
                 .router {
@@ -1496,7 +1496,7 @@ const RouterOutputs = () => {
                     }
 
                     .title {
-                        margin-bottom: 16px;
+                        margin-bottom: 12px;
                     }
 
                     .router {
@@ -1510,7 +1510,7 @@ const RouterOutputs = () => {
                     }
 
                     .title {
-                        margin-bottom: 12px;
+                        margin-bottom: 10px;
                     }
 
                     .router {
