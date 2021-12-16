@@ -32,7 +32,7 @@ const NavLink = ({ name, href }) => (
 
             @media only screen and (max-width: 550px) {
                 .link {
-                    margin-left: 20px;
+                    margin-left: 16px;
                 }
             }
         `}</style>
@@ -251,10 +251,16 @@ const WalletManager = () => {
                 @media only screen and (max-width: 550px) {
                     .chain {
                         padding: 8px;
+                        margin-right: 12px;
                     }
 
                     .chain-name {
                         display: none;
+                    }
+
+                    .connect {
+                        padding: 6px 16px;
+                        margin-right: -1px;
                     }
                 }
             `}</style>
@@ -319,7 +325,7 @@ const NavBar = () => (
 
             @media only screen and (max-width: 550px) {
                 .nav {
-                    padding: 0 max(calc(50vw - 500px), 10px);
+                    padding: 0 max(calc(50vw - 140px), 10px);
                 }
 
                 .title {
@@ -386,7 +392,7 @@ const Footer = () => (
 
             @media only screen and (max-width: 550px) {
                 .footer {
-                    padding: 0 max(calc(50vw - 500px), 10px);
+                    padding: 0 max(calc(50vw - 140px), 10px);
                 }
             }
         `}</style>
