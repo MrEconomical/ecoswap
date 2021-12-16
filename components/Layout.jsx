@@ -384,7 +384,7 @@ const Footer = () => (
                 }
             }
 
-            @media only screen and (max-witdth: 550px) {
+            @media only screen and (max-width: 550px) {
                 .footer {
                     padding: 0 max(calc(50vw - 500px), 10px);
                 }
@@ -410,7 +410,7 @@ const Layout = ({ children }) => (
 
             @media only screen and (max-width: 550px) {
                 .content {
-                    padding: 0 max(calc(50vw - 500px), 10px);
+                    padding: 0 max(calc(50vw - 140px), 10px);
                 }
             }
         `}</style>

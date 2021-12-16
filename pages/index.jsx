@@ -867,7 +867,7 @@ const SwapInterface = () => {
 
                 @media only screen and (max-width: 1000px), (max-height: 900px) {
                     .interface {
-                        width: 280px;
+                        width: 100%;
                         padding: 24px 24px 24px 0;
                         margin-right: 24px;
                     }
@@ -1455,7 +1455,7 @@ const SwapSettings = () => {
 
                 @media only screen and (max-width: 550px) {
                     .settings {
-                        max-width: 280px;
+                        width: 100%;
                     }
 
                     .slippage-section {
@@ -1536,7 +1536,7 @@ const RouterOutputs = () => {
                             {swap.tokenOut && width >= 550 ? swap.tokenOut.symbol : ""}
                         </div>
                         <div className="section">
-                            {router.out === false || !chain.swapSettings.routers[router.id].enabled ? "—" : swap.tokenOut && router.out ? swap.tokenOut.default ? `≈ $${formatNumber(getTokenValue(swap.tokenOut, router.out))}` : "Price Unknown" : "..."}
+                            {router.out === false || !chain.swapSettings.routers[router.id].enabled ? "—" : swap.tokenOut && router.out ? swap.tokenOut.default ? `≈ $${formatNumber(getTokenValue(swap.tokenOut, router.out))}` : width >= 550 ? "Price Unknown" : "Unknown" : "..."}
                         </div>
                     </div>
                 ))}
