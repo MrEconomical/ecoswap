@@ -286,6 +286,12 @@ const NavBar = () => (
                     height: 60px;
                 }
             }
+
+            @media only screen and (max-height: 900px) {
+                .title {
+                    margin-bottom: 0;
+                }
+            }
         `}</style>
     </>
 )
