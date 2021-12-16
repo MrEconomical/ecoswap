@@ -915,6 +915,7 @@ const SwapSettings = () => {
     // Swap settings data
     
     const { web3, chain } = useContext(EthereumContext)
+    const { width } = useWindowSize()
     const settings = chain.swapSettings
     const slippageInput = useRef("")
     const gasInput = useRef("")
@@ -991,33 +992,63 @@ const SwapSettings = () => {
     return (
         <>
             <div className="settings">
-                <div className="top">
-                    <div className="slippage-section">
-                        <div className="section-title">
-                            Slippage
-                            <div className="title-value"> - {settings.slippage}%</div>
+                {width >= 550 ? (
+                    <div className="top">
+                        <div className="slippage-section">
+                            <div className="section-title">
+                                Slippage
+                                <div className="title-value"> - {settings.slippage}%</div>
+                            </div>
+                            <div className="slippage-content">
+                                <input id="slippage-slider" className="slippage-slider" type="range" min="10" max="200" value={settings.slippage * 100} onChange={updateSlippage}></input>
+                                <input className="slippage-input" maxLength="5" onChange={setSlippage}></input>
+                            </div>
                         </div>
-                        <div className="slippage-content">
-                            <input id="slippage-slider" className="slippage-slider" type="range" min="10" max="200" value={settings.slippage * 100} onChange={updateSlippage}></input>
-                            <input className="slippage-input" maxLength="5" onChange={setSlippage}></input>
+                        <div className="gas-section">
+                            <div className="section-title">
+                                Gas Price
+                                <div className="title-value"> - {typeof settings.gas[chain.id] === "number" ? `custom ${settings.gas[chain.id]}` : chain.gasPrice[settings.gas[chain.id]]} gwei</div>
+                            </div>
+                            <div className="gas-controls">
+                                <div className="gas-switch" data-checked={settings.gas[chain.id] === "slow"} onClick={() => updateGas("slow")}></div>
+                                <div className="gas-label">Slow</div>
+                                <div className="gas-switch" data-checked={settings.gas[chain.id] === "default"} onClick={() => updateGas("default")}></div>
+                                <div className="gas-label">Default</div>
+                                <div className="gas-switch" data-checked={settings.gas[chain.id] === "fast"} onClick={() => updateGas("fast")}></div>
+                                <div className="gas-label">Fast</div>
+                                <input id="gas-input" className="gas-input" onChange={setGas}></input>
+                            </div>
                         </div>
                     </div>
-                    <div className="gas-section">
-                        <div className="section-title">
-                            Gas Price
-                            <div className="title-value"> - {typeof settings.gas[chain.id] === "number" ? `custom ${settings.gas[chain.id]}` : chain.gasPrice[settings.gas[chain.id]]} gwei</div>
+                ) : (
+                    <>
+                        <div className="slippage-section">
+                            <div className="section-title">
+                                Slippage
+                                <div className="title-value"> - {settings.slippage}%</div>
+                            </div>
+                            <div className="slippage-content">
+                                <input id="slippage-slider" className="slippage-slider" type="range" min="10" max="200" value={settings.slippage * 100} onChange={updateSlippage}></input>
+                                <input className="slippage-input" maxLength="5" onChange={setSlippage}></input>
+                            </div>
                         </div>
-                        <div className="gas-controls">
-                            <div className="gas-switch" data-checked={settings.gas[chain.id] === "slow"} onClick={() => updateGas("slow")}></div>
-                            <div className="gas-label">Slow</div>
-                            <div className="gas-switch" data-checked={settings.gas[chain.id] === "default"} onClick={() => updateGas("default")}></div>
-                            <div className="gas-label">Default</div>
-                            <div className="gas-switch" data-checked={settings.gas[chain.id] === "fast"} onClick={() => updateGas("fast")}></div>
-                            <div className="gas-label">Fast</div>
-                            <input id="gas-input" className="gas-input" onChange={setGas}></input>
+                        <div className="gas-section">
+                            <div className="section-title">
+                                Gas Price
+                                <div className="title-value"> - {typeof settings.gas[chain.id] === "number" ? `custom ${settings.gas[chain.id]}` : chain.gasPrice[settings.gas[chain.id]]} gwei</div>
+                            </div>
+                            <div className="gas-controls">
+                                <div className="gas-switch" data-checked={settings.gas[chain.id] === "slow"} onClick={() => updateGas("slow")}></div>
+                                <div className="gas-label">Slow</div>
+                                <div className="gas-switch" data-checked={settings.gas[chain.id] === "default"} onClick={() => updateGas("default")}></div>
+                                <div className="gas-label">Default</div>
+                                <div className="gas-switch" data-checked={settings.gas[chain.id] === "fast"} onClick={() => updateGas("fast")}></div>
+                                <div className="gas-label">Fast</div>
+                                <input id="gas-input" className="gas-input" onChange={setGas}></input>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </>
+                )}
                 <div className="section">
                     <div className="section-title">Aggregators</div>
                     <div className="routers">
@@ -1410,6 +1441,28 @@ const SwapSettings = () => {
                     .settings {
                         width: 100%;
                         padding-top: 0;
+                    }
+                }
+
+                @media only screen and (max-width: 700px) {
+                    .gas-section {
+                        width: calc(60% - 64px);
+                        margin-left: 64px;
+                    }
+                }
+
+                @media only screen and (max-width: 550px) {
+                    .slippage-section {
+                        width: 100%;
+                    }
+
+                    .gas-section {
+                        width: 100%;
+                        margin-left: 0;
+                    }
+
+                    .routers {
+                        grid-template-columns: repeat(2, 1fr);
                     }
                 }
             `}</style>
