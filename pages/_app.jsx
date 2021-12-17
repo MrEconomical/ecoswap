@@ -33,8 +33,9 @@ const Metadata = ({ page }) => {
 const App = ({ Component, pageProps }) => {
     // Page theme
 
-    const { theme } = useContext(ThemeContext)
+    const { theme, setTheme } = useContext(ThemeContext)
     console.log(theme)
+    console.log(setTheme)
 
     // Error page
 
@@ -143,6 +144,14 @@ const App = ({ Component, pageProps }) => {
     )
 }
 
+// Theme wrapper
+
+const ThemedApp = ({ Component, pageProps }) => (
+    <ThemeContextProvider>
+        <App Component={Component} pageProps={pageProps}></App>
+    </ThemeContextProvider>
+)
+
 // Exports
 
-export default App
+export default ThemedApp
