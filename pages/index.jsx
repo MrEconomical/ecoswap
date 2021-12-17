@@ -478,6 +478,12 @@ const TokenSelect = ({ label, type }) => {
                         height: calc(100% - 40px);
                     }
                 }
+
+                @media only screen and (max-width: 550px) {
+                    .menu {
+
+                    }
+                }
             `}</style>
         </>
     )
@@ -898,7 +904,7 @@ const SwapInterface = () => {
 
                 @media only screen and (max-width: 700px) {
                     .interface {
-                        width: 100%;
+                        width: 290px;
                         padding: 0;
                         border-right: none;
                         margin-right: 0;
@@ -1655,7 +1661,7 @@ const Swap = () => {
     return (
         <>
             <div className="content">
-                {width >= 700 ? (
+                {width > 700 ? (
                     <>
                         <div className="top">
                             <SwapInterface></SwapInterface>
