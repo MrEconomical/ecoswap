@@ -1,5 +1,6 @@
 // Files and modules
 
+import ThemeContext from "../state/ThemeContext"
 import WindowSizeContext from "../state/WindowSizeContext"
 import EthereumContext, { chains } from "../state/EthereumContext"
 import Link from "next/link"
@@ -282,71 +283,79 @@ const WalletManager = () => {
 
 // Navigation bar component
 
-const NavBar = () => (
-    <>
-        <nav className="nav">
-            <Link href="/">
-                <a className="header">
-                    <img className="icon" src="/ecoswap.png"></img>
-                    <div className="title">EcoSwap</div>
-                </a>
-            </Link>
-            <NavLink name="About" href="/about"></NavLink>
-            <WalletManager></WalletManager>
-        </nav>
-        <style jsx>{`
-            .nav {
-                width: 100%;
-                height: 80px;
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: center;
-                padding: 0 max(calc(50vw - 500px), 20px);
-            }
+const NavBar = () => {
+    // Theme data
 
-            .header {
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: center;
-                gap: 16px;
-            }
+    const { theme } = useContext(ThemeContext)
 
-            .icon {
-                height: 2.5rem;
-            }
+    // Component
 
-            .title {
-                font-size: 1.1rem;
-                font-weight: bold;
-                margin-bottom: 0.5px;
-            }
-
-            @media only screen and (max-width: 1000px), (max-height: 900px) {
+    return (
+        <>
+            <nav className="nav">
+                <Link href="/">
+                    <a className="header">
+                        <img className="icon" src={theme === "dark" ? "/ecoswap-white.png" : "/ecoswap.png"}></img>
+                        <div className="title">EcoSwap</div>
+                    </a>
+                </Link>
+                <NavLink name="About" href="/about"></NavLink>
+                <WalletManager></WalletManager>
+            </nav>
+            <style jsx>{`
                 .nav {
-                    height: 60px;
+                    width: 100%;
+                    height: 80px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    padding: 0 max(calc(50vw - 500px), 20px);
                 }
-            }
 
-            @media only screen and (max-height: 900px) {
-                .title {
-                    margin-bottom: 0;
+                .header {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    gap: 16px;
                 }
-            }
 
-            @media only screen and (max-width: 550px) {
-                .nav {
-                    padding: 0 max(calc(50vw - 145px), 10px);
+                .icon {
+                    height: 2.5rem;
                 }
 
                 .title {
-                    display: none;
+                    font-size: 1.1rem;
+                    font-weight: bold;
+                    margin-bottom: 0.5px;
                 }
-            }
-        `}</style>
-    </>
-)
+
+                @media only screen and (max-width: 1000px), (max-height: 900px) {
+                    .nav {
+                        height: 60px;
+                    }
+                }
+
+                @media only screen and (max-height: 900px) {
+                    .title {
+                        margin-bottom: 0;
+                    }
+                }
+
+                @media only screen and (max-width: 550px) {
+                    .nav {
+                        padding: 0 max(calc(50vw - 145px), 10px);
+                    }
+
+                    .title {
+                        display: none;
+                    }
+                }
+            `}</style>
+        </>
+    )
+}
 
 // Footer component
 
