@@ -463,7 +463,7 @@ const TokenSelect = ({ label, type }) => {
                     .menu {
                         top: 24px;
                         width: calc(100% - 24px);
-                        height: calc(100% - 48px);
+                        height: calc(100% - 50px);
                     }
 
                     .icon {
@@ -475,13 +475,16 @@ const TokenSelect = ({ label, type }) => {
                     .menu {
                         top: 20px;
                         width: calc(100% - 20px);
-                        height: calc(100% - 40px);
+                        height: calc(100% - 42px);
                     }
                 }
 
-                @media only screen and (max-width: 550px) {
+                @media only screen and (max-width: 700px) {
                     .menu {
-
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: calc(100% - 2px);
                     }
                 }
             `}</style>
