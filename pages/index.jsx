@@ -2,6 +2,7 @@
 
 import ERC20ABI from "../abis/ERC20"
 import { parse, unparse, format, formatNumber } from "../helpers/number"
+import ThemeContext from "../state/ThemeContext"
 import WindowSizeContext from "../state/WindowSizeContext"
 import EthereumContext from "../state/EthereumContext"
 import PriceContext from "../state/PriceContext"
@@ -14,6 +15,7 @@ import { useContext, useEffect, useState, useRef } from "react"
 const SwapInput = () => {
     // Swap data
 
+    const { theme } = useContext(ThemeContext)
     const { chain, BN } = useContext(EthereumContext)
     const inputBefore = useRef("")
 
@@ -124,6 +126,7 @@ const SwapInput = () => {
 const TokenSelect = ({ label, type }) => {
     // Token selection menu data
 
+    const { theme } = useContext(ThemeContext)
     const { web3, chain, account, BN } = useContext(EthereumContext)
     const activeToken = chain.swap[type === "input" ? "tokenIn" : "tokenOut"]
     const setActiveToken = chain.swap[type === "input" ? "setTokenIn" : "setTokenOut"]
@@ -334,6 +337,7 @@ const TokenSelect = ({ label, type }) => {
                     width: 0.9rem;
                     height: 0.9rem;
                     object-fit: contain;
+                    filter: ${theme === "dark" ? "invert(1)" : "none"};
                     margin-left: 8px;
                 }
 
@@ -379,12 +383,14 @@ const TokenSelect = ({ label, type }) => {
                     width: 0.75rem;
                     height: 0.75rem;
                     object-fit: contain;
+                    filter: ${theme === "dark" ? "invert(1)" : "none"};
                     margin-right: 16px;
                 }
 
                 .search {
                     width: 100%;
                     outline: none;
+                    background-color: var(--input-background);
                     border: 1px solid var(--light-gray);
                     border-radius: 8px;
                     padding: 6px 8px;
@@ -498,6 +504,7 @@ const TokenSelect = ({ label, type }) => {
 const SwapInterface = () => {
     // Swap data
 
+    const { theme } = useContext(ThemeContext)
     const { enabled, web3, chain, account, BN } = useContext(EthereumContext)
     const swap = chain.swap
     const [ swapButtonText, setSwapButtonText ] = useState("Swap Tokens")
@@ -840,6 +847,11 @@ const SwapInterface = () => {
                     width: 20px;
                     height: 20px;
                     object-fit: contain;
+                    filter: ${theme === "dark" ? "invert(1)" : "none"};
+                }
+
+                .switch:hover .arrows {
+                    filter: none;
                 }
 
                 .output-label {
@@ -926,6 +938,7 @@ const SwapInterface = () => {
 const SwapSettings = () => {
     // Swap settings data
     
+    const { theme } = useContext(ThemeContext)
     const { web3, chain } = useContext(EthereumContext)
     const { width } = useContext(WindowSizeContext)
     const settings = chain.swapSettings
@@ -1255,6 +1268,10 @@ const SwapSettings = () => {
                     margin-right: 12px;
                 }
 
+                .router-icon[src="/routers/0x.svg"] {
+                    filter: ${theme === "dark" ? "invert(1)" : "none"};
+                }
+
                 .router-status {
                     min-width: 4.3rem;
                     color: var(--dark-gray);
@@ -1513,6 +1530,7 @@ const SwapSettings = () => {
 const RouterOutputs = () => {
     // Swap data
 
+    const { theme } = useContext(ThemeContext)
     const { chain } = useContext(EthereumContext)
     const prices = useContext(PriceContext)
     const { width } = useContext(WindowSizeContext)
@@ -1593,6 +1611,10 @@ const RouterOutputs = () => {
                     width: 1.2rem;
                     height: 1.2rem;
                     object-fit: contain;
+                }
+
+                .icon[src="/routers/0x.svg"] {
+                    filter: ${theme === "dark" ? "invert(1)" : "none"};
                 }
 
                 .arrow {

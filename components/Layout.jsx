@@ -160,6 +160,10 @@ const WalletManager = () => {
                     background-color: var(--light);
                 }
 
+                .chain:hover .chain-name {
+                    color: var(--base-black);
+                }
+
                 .chain-icon {
                     height: 0.9rem;
                 }
