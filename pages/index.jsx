@@ -998,7 +998,7 @@ const SwapSettings = () => {
     return (
         <>
             <div className="settings">
-                {width >= 550 ? (
+                {width > 550 ? (
                     <div className="top">
                         <div className="slippage-section">
                             <div className="section-title">
@@ -1533,16 +1533,16 @@ const RouterOutputs = () => {
                                 <img className="icon" src={swap.tokenIn.default ? `/tokens/${swap.tokenIn.symbol}.svg` : "/tokens/unknown.svg"}></img>
                             ) : <></>}
                             {`${swap.tokenIn && swap.tokenInAmount ? format(parse(swap.tokenInAmount, swap.tokenIn.decimals)) : "..."} `}
-                            {swap.tokenIn && width >= 550 ? swap.tokenIn.symbol : ""}
+                            {swap.tokenIn && width > 550 ? swap.tokenIn.symbol : ""}
                             <div className="arrow">➔</div>
                             {swap.tokenOut ? (
                                 <img className="icon" src={swap.tokenOut.default ? `/tokens/${swap.tokenOut.symbol}.svg` : "/tokens/unknown.svg"}></img>
                             ) : <></>}
                             {`${router.out === false || !chain.swapSettings.routers[router.id].enabled ? "—" : swap.tokenOut && router.out ? format(parse(router.out, swap.tokenOut.decimals)) : "..."} `}
-                            {swap.tokenOut && width >= 550 ? swap.tokenOut.symbol : ""}
+                            {swap.tokenOut && width > 550 ? swap.tokenOut.symbol : ""}
                         </div>
                         <div className="section">
-                            {router.out === false || !chain.swapSettings.routers[router.id].enabled ? "—" : swap.tokenOut && router.out ? swap.tokenOut.default ? `≈ $${formatNumber(getTokenValue(swap.tokenOut, router.out))}` : width >= 550 ? "Price Unknown" : "Unknown" : "..."}
+                            {router.out === false || !chain.swapSettings.routers[router.id].enabled ? "—" : swap.tokenOut && router.out ? swap.tokenOut.default ? `≈ $${formatNumber(getTokenValue(swap.tokenOut, router.out))}` : width > 550 ? "Price Unknown" : "Unknown" : "..."}
                         </div>
                     </div>
                 ))}
