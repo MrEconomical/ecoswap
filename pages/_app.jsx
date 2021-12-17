@@ -2,10 +2,12 @@
 
 import Layout from "../components/Layout"
 import { WindowSizeContextProvider } from "../state/WindowSizeContext"
+import ThemeContext, { ThemeContextProvider } from "../state/ThemeContext"
 import { EthereumContextProvider } from "../state/EthereumContext"
 import { PriceContextProvider } from "../state/PriceContext"
 import Head from "next/head"
 import Error from "next/error"
+import { useContext } from "react"
 
 // Site metadata
 
@@ -29,6 +31,11 @@ const Metadata = ({ page }) => {
 // Site content
 
 const App = ({ Component, pageProps }) => {
+    // Page theme
+
+    const { theme } = useContext(ThemeContext)
+    console.log(theme)
+
     // Error page
 
     if (pageProps.statusCode) {
