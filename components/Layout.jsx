@@ -326,7 +326,7 @@ const NavBar = () => (
 
             @media only screen and (max-width: 550px) {
                 .nav {
-                    padding: 0 max(calc(50vw - 140px), 10px);
+                    padding: 0 max(calc(50vw - 145px), 10px);
                 }
 
                 .title {
@@ -393,7 +393,7 @@ const Footer = () => (
 
             @media only screen and (max-width: 550px) {
                 .footer {
-                    padding: 0 max(calc(50vw - 140px), 10px);
+                    padding: 0 max(calc(50vw - 145px), 10px);
                 }
             }
         `}</style>
@@ -417,7 +417,7 @@ const Layout = ({ children }) => (
 
             @media only screen and (max-width: 550px) {
                 .content {
-                    padding: 0 max(calc(50vw - 140px), 10px);
+                    padding: 0 max(calc(50vw - 145px), 10px);
                 }
             }
         `}</style>
