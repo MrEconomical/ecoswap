@@ -1367,6 +1367,7 @@ const SwapSettings = () => {
 
                 .referral-button:hover {
                     background-color: var(--light);
+                    color: ${theme === "dark" ? "var(--base-black)" : "default"};
                 }
 
                 @media only screen and (max-width: 1000px), (max-height: 900px) {
