@@ -206,7 +206,7 @@ const TokenSelect = ({ label, type }) => {
     // Switch to selected token
 
     function switchToken(event, newToken) {
-        for (const element of event.nativeEvent.path) {
+        for (const element of event.nativeEvent.path || event.nativeEvent.composedPath()) {
             if (element.classList && element.classList.contains("token-control")) return
         }
         if (chain.tokens.find(token => token.address === newToken.address)) {
