@@ -362,7 +362,17 @@ const NavBar = () => {
 const Footer = () => {
     // Theme data
 
-    const { theme } = useContext(ThemeContext)
+    const { theme, setTheme } = useContext(ThemeContext)
+
+    // Switch page theme
+
+    function switchTheme() {
+        if (theme === "light") {
+            setTheme("dark")
+        } else {
+            setTheme("light")
+        }
+    }
 
     // Component
 
@@ -370,6 +380,9 @@ const Footer = () => {
         <>
             <div className="footer">
                 Built by MrEconomical.eth
+                <button className="switch-theme" onClick={switchTheme}>
+                    <img className="theme-icon" src={theme === "dark" ? "/icons/moon.svg" : "/icons/sun.svg"}></img>
+                </button>
                 <div className="links">
                     <a href="https://discord.gg/HhQKXfRr" target="_blank">
                         <img className="link" src="/icons/discord.svg"></img>
@@ -389,6 +402,27 @@ const Footer = () => {
                     align-items: center;
                     font-size: 0.9rem;
                     padding: 0 max(calc(50vw - 500px), 20px);
+                }
+
+                .switch-theme {
+                    width: 32px;
+                    height: 32px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    background-color: var(--light);
+                    border: 1px solid var(--background);
+                    border-radius: 8px;
+                    margin-left: 24px;
+                }
+
+                .switch-theme:hover {
+                    border: 1px solid var(--light-dark);
+                }
+
+                .theme-icon {
+                    height: 16px;
                 }
 
                 .links {
