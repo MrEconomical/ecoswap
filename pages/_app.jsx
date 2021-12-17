@@ -56,11 +56,6 @@ const App = ({ Component, pageProps }) => {
             </EthereumContextProvider>
             </WindowSizeContextProvider>
             <style jsx global>{`
-                @font-face {
-                    font-family: "Gilroy";
-                    src: url("/fonts/Gilroy-Medium.woff2") format("woff2");
-                }
-
                 :root {
                     --background: ${theme === "light" ? "#FFFFFF" : "#16191E"};
                     --input-background: ${theme === "light" ? "#F8FBFF" : "#191B1F"};
@@ -147,9 +142,17 @@ const App = ({ Component, pageProps }) => {
 // Theme wrapper
 
 const ThemedApp = ({ Component, pageProps }) => (
-    <ThemeContextProvider>
-        <App Component={Component} pageProps={pageProps}></App>
-    </ThemeContextProvider>
+    <>
+        <ThemeContextProvider>
+            <App Component={Component} pageProps={pageProps}></App>
+        </ThemeContextProvider>
+        <style jsx global>{`
+            @font-face {
+                font-family: "Gilroy";
+                src: url("/fonts/Gilroy-Medium.woff2") format("woff2");
+            }
+        `}</style>
+    </>
 )
 
 // Exports
