@@ -63,14 +63,15 @@ const App = ({ Component, pageProps }) => {
 
                 :root {
                     --background: ${theme === "light" ? "#FFFFFF" : "#16191E"};
+                    --input-background: ${theme === "light" ? "#F8FBFF" : "#191B1F"};
                     --accent: #48BF53;
-                    --light-dark: #C8EBCB;
-                    --light: #ECF8ED;
+                    --light-dark: ${theme === "light" ? "#C8EBCB" : "#a4dfa9"};
+                    --light: ${theme === "light" ? "#ECF8ED" : "#C8EBCB"};
                     --base-black: #16191E;
                     --black: ${theme === "light" ? "#16191E" : "#E6E9EE"};
-                    --dark-gray: #56595E;
-                    --gray: #96999E;
-                    --light-gray: #C6C9CE;
+                    --dark-gray: ${theme === "light" ? "#56595E" : "#C6C9CE"};
+                    --gray: ${theme === "light" ? "#96999E" : "#A6A9AE"};
+                    --light-gray: ${theme === "light" ? "#C6C9CE" : "#76797E"};
                 }
 
                 * {

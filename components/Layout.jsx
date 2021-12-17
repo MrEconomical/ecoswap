@@ -17,6 +17,7 @@ const NavLink = ({ name, href }) => (
         <style jsx>{`
             .link {
                 font-size: 1.1rem;
+                color: var(--black);
                 margin-left: 48px;
             }
 

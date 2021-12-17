@@ -104,7 +104,7 @@ const SwapInput = () => {
                     width: 45%;
                     font-size: 1.2rem;
                     outline: none;
-                    background-color: var(--background);
+                    background-color: var(--input-background);
                     border: 1px solid var(--light-gray);
                     border-radius: 8px;
                     padding: 8px 12px;
@@ -850,7 +850,7 @@ const SwapInterface = () => {
                     width: 45%;
                     min-height: calc(1.44rem + 18px);
                     font-size: 1.2rem;
-                    background-color: var(--background);
+                    background-color: var(--input-background);
                     border: 1px solid var(--light-gray);
                     border-radius: 8px;
                     padding: 8px 12px;
@@ -1162,6 +1162,7 @@ const SwapSettings = () => {
                 .slippage-input {
                     width: 3.75rem;
                     outline: none;
+                    background-color: var(--input-background);
                     border: 1px solid var(--light-gray);
                     border-radius: 8px;
                     padding: 6px 8px;
@@ -1203,6 +1204,7 @@ const SwapSettings = () => {
                 .gas-input {
                     width: 3.75rem;
                     outline: none;
+                    background-color: var(--input-background);
                     border: 1px solid var(--light-gray);
                     border-radius: 8px;
                     padding: 6px 8px;
@@ -1329,7 +1331,7 @@ const SwapSettings = () => {
                     width: 60%;
                     outline: none;
                     font-size: 1rem;
-                    background-color: var(--background);
+                    background-color: var(--input-background);
                     border: 1px solid var(--light-gray);
                     border-radius: 8px;
                     padding: 6px 8px;
