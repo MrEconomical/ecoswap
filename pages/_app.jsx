@@ -65,8 +65,8 @@ const App = ({ Component, pageProps }) => {
                     --background: ${theme === "light" ? "#FFFFFF" : "#16191E"};
                     --input-background: ${theme === "light" ? "#F8FBFF" : "#191B1F"};
                     --accent: #48BF53;
-                    --light-dark: ${theme === "light" ? "#C8EBCB" : "#a4dfa9"};
-                    --light: ${theme === "light" ? "#ECF8ED" : "#C8EBCB"};
+                    --light-dark: ${theme === "light" ? "#C8EBCB" : "#6DCC75"};
+                    --light: ${theme === "light" ? "#ECF8ED" : "#B6E5BA"};
                     --base-black: #16191E;
                     --black: ${theme === "light" ? "#16191E" : "#E6E9EE"};
                     --dark-gray: ${theme === "light" ? "#56595E" : "#C6C9CE"};
