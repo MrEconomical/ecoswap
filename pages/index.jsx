@@ -104,6 +104,7 @@ const SwapInput = () => {
                     width: 45%;
                     font-size: 1.2rem;
                     outline: none;
+                    background-color: var(--background);
                     border: 1px solid var(--light-gray);
                     border-radius: 8px;
                     padding: 8px 12px;
@@ -849,6 +850,7 @@ const SwapInterface = () => {
                     width: 45%;
                     min-height: calc(1.44rem + 18px);
                     font-size: 1.2rem;
+                    background-color: var(--background);
                     border: 1px solid var(--light-gray);
                     border-radius: 8px;
                     padding: 8px 12px;
@@ -859,6 +861,7 @@ const SwapInterface = () => {
                     width: 100%;
                     font-size: 1.2rem;
                     text-align: center;
+                    color: var(--base-black);
                     background-color: var(--light);
                     border: 1px solid var(--background);
                     border-radius: 8px;
@@ -1326,6 +1329,7 @@ const SwapSettings = () => {
                     width: 60%;
                     outline: none;
                     font-size: 1rem;
+                    background-color: var(--background);
                     border: 1px solid var(--light-gray);
                     border-radius: 8px;
                     padding: 6px 8px;

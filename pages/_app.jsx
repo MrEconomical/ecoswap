@@ -34,8 +34,6 @@ const App = ({ Component, pageProps }) => {
     // Page theme
 
     const { theme, setTheme } = useContext(ThemeContext)
-    console.log(theme)
-    console.log(setTheme)
 
     // Error page
 
@@ -64,11 +62,12 @@ const App = ({ Component, pageProps }) => {
                 }
 
                 :root {
-                    --background: #FFFFFF;
+                    --background: ${theme === "light" ? "#FFFFFF" : "#16191E"};
                     --accent: #48BF53;
                     --light-dark: #C8EBCB;
-                    --light: #ECF8Ed;
-                    --black: #16191E;
+                    --light: #ECF8ED;
+                    --base-black: #16191E;
+                    --black: ${theme === "light" ? "#16191E" : "#E6E9EE"};
                     --dark-gray: #56595E;
                     --gray: #96999E;
                     --light-gray: #C6C9CE;

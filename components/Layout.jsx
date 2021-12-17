@@ -223,6 +223,7 @@ const WalletManager = () => {
                     justify-content: center;
                     align-items: center;
                     gap: 12px;
+                    color: var(--base-black);
                 }
 
                 .connect-icon {
