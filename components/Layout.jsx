@@ -255,6 +255,11 @@ const WalletManager = () => {
                         margin-right: 12px;
                     }
 
+                    .chain-icon {
+                        width: 0.9rem;
+                        object-fit: contain;
+                    }
+
                     .chain-name {
                         display: none;
                     }
