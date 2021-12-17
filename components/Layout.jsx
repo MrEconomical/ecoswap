@@ -359,66 +359,75 @@ const NavBar = () => {
 
 // Footer component
 
-const Footer = () => (
-    <>
-        <div className="footer">
-            Built by MrEconomical.eth
-            <div className="links">
-                <a href="https://discord.gg/HhQKXfRr" target="_blank">
-                    <img className="link" src="/icons/discord.svg"></img>
-                </a>
-                <a href="https://github.com/MrEconomical/ecoswap" target="_blank">
-                    <img className="link" src="/icons/github.svg"></img>
-                </a>
+const Footer = () => {
+    // Theme data
+
+    const { theme } = useContext(ThemeContext)
+
+    // Component
+
+    return (
+        <>
+            <div className="footer">
+                Built by MrEconomical.eth
+                <div className="links">
+                    <a href="https://discord.gg/HhQKXfRr" target="_blank">
+                        <img className="link" src="/icons/discord.svg"></img>
+                    </a>
+                    <a href="https://github.com/MrEconomical/ecoswap" target="_blank">
+                        <img className="link" src="/icons/github.svg"></img>
+                    </a>
+                </div>
             </div>
-        </div>
-        <style jsx>{`
-            .footer {
-                width: 100%;
-                height: 60px;
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: center;
-                font-size: 0.9rem;
-                padding: 0 max(calc(50vw - 500px), 20px);
-            }
-
-            .links {
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: center;
-                gap: 24px;
-                margin-left: auto;
-            }
-
-            .link {
-                height: 20px;
-            }
-
-            @media only screen and (max-width: 1000px), (max-height: 900px) {
+            <style jsx>{`
                 .footer {
-                    height: 40px;
+                    width: 100%;
+                    height: 60px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    font-size: 0.9rem;
+                    padding: 0 max(calc(50vw - 500px), 20px);
                 }
 
                 .links {
-                    gap: 16px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    gap: 24px;
+                    margin-left: auto;
                 }
 
                 .link {
-                    height: 15px;
+                    height: 20px;
+                    filter: ${theme === "dark" ? "invert(1)" : "none"};
                 }
-            }
 
-            @media only screen and (max-width: 550px) {
-                .footer {
-                    padding: 0 max(calc(50vw - 145px), 10px);
+                @media only screen and (max-width: 1000px), (max-height: 900px) {
+                    .footer {
+                        height: 40px;
+                    }
+
+                    .links {
+                        gap: 16px;
+                    }
+
+                    .link {
+                        height: 15px;
+                    }
                 }
-            }
-        `}</style>
-    </>
-)
+
+                @media only screen and (max-width: 550px) {
+                    .footer {
+                        padding: 0 max(calc(50vw - 145px), 10px);
+                    }
+                }
+            `}</style>
+        </>
+    )
+}
 
 // Layout component
 
