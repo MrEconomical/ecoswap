@@ -2,11 +2,11 @@
 
 import ERC20ABI from "../abis/ERC20"
 import { parse, unparse, format, formatNumber } from "../helpers/number"
+import WindowSizeContext from "../state/WindowSizeContext"
 import EthereumContext from "../state/EthereumContext"
 import PriceContext from "../state/PriceContext"
 import quoteSwap from "../swap/quote"
 import getSwap from "../swap/swap"
-import useWindowSize from "../state/useWindowSize"
 import { useContext, useEffect, useState, useRef } from "react"
 
 // Swap input component
@@ -915,7 +915,7 @@ const SwapSettings = () => {
     // Swap settings data
     
     const { web3, chain } = useContext(EthereumContext)
-    const { width } = useWindowSize()
+    const { width } = useContext(WindowSizeContext)
     const settings = chain.swapSettings
     const slippageInput = useRef("")
     const gasInput = useRef("")
@@ -1500,7 +1500,7 @@ const RouterOutputs = () => {
 
     const { chain } = useContext(EthereumContext)
     const prices = useContext(PriceContext)
-    const { width } = useWindowSize()
+    const { width } = useContext(WindowSizeContext)
     const swap = chain.swap
 
     // Get token value
@@ -1648,7 +1648,7 @@ const RouterOutputs = () => {
 const Swap = () => {
     // Responsive window size
 
-    const { width } = useWindowSize()
+    const { width } = useContext(WindowSizeContext)
 
     // Component
 

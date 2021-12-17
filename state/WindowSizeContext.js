@@ -1,10 +1,17 @@
 // Files and modules
 
-import { useEffect, useState } from "react"
+import { createContext, useEffect, useState } from "react"
 
-// Window size hook
+// Window size context
 
-function useWindowSize() {
+const WindowSizeContext = createContext({
+    width: 1600,
+    height: 900
+})
+
+// Window size context provider
+
+const WindowSizeContextProvider = ({ children }) => {
     // Window size state data
 
     const [ width, setWidth ] = useState(1600)
@@ -25,14 +32,19 @@ function useWindowSize() {
         return () => window.removeEventListener("resize", updateWindowSize)
     }, [])
 
-    // Window size data
+    // Component
 
-    return {
-        width,
-        height
-    }
+    return (
+        <WindowSizeContext.Provider value={{
+            width,
+            height
+        }}>
+            {children}
+        </WindowSizeContext.Provider>
+    )
 }
 
 // Exports
 
-export default useWindowSize
+export { WindowSizeContextProvider }
+export default WindowSizeContext

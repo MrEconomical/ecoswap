@@ -1,7 +1,7 @@
 // Files and modules
 
+import WindowSizeContext from "../state/WindowSizeContext"
 import EthereumContext, { chains } from "../state/EthereumContext"
-import useWindowSize from "../state/useWindowSize"
 import Link from "next/link"
 import { useEffect, useContext, useState } from "react"
 
@@ -45,7 +45,7 @@ const WalletManager = () => {
     // Wallet data
 
     const { enabled, chain, account } = useContext(EthereumContext)
-    const { width } = useWindowSize()
+    const { width } = useContext(WindowSizeContext)
     const [ chainSelectActive, setChainSelectActive ] = useState(false)
 
     // Connect to MetaMask

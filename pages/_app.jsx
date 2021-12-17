@@ -1,6 +1,7 @@
 // Files and modules
 
 import Layout from "../components/Layout"
+import { WindowSizeContextProvider } from "../state/WindowSizeContext"
 import { EthereumContextProvider } from "../state/EthereumContext"
 import { PriceContextProvider } from "../state/PriceContext"
 import Head from "next/head"
@@ -28,19 +29,26 @@ const Metadata = ({ page }) => {
 // Site content
 
 const App = ({ Component, pageProps }) => {
+    // Error page
+
     if (pageProps.statusCode) {
         return <Error statusCode={pageProps.statusCode}></Error>
     }
+
+    // Component
+
     return (
         <>
             <Metadata page={pageProps.page}></Metadata>
+            <WindowSizeContextProvider>
             <EthereumContextProvider>
-                <PriceContextProvider>
-                    <Layout>
-                        <Component {...pageProps}></Component>
-                    </Layout>
-                </PriceContextProvider>
+            <PriceContextProvider>
+                <Layout>
+                    <Component {...pageProps}></Component>
+                </Layout>
+            </PriceContextProvider>
             </EthereumContextProvider>
+            </WindowSizeContextProvider>
             <style jsx global>{`
                 @font-face {
                     font-family: "Gilroy";
