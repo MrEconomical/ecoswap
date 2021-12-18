@@ -59,7 +59,7 @@ const App = ({ Component, pageProps }) => {
                 :root {
                     --background: ${theme === "light" ? "#FFFFFF" : "#16191E"};
                     --input-background: ${theme === "light" ? "#F8FBFF" : "#191B1F"};
-                    --accent: #48BF53;
+                    /* base accent #48BF53 */
                     --light-dark: ${theme === "light" ? "#C8EBCB" : "#6DCC75"};
                     --light: ${theme === "light" ? "#ECF8ED" : "#B6E5BA"};
                     --base-black: #16191E;
@@ -80,39 +80,12 @@ const App = ({ Component, pageProps }) => {
                     margin: 0;
                 }
 
-                h1 {
-                    font-size: initial;
-                    margin: 0;
-                }
-
-                h2 {
-                    font-size: initial;
-                    margin: 0;
-                }
-
-                p {
-                    margin: 0;
-                }
-
-                a {
-                    color: initial;
-                    text-decoration: initial;
-                    cursor: pointer;
-                }
-
-                button {
-                    cursor: pointer;
-                    background-color: transparent;
-                    border: none;
-                    padding: 0;
-                }
-
                 ::-webkit-scrollbar {
                     width: 10px;
                 }
 
                 ::-webkit-scrollbar-track {
-                    background-color: #E6E9EE;
+                    background-color: ${theme === "dark" ? "#36393E" : "#E6E9EE"};
                 }
 
                 ::-webkit-scrollbar-thumb {
@@ -150,6 +123,33 @@ const ThemedApp = ({ Component, pageProps }) => (
             @font-face {
                 font-family: "Gilroy";
                 src: url("/fonts/Gilroy-Medium.woff2") format("woff2");
+            }
+
+            h1 {
+                font-size: initial;
+                margin: 0;
+            }
+
+            h2 {
+                font-size: initial;
+                margin: 0;
+            }
+
+            p {
+                margin: 0;
+            }
+
+            a {
+                color: initial;
+                text-decoration: initial;
+                cursor: pointer;
+            }
+
+            button {
+                cursor: pointer;
+                background-color: transparent;
+                border: none;
+                padding: 0;
             }
         `}</style>
     </>

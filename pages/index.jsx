@@ -369,6 +369,7 @@ const TokenSelect = ({ label, type }) => {
                     width: 100%;
                     height: 100%;
                     object-fit: contain;
+                    filter: ${theme === "dark" ? "invert(1)" : "none"};
                 }
 
                 .token-search {
@@ -1310,7 +1311,7 @@ const SwapSettings = () => {
                     bottom: 4px;
                     content: "";
                     outline: none;
-                    background-color: white;
+                    background-color: ${theme === "dark" ? "#E6E9EE" : "#FFFFFF"};
                 }
 
                 input:checked + .slider {
