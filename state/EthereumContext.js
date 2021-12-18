@@ -68,10 +68,17 @@ const EthereumContextProvider = ({ children }) => {
 
     // Update active account
 
-    function updateAccount() {
+    async function updateAccount(fromEvent) {
         if (typeof ethereum === "undefined") return
-        console.log(ethereum.selectedAddress)
+        if (!ethereum.selectedAddress && localStorage.connected === "true") {
+            await ethereum.request({ method: "eth_requestAccounts" })
+        }
         setAccount(ethereum.selectedAddress)
+        if (ethereum.selectedAddress) {
+            localStorage.connected = true
+        } else if (fromEvent && !ethereum.selectedAddress) {
+            localStorage.connected = false
+        }
     }
 
     // Update active chain
@@ -85,7 +92,6 @@ const EthereumContextProvider = ({ children }) => {
     // Update all client side data
 
     function updateEthereumState() {
-        console.log("updating ethereum state")
         setEnabled(typeof ethereum !== "undefined")
         updateAccount()
         updateChain()
@@ -163,12 +169,12 @@ const EthereumContextProvider = ({ children }) => {
 
     useEffect(() => {
         if (typeof ethereum !== "undefined") {
-            ethereum.on("accountsChanged", updateAccount)
+            ethereum.on("accountsChanged", () => updateAccount(true))
             ethereum.on("chainChanged", updateChain)
         }
         return () => {
             if (typeof ethereum !== "undefined") {
-                ethereum.removeListener("accountsChanged", updateAccount)
+                ethereum.removeListener("accountsChanged", () => updateAccount(true))
                 ethereum.removeListener("chainChanged", updateChain)
             }
         }
