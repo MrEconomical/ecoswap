@@ -70,6 +70,7 @@ const EthereumContextProvider = ({ children }) => {
 
     function updateAccount() {
         if (typeof ethereum === "undefined") return
+        console.log(ethereum.selectedAddress)
         setAccount(ethereum.selectedAddress)
     }
 
@@ -84,6 +85,7 @@ const EthereumContextProvider = ({ children }) => {
     // Update all client side data
 
     function updateEthereumState() {
+        console.log("updating ethereum state")
         setEnabled(typeof ethereum !== "undefined")
         updateAccount()
         updateChain()
