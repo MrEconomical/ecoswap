@@ -1,5 +1,5 @@
 # EcoSwap
 
-⚠️ This software is still under early alpha development
+A privacy-centered DEX aggregator, bringing you a fast, lightweight swap experience with the best rates on Ethereum, Polygon, Fantom, Avalanche, and the Binance Smart Chain.
 
-Alpha build active at https://ecoswap.exchange
+https://ecoswap.excxhange
