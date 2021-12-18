@@ -68,24 +68,19 @@ const EthereumContextProvider = ({ children }) => {
 
     // Update active account
 
-    async function updateAccount(fromEvent) {
+    async function updateAccount() {
         if (typeof ethereum === "undefined") return
-        if (!ethereum.selectedAddress && localStorage.connected === "true") {
-            await ethereum.request({ method: "eth_requestAccounts" })
-        }
-        setAccount(ethereum.selectedAddress)
-        if (ethereum.selectedAddress) {
-            localStorage.connected = true
-        } else if (fromEvent && !ethereum.selectedAddress) {
-            localStorage.connected = false
-        }
+        setAccount((await ethereum.request({ method: "eth_accounts" }))[0])
     }
 
     // Update active chain
 
-    function updateChain() {
-        if (typeof ethereum !== "undefined" && chains[ethereum.chainId]) {
-            setChain(chains[ethereum.chainId])
+    async function updateChain() {
+        if (typeof ethereum !== "undefined") {
+            const chainId = await ethereum.request({ method: "eth_chainId" })
+            if (chains[chainId]) {
+                setChain(chains[chainId])
+            }
         }
     }
 
@@ -158,6 +153,7 @@ const EthereumContextProvider = ({ children }) => {
     // Update client side data on loop
 
     useEffect(() => {
+        delete localStorage.connected
         updateEthereumState()
         setTimeout(updateEthereumState, 500)
         setTimeout(updateEthereumState, 1000)
@@ -169,12 +165,12 @@ const EthereumContextProvider = ({ children }) => {
 
     useEffect(() => {
         if (typeof ethereum !== "undefined") {
-            ethereum.on("accountsChanged", () => updateAccount(true))
+            ethereum.on("accountsChanged", updateAccount)
             ethereum.on("chainChanged", updateChain)
         }
         return () => {
             if (typeof ethereum !== "undefined") {
-                ethereum.removeListener("accountsChanged", () => updateAccount(true))
+                ethereum.removeListener("accountsChanged", updateAccount)
                 ethereum.removeListener("chainChanged", updateChain)
             }
         }
