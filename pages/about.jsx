@@ -47,6 +47,24 @@ const About = () => (
                     height: calc(100vh - 100px);
                 }
             }
+
+            @media only screen and (max-width: 550px) {
+                .content {
+                    padding-bottom: 0;
+                }
+                
+                .title {
+                    margin-bottom: 24px;
+                }
+
+                .paragraph {
+                    margin-bottom: 12px;
+                }
+
+                .first { 
+                    margin-top: 12px;
+                }
+            }
         `}</style>
     </>
 )

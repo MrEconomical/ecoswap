@@ -1098,7 +1098,7 @@ const SwapSettings = () => {
                 <div className="section">
                     <div className="section-title referral-title">
                         Referral Address
-                        <div className="title-value referral-value"> - {settings.referral || "None"}</div>
+                        <div className="title-value referral-value"> - {settings.referral ? width > 550 ? settings.referral : `${settings.referral.slice(0, 6)}...${settings.referral.slice(-4)}` : "None"}</div>
                     </div>
                     <div className="referral-label">Input address to receive swap surplus or other referral rewards from aggregators. Referral address will not work if it is the same as the account swapping tokens.</div>
                     <div className="referral">
