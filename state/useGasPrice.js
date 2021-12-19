@@ -46,7 +46,6 @@ function useGasPrice(chainId, chain) {
                 const data = (await axios(`https://api.zapper.fi/v1/gas-price?network=${
                     chainId === "0x89" ? "polygon" :
                     chainId === "0xfa" ? "fantom" :
-                    chainId === "0xa86a" ? "avalanche" :
                     chainId === "0x38" ? "binance-smart-chain" : null
                 }&api_key=96e0cc51-a62e-42ca-acee-910ea7d2a241`)).data
                 setSlow(data.standard)
