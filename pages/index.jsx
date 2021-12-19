@@ -680,12 +680,12 @@ const SwapInterface = () => {
         try {
             const tx = {
                 ...swapData.tx,
-                type: chain.id === "0x1" ? "2" : "1",
+                type: chain.id === "0x1" || chain.id === "0xa86a" ? "2" : "1",
                 value: swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? BN(swapData.in).toString(16) : 0
             }
             const gas = chain.swapSettings.gas[chain.id]
             if (gas !== "default") {
-                if (chain.id === "0x1") {
+                if (chain.id === "0x1" || chain.id === "0xa86a") {
                     tx.maxFeePerGas = BN((chain.gasPrice[gas] || gas) * 100).mul(BN(10).pow(BN(7))).toString(16),
                     tx.maxPriorityFeePerGas = BN(chain.gasPrice.priorityFee[gas] * 100).mul(BN(10).pow(BN(7))).toString(16)
                 } else {

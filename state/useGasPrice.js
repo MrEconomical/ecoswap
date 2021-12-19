@@ -32,6 +32,16 @@ function useGasPrice(chainId, chain) {
                     default: 2,
                     fast: data.instant.gwei > 200 ? 6 : 4
                 })
+            } else if (chainId === "0xa86a") {
+                const data = (await axios("https://api.zapper.fi/v1/gas-price?network=avalanche&api_key=96e0cc51-a62e-42ca-acee-910ea7d2a241")).data
+                setSlow(data.standard)
+                setNormal(data.fast)
+                setFast(data.instant)
+                setPriorityFee({
+                    slow: 1,
+                    default: 2,
+                    fast: data.instant > 100 ? 6 : 4
+                })
             } else {
                 const data = (await axios(`https://api.zapper.fi/v1/gas-price?network=${
                     chainId === "0x89" ? "polygon" :
