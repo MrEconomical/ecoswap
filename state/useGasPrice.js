@@ -42,9 +42,9 @@ function useGasPrice(chainId, chain) {
                 setNormal(data.fast)
                 setFast(data.instant)
                 setPriorityFee({
-                    slow: 1,
-                    default: 2,
-                    fast: data.instant > 100 ? 6 : 4
+                    slow: 15,
+                    default: 25,
+                    fast: data.instant > 100 ? 40 : 30
                 })
             } else {
                 // Default gas API
