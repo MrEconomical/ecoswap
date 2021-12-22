@@ -72,7 +72,7 @@ function useGasPrice(chainId, chain) {
         if (gas <= slow) {
             return priorityFee.slow
         } else if (gas <= normal) {
-            return priorityFee.normal
+            return priorityFee.default
         } else {
             return priorityFee.fast
         }
