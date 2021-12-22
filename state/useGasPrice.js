@@ -23,6 +23,8 @@ function useGasPrice(chainId, chain) {
     async function updateGas() {
         try {
             if (chainId === "0x1") {
+                // Ethereum gas
+
                 const data = (await axios("https://ethgas.watch/api/gas")).data
                 setSlow(data.slow.gwei)
                 setNormal(data.normal.gwei)
@@ -33,6 +35,8 @@ function useGasPrice(chainId, chain) {
                     fast: data.instant.gwei > 200 ? 6 : 4
                 })
             } else if (chainId === "0xa86a") {
+                // Avalanche gas
+
                 const data = (await axios("https://api.zapper.fi/v1/gas-price?network=avalanche&api_key=96e0cc51-a62e-42ca-acee-910ea7d2a241")).data
                 setSlow(data.standard)
                 setNormal(data.fast)
@@ -43,6 +47,8 @@ function useGasPrice(chainId, chain) {
                     fast: data.instant > 100 ? 6 : 4
                 })
             } else {
+                // Default gas API
+
                 const data = (await axios(`https://api.zapper.fi/v1/gas-price?network=${
                     chainId === "0x89" ? "polygon" :
                     chainId === "0xfa" ? "fantom" :
@@ -54,6 +60,21 @@ function useGasPrice(chainId, chain) {
             }
         } catch(error) {
             console.error(error)
+        }
+    }
+
+    // Calculate priority fee
+
+    function getPriorityFee(gas) {
+        if (typeof gas !== "number") {
+            return priorityFee[gas]
+        }
+        if (gas <= slow) {
+            return priorityFee.slow
+        } else if (gas <= normal) {
+            return priorityFee.normal
+        } else {
+            return priorityFee.fast
         }
     }
 
@@ -76,7 +97,8 @@ function useGasPrice(chainId, chain) {
         slow,
         default: normal,
         fast,
-        priorityFee
+        priorityFee,
+        getPriorityFee
     }
 }
 

@@ -687,7 +687,7 @@ const SwapInterface = () => {
             if (gas !== "default") {
                 if (chain.id === "0x1" || chain.id === "0xa86a") {
                     tx.maxFeePerGas = BN((chain.gasPrice[gas] || gas) * 100).mul(BN(10).pow(BN(7))).toString(16),
-                    tx.maxPriorityFeePerGas = BN(chain.gasPrice.priorityFee[gas] * 100).mul(BN(10).pow(BN(7))).toString(16)
+                    tx.maxPriorityFeePerGas = BN(chain.gasPrice.getPriorityFee(gas) * 100).mul(BN(10).pow(BN(7))).toString(16)
                 } else {
                     tx.gasPrice = BN((chain.gasPrice[gas] || gas) * 100).mul(BN(10).pow(BN(7))).toString(16)
                 }
