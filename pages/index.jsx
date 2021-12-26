@@ -15,7 +15,6 @@ import { useContext, useEffect, useState, useRef } from "react"
 const SwapInput = () => {
     // Swap data
 
-    const { theme } = useContext(ThemeContext)
     const { chain, BN } = useContext(EthereumContext)
     const inputBefore = useRef("")
 
@@ -626,7 +625,10 @@ const SwapInterface = () => {
 
         // Check approval
 
-        if (swap.tokenIn.address !== "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
+        if (
+            swap.tokenIn.address !== "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" &&
+            (swap.tokenIn.address !== chain.WETH || swap.tokenOut.address !== "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE")
+        ) {
             const Token = new chain.web3.eth.Contract(ERC20ABI, swap.tokenIn.address)
             const approved = BN(await Token.methods.allowance(account, swapData.tx.to).call())
             if (approved.lt(swap.tokenInAmount)) {
@@ -674,6 +676,20 @@ const SwapInterface = () => {
             }
         }
 
+        // Set wrap and unwrap ETH button text
+
+        if (
+            swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" &&
+            swap.tokenOut.address === chain.WETH
+        ) {
+            setSwapButtonText("Wrap")
+        } else if (
+            swap.tokenIn.address === chain.WETH &&
+            swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+        ) {
+            setSwapButtonText("Unwrap")
+        }
+
         // Send swap transaction
 
         swapPending.current = true
@@ -700,6 +716,7 @@ const SwapInterface = () => {
             console.error(error)
         }
         swapPending.current = false
+        setSwapButtonText("Swap Tokens")
     }
 
     // Update swap data on token changes
