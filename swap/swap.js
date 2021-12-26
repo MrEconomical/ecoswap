@@ -18,27 +18,37 @@ async function getSwap(chain, account, BN) {
         chain.swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" &&
         chain.swap.tokenOut.address === chain.WETH._address
     ) {
+        chain.swap.setTokenOutAmount(chain.swap.tokenInAmount)
         chain.swap.setRouters(routerList.map(router => ({
             ...router,
             out: chain.swap.tokenInAmount
         })))
         return {
-            from: account,
-            to: chain.WETH._address,
-            data: chain.WETH.methods.deposit().encodeABI()
+            in: chain.swap.tokenInAmount,
+            out: chain.swap.tokenInAmount,
+            tx: {
+                from: account,
+                to: chain.WETH._address,
+                data: chain.WETH.methods.deposit().encodeABI()
+            }
         }
     } else if (
         chain.swap.tokenIn.address === chain.WETH._address &&
         chain.swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
     ) {
+        chain.swap.setTokenOutAmount(chain.swap.tokenInAmount)
         chain.swap.setRouters(routerList.map(router => ({
             ...router,
             out: chain.swap.tokenInAmount
         })))
         return {
-            from: account,
-            to: chain.WETH._address,
-            data: chain.WETH.methods.withdraw(chain.swap.tokenInAmount).encodeABI()
+            in: chain.swap.tokenInAmount,
+            out: chain.swap.tokenInAmount,
+            tx: {
+                from: account,
+                to: chain.WETH._address,
+                data: chain.WETH.methods.withdraw(chain.swap.tokenInAmount).encodeABI()
+            }
         }
     }
 
