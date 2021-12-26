@@ -5,6 +5,7 @@ import useTokens from "./useTokens"
 import useSwap from "./useSwap"
 import useSwapSettings from "./useSwapSettings"
 import useGasPrice from "./useGasPrice"
+import WETHABI from "../abis/WETH"
 import ERC20ABI from "../abis/ERC20"
 import { createContext, useEffect, useState } from "react"
 import Web3 from "web3"
@@ -20,6 +21,7 @@ for (const id in chainData) {
         ...chainData[id],
         web3: new Web3(chainData[id].rpc)
     }
+    chains[id].WETH = new chains[id].web3.eth.Contract(WETHABI, chains[id].WETH)
 }
 
 // Ethereum context

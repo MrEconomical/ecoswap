@@ -12,6 +12,26 @@ for (const router of routerList) {
 // Get best swap from routers
 
 async function getSwap(chain, account, BN) {
+    // Wrap or unwrap ETH swap
+
+    if (
+        chain.swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" &&
+        chain.swap.tokenOut.address === chain.WETH._address
+    ) {
+        return {
+            to: chain.WETH._address,
+            data: chain.WETH.methods.deposit(chain.swap.tokenInAmount).encodeABI()
+        }
+    } else if (
+        chain.swap.tokenIn.address === chain.WETH._address &&
+        chain.swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+    ) {
+        return {
+            to: chain.WETH._address,
+            data: chain.WETH.methods.withdraw(chain.swap.tokenInAmount).encodeABI()
+        }
+    }
+
     // Get best router swap
 
     const swaps = await Promise.all(routers.map(router => router.getSwap(chain, account, BN)))

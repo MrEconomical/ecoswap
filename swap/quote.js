@@ -12,6 +12,17 @@ for (const router of routerList) {
 // Quote swap on routers
 
 async function quoteSwap(chain, BN) {
+    // Wrap or unwrap ETH quote
+
+    if (
+        (chain.swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" &&
+        chain.swap.tokenOut.address === chain.WETH._address) ||
+        (chain.swap.tokenIn.address === chain.WETH._address &&
+        chain.swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE")
+    ) {
+        return chain.swap.tokenInAmount
+    }
+
     // Get best router quote
 
     const quotes = await Promise.all(routers.map(router => router.quote(chain, BN)))
