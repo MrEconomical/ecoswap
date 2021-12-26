@@ -90,6 +90,7 @@ function useGasPrice(chainId, chain) {
     // Calculate gas parameters
 
     function getGasParameters(gas, BN) {
+        if (gas === "default") return {}
         if (chainId === "0x1" || chainId === "0xa86a") {
             return {
                 type: "2",

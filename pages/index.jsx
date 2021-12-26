@@ -641,7 +641,8 @@ const SwapInterface = () => {
                         params: [{
                             from: account,
                             to: Token._address,
-                            data: Token.methods.approve(swapData.tx.to, BN(2).pow(BN(256)).sub(BN(1))).encodeABI()
+                            data: Token.methods.approve(swapData.tx.to, BN(2).pow(BN(256)).sub(BN(1))).encodeABI(),
+                            ...chain.gasPrice.getGasParameters(chain.swapSettings.gas[chain.id], BN)
                         }]
                     })
                     setSwapButtonText(`Approve ${swap.tokenIn.symbol} on ${swapData.routerName}...`)
