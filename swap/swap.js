@@ -18,15 +18,25 @@ async function getSwap(chain, account, BN) {
         chain.swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" &&
         chain.swap.tokenOut.address === chain.WETH._address
     ) {
+        chain.swap.setRouters(routerList.map(router => ({
+            ...router,
+            out: chain.swap.tokenInAmount
+        })))
         return {
+            from: account,
             to: chain.WETH._address,
-            data: chain.WETH.methods.deposit(chain.swap.tokenInAmount).encodeABI()
+            data: chain.WETH.methods.deposit().encodeABI()
         }
     } else if (
         chain.swap.tokenIn.address === chain.WETH._address &&
         chain.swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
     ) {
+        chain.swap.setRouters(routerList.map(router => ({
+            ...router,
+            out: chain.swap.tokenInAmount
+        })))
         return {
+            from: account,
             to: chain.WETH._address,
             data: chain.WETH.methods.withdraw(chain.swap.tokenInAmount).encodeABI()
         }

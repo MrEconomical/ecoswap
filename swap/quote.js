@@ -20,7 +20,13 @@ async function quoteSwap(chain, BN) {
         (chain.swap.tokenIn.address === chain.WETH._address &&
         chain.swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE")
     ) {
-        return chain.swap.tokenInAmount
+        return {
+            tokenOutAmount: chain.swap.tokenInAmount,
+            routers: routerList.map(router => ({
+                ...router,
+                out: chain.swap.tokenInAmount
+            }))
+        }
     }
 
     // Get best router quote
