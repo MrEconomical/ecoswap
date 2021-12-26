@@ -18,6 +18,15 @@ function useGasPrice(chainId, chain) {
     })
     const initialized = useRef(false)
 
+    const gasPrice = {
+        slow,
+        default: normal,
+        fast,
+        priorityFee,
+        getPriorityFee,
+        getGasParameters
+    }
+
     // Update gas prices
 
     async function updateGas() {
@@ -78,6 +87,23 @@ function useGasPrice(chainId, chain) {
         }
     }
 
+    // Calculate gas parameters
+
+    function getGasParameters(gas, BN) {
+        if (chainId === "0x1" || chainId === "0xa86a") {
+            return {
+                type: "2",
+                maxFeePerGas: BN((gasPrice[gas] || gas) * 100).mul(BN(10).pow(BN(7))).toString(16),
+                maxPriorityFeePerGas: BN(getPriorityFee(gas) * 100).mul(BN(10).pow(BN(7))).toString(16)
+            }
+        } else {
+            return {
+                type: "1",
+                gasPrice: BN((gasPrice[gas] || gas) * 100).mul(BN(10).pow(BN(7))).toString(16)
+            }
+        }
+    }
+
     // Update gas price fetch loop on chain changes
 
     useEffect(() => {
@@ -93,13 +119,7 @@ function useGasPrice(chainId, chain) {
 
     // Gas data
 
-    return {
-        slow,
-        default: normal,
-        fast,
-        priorityFee,
-        getPriorityFee
-    }
+    return gasPrice
 }
 
 // Exports
