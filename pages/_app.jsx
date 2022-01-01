@@ -1,10 +1,10 @@
 // Files and modules
 
-import Layout from "../components/Layout"
-import { WindowSizeContextProvider } from "../state/WindowSizeContext"
-import ThemeContext, { ThemeContextProvider } from "../state/ThemeContext"
-import { EthereumContextProvider } from "../state/EthereumContext"
-import { PriceContextProvider } from "../state/PriceContext"
+import Layout from "../components/Layout.jsx"
+import ThemeContext, { ThemeContextProvider } from "../state/ThemeContext.js"
+import { WindowSizeContextProvider } from "../state/WindowSizeContext.js"
+import { EthereumContextProvider } from "../state/EthereumContext.js"
+import { PriceContextProvider } from "../state/PriceContext.js"
 import Head from "next/head"
 import Error from "next/error"
 import { useContext } from "react"

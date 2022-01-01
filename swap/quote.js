@@ -1,6 +1,6 @@
 // Files and modules
 
-import routerList from "../data/routers"
+import routerList from "../data/routers.json"
 
 // Load router handlers
 

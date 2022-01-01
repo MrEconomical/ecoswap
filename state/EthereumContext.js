@@ -1,13 +1,13 @@
 // Files and modules
 
-import chainData from "../data/chains"
-import useTokens from "./useTokens"
-import useSwap from "./useSwap"
-import useSwapSettings from "./useSwapSettings"
-import useGasPrice from "./useGasPrice"
-import WETHABI from "../abis/WETH"
-import ERC20ABI from "../abis/ERC20"
-import { createContext, useEffect, useState } from "react"
+import chainData from "../data/chains.json"
+import WETHABI from "../abis/WETH.json"
+import ERC20ABI from "../abis/ERC20.json"
+import useTokens from "./useTokens.js"
+import useSwap from "./useSwap.js"
+import useSwapSettings from "./useSwapSettings.js"
+import useGasPrice from "./useGasPrice.js"
+import { createContext, useState, useEffect } from "react"
 import Web3 from "web3"
 
 // Load Ethereum data

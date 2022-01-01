@@ -1,6 +1,6 @@
 // Files and modules
 
-import { useEffect, useState, useRef } from "react"
+import { useState, useEffect, useRef } from "react"
 
 // Chain tokens hook
 

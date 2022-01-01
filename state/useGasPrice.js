@@ -1,7 +1,7 @@
 // Files and modules
 
 import axios from "axios"
-import { useEffect, useState, useRef } from "react"
+import { useState, useEffect, useRef } from "react"
 
 // Chain gas price hook
 

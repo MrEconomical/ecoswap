@@ -1,6 +1,6 @@
 // Files and modules
 
-import { createContext, useEffect, useState } from "react"
+import { createContext, useState, useEffect } from "react"
 
 // Window size context
 

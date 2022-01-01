@@ -1,7 +1,7 @@
 // Files and modules
 
-import routerList from "../data/routers"
-import { useEffect, useState } from "react"
+import routerList from "../data/routers.json"
+import { useState, useEffect } from "react"
 
 // Swap settings hook
 

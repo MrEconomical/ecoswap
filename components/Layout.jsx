@@ -1,10 +1,10 @@
 // Files and modules
 
-import ThemeContext from "../state/ThemeContext"
-import WindowSizeContext from "../state/WindowSizeContext"
-import EthereumContext, { chains } from "../state/EthereumContext"
+import ThemeContext from "../state/ThemeContext.js"
+import WindowSizeContext from "../state/WindowSizeContext.js"
+import EthereumContext, { chains } from "../state/EthereumContext.js"
 import Link from "next/link"
-import { useEffect, useContext, useState } from "react"
+import { useState, useEffect, useContext } from "react"
 
 const chainIds = Object.keys(chains)
 
