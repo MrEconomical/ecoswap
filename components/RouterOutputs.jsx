@@ -46,13 +46,13 @@ const RouterOutputs = () => {
                         </div>
                         <div className="section">
                             {swap.tokenIn ? (
-                                <img className="icon" src={`/tokens/${swap.tokenIn.symbol}.svg`} onError={defaultImage}></img>
+                                <img className="icon" src={`/tokens/${chain.id}/${swap.tokenIn.symbol}-${swap.tokenIn.address}.svg`} onError={defaultImage}></img>
                             ) : <></>}
                             {`${swap.tokenIn && swap.tokenInAmount ? format(parse(swap.tokenInAmount, swap.tokenIn.decimals)) : "..."} `}
                             {swap.tokenIn && width > 550 ? swap.tokenIn.symbol : ""}
                             <div className="arrow">➔</div>
                             {swap.tokenOut ? (
-                                <img className="icon" src={`/tokens/${swap.tokenOut.symbol}.svg`} onError={defaultImage}></img>
+                                <img className="icon" src={`/tokens/${chain.id}/${swap.tokenOut.symbol}-${swap.tokenOut.address}.svg`} onError={defaultImage}></img>
                             ) : <></>}
                             {`${router.out === false || !chain.swapSettings.routers[router.id].enabled ? "—" : swap.tokenOut && router.out ? format(parse(router.out, swap.tokenOut.decimals)) : "..."} `}
                             {swap.tokenOut && width > 550 ? swap.tokenOut.symbol : ""}
