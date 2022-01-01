@@ -4,6 +4,7 @@ import ThemeContext from "../state/ThemeContext.js"
 import WindowSizeContext from "../state/WindowSizeContext.js"
 import EthereumContext from "../state/EthereumContext.js"
 import PriceContext from "../state/PriceContext.js"
+import { parse, format, formatNumber } from "../helpers/number.js"
 import { useContext } from "react"
 
 // Router outputs component

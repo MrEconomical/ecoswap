@@ -4,6 +4,7 @@ import ThemeContext from "../state/ThemeContext.js"
 import EthereumContext from "../state/EthereumContext.js"
 import SwapInput from "./SwapInput.jsx"
 import TokenSelect from "./TokenSelect.jsx"
+import { parse, format } from "../helpers/number.js"
 import { useState, useEffect, useContext, useRef } from "react"
 
 // Swap interface component

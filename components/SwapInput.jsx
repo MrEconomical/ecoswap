@@ -1,6 +1,7 @@
 // Files and modules
 
 import EthereumContext from "../state/EthereumContext.js"
+import { unparse, format } from "../helpers/number.js"
 import { useEffect, useContext, useRef } from "react"
 
 // Swap input component
