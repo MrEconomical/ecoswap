@@ -150,6 +150,13 @@ const TokenSelect = ({ label, type }) => {
         chain.setTokens(chain.tokens.slice(0, chainTokensIndex).concat(chain.tokens.slice(chainTokensIndex + 1)))
     }
 
+    // Replace token image with default unknown
+
+    function defaultImage(event) {
+        event.target.onerror = null
+        event.target.src = "/tokens/unknown.svg"
+    }
+
     // Update token list on data changes
 
     useEffect(() => {
@@ -198,7 +205,7 @@ const TokenSelect = ({ label, type }) => {
                     <div className="tokens">
                         {tokenList.map(token => (
                             <button className="token" key={`${chain.id}-${type}-${token.address}`} onClick={event => switchToken(event, token)}>
-                                <img className="icon" src={`/tokens/${token.default ? token.symbol : "unknown"}.svg`}></img>
+                                <img className="icon" src={`/tokens/${token.symbol}.svg`} onError={defaultImage}></img>
                                 <div className="info">
                                     <div className="name">{token.name} - {token.symbol}</div>
                                     <div className="token-menu">
