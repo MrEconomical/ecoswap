@@ -23,8 +23,21 @@ const PriceContextProvider = ({ children }) => {
                     if (market.symbol.endsWith("USDT")) {
                         const token = market.symbol.slice(0, -4)
                         prices[token] = +market.price
+
+                        // Wrapped token price
+
                         if (["ETH", "MATIC", "FTM", "AVAX", "BNB"].includes(token)) {
                             prices[`W${token}`] = +market.price
+                        }
+
+                        // Avalanche wrapped token price
+
+                        if (["ETH", "USDC", "DAI", "USDT", "BTC"].includes(token)) {
+                            if (["ETH", "BTC"].includes(token)) {
+                                prices[`W${token}.e`] = +market.price
+                            } else {
+                                prices[`${token}.e`] = +market.price
+                            }
                         }
                     }
                 }
