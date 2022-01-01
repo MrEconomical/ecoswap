@@ -384,6 +384,9 @@ const Footer = () => {
                     <img className="theme-icon" src={theme === "dark" ? "/icons/moon.svg" : "/icons/sun.svg"}></img>
                 </button>
                 <div className="links">
+                    <a href="https://twitter.com/MrEconomical_" target="_blank">
+                        <img className="link" src="/icons/twitter.svg"></img>
+                    </a>
                     <a href="https://discord.gg/PCVHj8kQsZ" target="_blank">
                         <img className="link" src="/icons/discord.svg"></img>
                     </a>
@@ -444,6 +447,16 @@ const Footer = () => {
                         height: 40px;
                     }
 
+                    .switch-theme {
+                        width: 28px;
+                        height: 28px;
+                        margin-left: 16px;
+                    }
+
+                    .theme-icon {
+                        height: 14px;
+                    }
+
                     .links {
                         gap: 16px;
                     }
@@ -454,6 +467,16 @@ const Footer = () => {
                 }
 
                 @media only screen and (max-width: 550px) {
+                    .switch-theme {
+                        width: 24px;
+                        height: 24px;
+                        margin-left: 12px;
+                    }
+
+                    .theme-icon {
+                        height: 12px;
+                    }
+
                     .footer {
                         padding: 0 max(calc(50vw - 145px), 10px);
                     }

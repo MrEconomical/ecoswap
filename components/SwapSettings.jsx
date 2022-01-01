@@ -572,8 +572,12 @@ const SwapSettings = () => {
                         margin-left: 0;
                     }
 
+                    .gas-switch {
+                        margin-right: 6px;
+                    }
+
                     .gas-label {
-                        margin-right: 16px;
+                        margin-right: auto;
                     }
 
                     .routers {
