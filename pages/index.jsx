@@ -175,15 +175,26 @@ const TokenSelect = ({ label, type }) => {
     // Add external token to token list
 
     async function addExternalToken(address, tokenList) {
-        if (!account) return
         const Token = new chain.web3.eth.Contract(ERC20ABI, address)
         let name, symbol, decimals, balance
         try {
             [ name, symbol, decimals, balance ] = await Promise.all([
-                Token.methods.name().call(),
-                Token.methods.symbol().call(),
+                Token.methods.name().call()
+                    .catch(async () => {
+                        return web3.utils.toAscii(await chain.web3.eth.call({
+                            to: Token._address,
+                            data: Token.methods.name().encodeABI()
+                        })).replace(/\0/g, "")
+                    }),
+                Token.methods.symbol().call()
+                    .catch(async () => {
+                        return web3.utils.toAscii(await chain.web3.eth.call({
+                            to: Token._address,
+                            data: Token.methods.symbol().encodeABI()
+                        })).replace(/\0/g, "")
+                    }),
                 Token.methods.decimals().call(),
-                Token.methods.balanceOf(account).call()
+                account ? Token.methods.balanceOf(account).call() : 0,
             ])
         } catch {
             return
@@ -439,6 +450,7 @@ const TokenSelect = ({ label, type }) => {
                     flex-direction: column;
                     justify-content: flex-start;
                     align-items: flex-start;
+                    flex: 1;
                 }
 
                 .name {
