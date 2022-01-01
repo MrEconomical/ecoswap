@@ -25,6 +25,13 @@ const RouterOutputs = () => {
         return +parse(amount, token.decimals) * prices[token.symbol]
     }
 
+    // Replace token image with default unknown
+
+    function defaultImage(event) {
+        event.target.onerror = null
+        event.target.src = "/tokens/unknown.svg"
+    }
+
     // Component
 
     return (
@@ -39,13 +46,13 @@ const RouterOutputs = () => {
                         </div>
                         <div className="section">
                             {swap.tokenIn ? (
-                                <img className="icon" src={swap.tokenIn.default ? `/tokens/${swap.tokenIn.symbol}.svg` : "/tokens/unknown.svg"}></img>
+                                <img className="icon" src={`/tokens/${swap.tokenIn.symbol}.svg`} onError={defaultImage}></img>
                             ) : <></>}
                             {`${swap.tokenIn && swap.tokenInAmount ? format(parse(swap.tokenInAmount, swap.tokenIn.decimals)) : "..."} `}
                             {swap.tokenIn && width > 550 ? swap.tokenIn.symbol : ""}
                             <div className="arrow">➔</div>
                             {swap.tokenOut ? (
-                                <img className="icon" src={swap.tokenOut.default ? `/tokens/${swap.tokenOut.symbol}.svg` : "/tokens/unknown.svg"}></img>
+                                <img className="icon" src={`/tokens/${swap.tokenOut.symbol}.svg`} onError={defaultImage}></img>
                             ) : <></>}
                             {`${router.out === false || !chain.swapSettings.routers[router.id].enabled ? "—" : swap.tokenOut && router.out ? format(parse(router.out, swap.tokenOut.decimals)) : "..."} `}
                             {swap.tokenOut && width > 550 ? swap.tokenOut.symbol : ""}
