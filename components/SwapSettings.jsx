@@ -149,7 +149,7 @@ const SwapSettings = () => {
                     </>
                 )}
                 <div className="section">
-                    <div className="section-title">Aggregators</div>
+                    <div className="section-title">Swap Routers</div>
                     <div className="routers">
                         {Object.keys(settings.routers).map(router => (
                             <div className="router" key={router}>

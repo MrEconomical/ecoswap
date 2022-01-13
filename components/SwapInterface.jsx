@@ -1,5 +1,6 @@
 // Files and modules
 
+import routerList from "../data/routers.json"
 import ERC20ABI from "../abis/ERC20.json"
 import ThemeContext from "../state/ThemeContext.js"
 import EthereumContext from "../state/EthereumContext.js"
@@ -116,11 +117,7 @@ const SwapInterface = () => {
     // Reset router quotes
 
     function resetRouterQuotes() {
-        const routers = [...swap.routers]
-        for (const router of routers) {
-            router.out = null
-        }
-        swap.setRouters(routers)
+        swap.setRouters(routerList)
     }
 
     // Swap tokens

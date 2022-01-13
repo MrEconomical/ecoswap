@@ -37,7 +37,7 @@ const RouterOutputs = () => {
     return (
         <>
             <div className="routers">
-                <div className="title">Aggregator Quotes</div>
+                <div className="title">Router Quotes</div>
                 {swap.routers.map(router => (
                     <div className="router" key={router.id}>
                         <div className="section">
@@ -93,12 +93,12 @@ const RouterOutputs = () => {
                     justify-content: flex-start;
                     align-items: center;
                     gap: 16px;
-                    font-size: 1.2rem;
+                    font-size: 1.1rem;
                 }
 
                 .icon {
-                    width: 1.2rem;
-                    height: 1.2rem;
+                    width: 1.1rem;
+                    height: 1.1rem;
                     object-fit: contain;
                 }
 

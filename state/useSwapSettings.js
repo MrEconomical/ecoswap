@@ -58,7 +58,7 @@ function useSwapSettings(chains) {
                     settings.gas = initialGas
                 }
 
-                if (Object.keys(settings.routers).length === Object.keys(initialRouters).length) {
+                if (Object.keys(settings.routers).every(router => initialRouters[router])) {
                     setRouters(settings.routers)
                 } else {
                     settings.routers = initialRouters

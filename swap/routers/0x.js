@@ -1,7 +1,10 @@
 // Files and modules
 
+import routerList from "../../data/routers.json"
 import axios from "axios"
 import querystring from "querystring"
+
+const routerData = routerList.find(router => router.id === "0x")
 
 // Resolve 0x API endpoint
 
@@ -22,9 +25,18 @@ function getEndpoint(chainId) {
 // Quote swap
 
 async function quote(chain, BN) {
-    if (!chain.swapSettings.routers["0x"].enabled) return BN(0)
+    // No quote
+
+    const none = {
+        ...routerData,
+        out: false
+    }
+
+    // Check swap parameters
+
+    if (!chain.swapSettings.routers[routerData.id].enabled) return none
     const endpoint = getEndpoint(chain.id)
-    if (!endpoint) return BN(0)
+    if (!endpoint) return none
     const swap = chain.swap
 
     try {
@@ -35,17 +47,21 @@ async function quote(chain, BN) {
             buyToken: swap.tokenOut.address,
             sellAmount: swap.tokenInAmount.toString()
         })}`)
-        return BN(result.data.buyAmount)
+
+        return {
+            ...routerData,
+            out: BN(result.data.buyAmount)
+        }
     } catch(error) {
         console.error(error)
-        return BN(0)
+        return none
     }
 }
 
 // Get swap
 
 async function getSwap(chain, account, BN) {
-    if (!chain.swapSettings.routers["0x"].enabled) return
+    if (!chain.swapSettings.routers[routerData.id].enabled) return
     const endpoint = getEndpoint(chain.id)
     if (!endpoint) return
     const swap = chain.swap
@@ -61,7 +77,7 @@ async function getSwap(chain, account, BN) {
         })}`)
         
         return {
-            routerName: "0x",
+            routerName: routerData.name,
             in: BN(result.data.sellAmount),
             out: BN(result.data.buyAmount),
             tx: {
