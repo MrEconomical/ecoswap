@@ -28,8 +28,8 @@ const RouterOutputs = () => {
     // Replace token image with default unknown
 
     function defaultImage(event) {
-        event.target.onerror = null
-        event.target.src = "/tokens/unknown.svg"
+        if (event.currentTarget.src.endsWith("unknown.svg") || event.currentTarget.src.endsWith("unknown-white.svg")) return
+        event.currentTarget.src = theme === "dark" ? "/tokens/unknown-white.svg" : "/tokens/unknown.svg"
     }
 
     // Component
