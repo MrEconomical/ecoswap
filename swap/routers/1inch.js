@@ -22,6 +22,7 @@ async function quote(chain, BN) {
     const endpoint = getEndpoint(chain.id)
     if (!endpoint) return BN(0)
     const swap = chain.swap
+
     try {
         // Request swap quote
 
@@ -44,6 +45,7 @@ async function getSwap(chain, account, BN) {
     const endpoint = getEndpoint(chain.id)
     if (!endpoint) return
     const swap = chain.swap
+    
     try {
         // Swap data
 
@@ -66,8 +68,10 @@ async function getSwap(chain, account, BN) {
                 disableEstimate: true
             })}`)
         ])
+        
         if (!withEstimate.error) {
             return {
+                routerName: "1inch",
                 in: BN(withEstimate.data.fromTokenAmount),
                 out: BN(withEstimate.data.toTokenAmount),
                 tx: {
@@ -88,6 +92,7 @@ async function getSwap(chain, account, BN) {
             withEstimate.error.response.data.description.startsWith("Not enough allowance"))
         ) {
             return {
+                routerName: "1inch",
                 in: BN(withoutEstimate.data.fromTokenAmount),
                 out: BN(withoutEstimate.data.toTokenAmount),
                 tx: {

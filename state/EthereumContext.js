@@ -116,6 +116,7 @@ const EthereumContextProvider = ({ children }) => {
                         clearInterval(interval)
                         return resolve()
                     }
+
                     const token = tokens[index ++]
                     balances[token] = await getTokenBalance(token, account)
                     busy = false
@@ -201,6 +202,7 @@ const EthereumContextProvider = ({ children }) => {
         const chainId = chain.id
         updateBalances()
         const interval = setInterval(updateBalances, 3000)
+
         return () => {
             clearInterval(interval)
             const balances = {}

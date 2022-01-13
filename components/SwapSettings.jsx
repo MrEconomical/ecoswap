@@ -52,9 +52,11 @@ const SwapSettings = () => {
         if (isNaN(+event.target.value) || event.target.value.includes(" ")) {
             event.target.value = gasInput.current
         }
+
         gasInput.current = event.target.value
         if (+event.target.value <= 0) return
         if (event.target.value.endsWith(".")) return
+        
         settings.setGas({
             ...settings.gas,
             [chain.id]: +event.target.value

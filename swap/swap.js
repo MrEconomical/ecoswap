@@ -23,6 +23,7 @@ async function getSwap(chain, account, BN) {
             ...router,
             out: chain.swap.tokenInAmount
         })))
+
         return {
             in: chain.swap.tokenInAmount,
             out: chain.swap.tokenInAmount,
@@ -41,6 +42,7 @@ async function getSwap(chain, account, BN) {
             ...router,
             out: chain.swap.tokenInAmount
         })))
+
         return {
             in: chain.swap.tokenInAmount,
             out: chain.swap.tokenInAmount,
@@ -73,6 +75,7 @@ async function getSwap(chain, account, BN) {
             out: swaps[s] ? swaps[s].out : false
         })
     }
+    
     routerQuotes.sort((a, b) => {
         if (a.out && !b.out) {
             return -1
@@ -88,10 +91,7 @@ async function getSwap(chain, account, BN) {
 
     // Return best swap
 
-    return {
-        routerName: routerList[best].name,
-        ...swaps[best]
-    }
+    return swaps[best]
 }
 
 // Exports

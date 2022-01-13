@@ -29,6 +29,7 @@ const TokenSelect = ({ label, type }) => {
                                                     (token.name.toLowerCase().includes(query) ||
                                                     token.symbol.toLowerCase().includes(query) ||
                                                     token.address.toLowerCase() === query))
+
         tokens.sort((a, b) => {
             // Sort tokens by address
 
@@ -44,14 +45,17 @@ const TokenSelect = ({ label, type }) => {
             const symbolA = a.symbol.toLowerCase()
             const nameB = b.name.toLowerCase()
             const symbolB = b.symbol.toLowerCase()
+
             if ((symbolA.includes(query) && !symbolB.includes(query)) || (nameA.includes(query) && !nameB.includes(query))) return -1
             if ((symbolB.includes(query) && !symbolA.includes(query)) || (nameB.includes(query) && !nameA.includes(query))) return 1
+
             if (symbolA.includes(query) && symbolB.includes(query)) {
                 return symbolA.indexOf(query) < symbolB.indexOf(query) ? -1 : 1
             } else {
                 return nameA.indexOf(query) < nameB.indexOf(query) ? -1 : 1
             }
         })
+
         setTokenList(tokens)
         if (web3.utils.isAddress(query) && !chain.tokens.find(token => token.address.toLowerCase() === query)) {
             addExternalToken(query, tokens)
@@ -63,6 +67,7 @@ const TokenSelect = ({ label, type }) => {
     async function addExternalToken(address, tokenList) {
         const Token = new chain.web3.eth.Contract(ERC20ABI, address)
         let name, symbol, decimals, balance
+
         try {
             [ name, symbol, decimals, balance ] = await Promise.all([
                 Token.methods.name().call()
@@ -85,10 +90,12 @@ const TokenSelect = ({ label, type }) => {
         } catch {
             return
         }
+
         chain.setTokenBalances({
             ...chain.tokenBalances,
             [Token._address]: BN(balance)
         })
+
         setTokenList([...tokenList, {
             external: true,
             added: false,
@@ -144,6 +151,7 @@ const TokenSelect = ({ label, type }) => {
         } else if (oppositeToken.address == oldToken.address) {
             setOppositeToken(null)
         }
+
         const tokenListIndex = tokenList.findIndex(token => token.address === oldToken.address)
         setTokenList(tokenList.slice(0, tokenListIndex).concat(tokenList.slice(tokenListIndex + 1)))
         const chainTokensIndex = chain.tokens.findIndex(token => token.address === oldToken.address)

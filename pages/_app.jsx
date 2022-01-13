@@ -33,7 +33,7 @@ const Metadata = ({ page }) => {
 const App = ({ Component, pageProps }) => {
     // Page theme
 
-    const { theme, setTheme } = useContext(ThemeContext)
+    const { theme } = useContext(ThemeContext)
 
     // Error page
 

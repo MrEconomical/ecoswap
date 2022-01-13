@@ -48,6 +48,7 @@ async function quoteSwap(chain, BN) {
             out: quotes[q].gt(BN(0)) ? quotes[q] : false
         })
     }
+
     routerQuotes.sort((a, b) => {
         if (a.out && !b.out) {
             return -1
@@ -59,6 +60,7 @@ async function quoteSwap(chain, BN) {
             return a.out.gt(b.out) ? -1 : 1
         }
     })
+    
     return {
         tokenOutAmount: quotes[best].gt(BN(0)) ? quotes[best] : "No quote",
         routers: routerQuotes

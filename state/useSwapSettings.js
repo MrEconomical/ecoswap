@@ -13,6 +13,7 @@ function useSwapSettings(chains) {
     for (const chainId in chains) {
         initialGas[chainId] = "default"
     }
+
     const [ gas, setGas ] = useState(initialGas)
     const initialRouters = {}
     for (const router of routerList) {
@@ -21,6 +22,7 @@ function useSwapSettings(chains) {
             enabled: true
         }
     }
+
     const [ routers, setRouters ] = useState(initialRouters)
     const [ referral, setReferral ] = useState()
 
@@ -43,21 +45,25 @@ function useSwapSettings(chains) {
         } else {
             try {
                 const settings = JSON.parse(localStorage.swapSettings)
+                
                 if (!isNaN(+settings.slippage) && +settings.slippage > 0 && +settings.slippage < 50) {
                     setSlippage(+settings.slippage)
                 } else {
                     settings.slippage = 0.5
                 }
+
                 if (Object.keys(settings.gas).length === Object.keys(initialGas).length) {
                     setGas(settings.gas)
                 } else {
                     settings.gas = initialGas
                 }
+
                 if (Object.keys(settings.routers).length === Object.keys(initialRouters).length) {
                     setRouters(settings.routers)
                 } else {
                     settings.routers = initialRouters
                 }
+
                 setReferral(settings.referral)
                 localStorage.swapSettings = JSON.stringify(settings)
             } catch {

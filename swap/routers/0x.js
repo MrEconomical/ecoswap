@@ -26,6 +26,7 @@ async function quote(chain, BN) {
     const endpoint = getEndpoint(chain.id)
     if (!endpoint) return BN(0)
     const swap = chain.swap
+
     try {
         // Request swap quote
 
@@ -48,6 +49,7 @@ async function getSwap(chain, account, BN) {
     const endpoint = getEndpoint(chain.id)
     if (!endpoint) return
     const swap = chain.swap
+
     try {
         // Request swap data
         
@@ -57,7 +59,9 @@ async function getSwap(chain, account, BN) {
             sellAmount: swap.tokenInAmount.toString(),
             slippagePercentage: chain.swapSettings.slippage / 100
         })}`)
+        
         return {
+            routerName: "0x",
             in: BN(result.data.sellAmount),
             out: BN(result.data.buyAmount),
             tx: {

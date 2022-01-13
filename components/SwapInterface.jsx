@@ -19,6 +19,7 @@ const SwapInterface = () => {
     const { enabled, web3, chain, account, BN } = useContext(EthereumContext)
     const swap = chain.swap
     const [ swapButtonText, setSwapButtonText ] = useState("Swap Tokens")
+
     const tokenIn = useRef(swap.tokenIn ? swap.tokenIn.address : null)
     const amountIn = useRef(swap.tokenInAmount)
     const tokenOut = useRef(swap.tokenOut ? swap.tokenOut.address : null)
@@ -142,6 +143,7 @@ const SwapInterface = () => {
         ) {
             const Token = new chain.web3.eth.Contract(ERC20ABI, swap.tokenIn.address)
             const approved = BN(await Token.methods.allowance(account, swapData.tx.to).call())
+
             if (approved.lt(swap.tokenInAmount)) {
                 // Prompt token approve
 
@@ -156,6 +158,7 @@ const SwapInterface = () => {
                             ...chain.gasPrice.getGasParameters(chain.swapSettings.gas[chain.id], BN)
                         }]
                     })
+
                     setSwapButtonText(`Approve ${swap.tokenIn.symbol} on ${swapData.routerName}...`)
                     const sent = Date.now()
                     const interval = setInterval(async () => {
@@ -166,13 +169,13 @@ const SwapInterface = () => {
                                 clearInterval(interval)
                                 return
                             }
+
                             const transaction = await chain.web3.eth.getTransactionReceipt(approveTx)
                             if (!transaction) {
                                 if (Date.now() - sent < 60000) return
                                 clearInterval(interval)
                                 setSwapButtonText("Swap Tokens")
-                            }
-                            if (transaction.status || transaction.status === false) {
+                            } else if (transaction.status || transaction.status === false) {
                                 clearInterval(interval)
                                 setSwapButtonText("Swap Tokens")
                             }
@@ -233,14 +236,17 @@ const SwapInterface = () => {
             tokenOut.current = swap.tokenOut ? swap.tokenOut.address : null
             return
         }
+
         if (swap.tokenIn.address === tokenIn.current && swap.tokenInAmount.eq(BN(amountIn.current)) && swap.tokenOut.address === tokenOut.current) return
         swap.setTokenOutAmount("...")
         resetRouterQuotes()
+
         if (swap.tokenIn.address !== tokenIn.current || swap.tokenOut.address !== tokenOut.current) {
             updateQuote()
         } else {
             updateTimeout.current = setTimeout(updateQuote, 300)
         }
+        
         tokenIn.current = swap.tokenIn.address
         amountIn.current = swap.tokenInAmount
         tokenOut.current = swap.tokenOut.address

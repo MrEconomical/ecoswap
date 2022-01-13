@@ -32,11 +32,13 @@ const SwapInput = () => {
             event.target.value = inputBefore.current
             return
         }
+
         let insert = 0
         while (event.target.value[insert] === inputBefore.current[insert]) {
             insert ++
             if (!event.target.value[insert] && !inputBefore.current[insert]) break
         }
+
         if (!event.target.value.endsWith(".")) {
             if (event.target.value.includes(".")) {
                 event.target.value = format(event.target.value, event.target.value.length - event.target.value.indexOf(".") - 1)
@@ -44,6 +46,7 @@ const SwapInput = () => {
                 event.target.value = format(event.target.value, 0)
             }
         }
+
         if (event.target.value.length === 1) {
             event.target.selectionEnd = 1
         } else {
@@ -67,6 +70,7 @@ const SwapInput = () => {
                 }
             }
         }
+        
         inputBefore.current = event.target.value
     }
 
