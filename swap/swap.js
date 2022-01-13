@@ -75,7 +75,7 @@ async function getSwap(chain, account, BN) {
             out: swaps[s] ? swaps[s].out : false
         })
     }
-    
+
     routerQuotes.sort((a, b) => {
         if (a.out && !b.out) {
             return -1

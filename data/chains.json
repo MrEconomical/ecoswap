@@ -27,7 +27,7 @@
         "name": "Avalanche",
         "fullName": "Avalanche Network",
         "token": "AVAX",
-        "WETH": "",
+        "WETH": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
         "rpc": "https://api.avax.network/ext/bc/C/rpc",
         "explorer": "https://snowtrace.io"
     },
