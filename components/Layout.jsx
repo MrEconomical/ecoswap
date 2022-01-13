@@ -46,7 +46,7 @@ const NavLink = ({ name, href }) => (
 const WalletManager = () => {
     // Wallet data
 
-    const { enabled, chain, account } = useContext(EthereumContext)
+    const { enabled, chain, account, chains, setChain } = useContext(EthereumContext)
     const { width } = useContext(WindowSizeContext)
     const [ chainSelectActive, setChainSelectActive ] = useState(false)
 
@@ -60,8 +60,11 @@ const WalletManager = () => {
     // Switch wallet to chain ID
 
     async function requestSwitch(chainId) {
-        if (!enabled) return
         setChainSelectActive(false)
+        if (!enabled) {
+            setChain(chains[chainId])
+            return
+        }
         try {
             // Switch to chain
 

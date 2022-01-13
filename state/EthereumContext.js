@@ -220,6 +220,9 @@ const EthereumContextProvider = ({ children }) => {
             chain,
             account,
             chains,
+            setEnabled,
+            setChain,
+            setAccount,
             BN
         }}>
             {children}
