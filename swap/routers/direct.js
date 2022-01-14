@@ -25,6 +25,8 @@ async function quote(chain, BN) {
         // Find best router quote
 
         const best = await getBestRouterQuote(chain, routers, BN)
+        if (best.out.isZero()) return none
+        
         return {
             id: routerData.id,
             routerId: best.router,
