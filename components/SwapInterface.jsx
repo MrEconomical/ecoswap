@@ -144,7 +144,7 @@ const SwapInterface = () => {
             if (approved.lt(swap.tokenInAmount)) {
                 // Prompt token approve
 
-                setSwapButtonText(`Approve ${swap.tokenIn.symbol} on ${swapData.routerName}`)
+                setSwapButtonText(`Approve ${swap.tokenIn.symbol} on ${swapData.router.name}`)
                 try {
                     const approveTx = await ethereum.request({
                         method: "eth_sendTransaction",
@@ -156,7 +156,7 @@ const SwapInterface = () => {
                         }]
                     })
 
-                    setSwapButtonText(`Approve ${swap.tokenIn.symbol} on ${swapData.routerName}...`)
+                    setSwapButtonText(`Approve ${swap.tokenIn.symbol} on ${swapData.router.name}...`)
                     const sent = Date.now()
                     const interval = setInterval(async () => {
                         try {

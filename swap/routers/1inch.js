@@ -57,11 +57,18 @@ async function quote(chain, BN) {
 // Get swap
 
 async function getSwap(chain, account, BN) {
+    // No swap
+
+    const none = {
+        router: routerData,
+        out: false
+    }
+
     // Check swap parameters
     
-    if (!chain.swapSettings.routers[routerData.id].enabled) return
+    if (!chain.swapSettings.routers[routerData.id].enabled) return none
     const endpoint = getEndpoint(chain.id)
-    if (!endpoint) return
+    if (!endpoint) return none
     const swap = chain.swap
     
     try {
@@ -89,7 +96,7 @@ async function getSwap(chain, account, BN) {
         
         if (!withEstimate.error) {
             return {
-                routerName: routerData.name,
+                router: routerData,
                 in: BN(withEstimate.data.fromTokenAmount),
                 out: BN(withEstimate.data.toTokenAmount),
                 tx: {
@@ -110,7 +117,7 @@ async function getSwap(chain, account, BN) {
             withEstimate.error.response.data.description.startsWith("Not enough allowance"))
         ) {
             return {
-                routerName: routerData.name,
+                router: routerData,
                 in: BN(withoutEstimate.data.fromTokenAmount),
                 out: BN(withoutEstimate.data.toTokenAmount),
                 tx: {
@@ -122,6 +129,7 @@ async function getSwap(chain, account, BN) {
         }
     } catch(error) {
         console.error(error)
+        return none
     }
 }
 

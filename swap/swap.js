@@ -57,26 +57,7 @@ async function getSwap(chain, account, BN) {
     // Get best router swap
 
     const swaps = await Promise.all(routers.map(router => router.getSwap(chain, account, BN)))
-    let best = 0
-    for (let s = 1; s < swaps.length; s ++) {
-        if (!swaps[s]) continue
-        if (swaps[s].out.gt(swaps[best].out)) {
-            best = s
-        }
-    }
-
-    // Update state
-
-    chain.swap.setTokenOutAmount(swaps[best] ? swaps[best].out : "No swap")
-    const routerQuotes = []
-    for (let s = 0; s < swaps.length; s ++) {
-        routerQuotes.push({
-            ...routerList[s],
-            out: swaps[s] ? swaps[s].out : false
-        })
-    }
-
-    routerQuotes.sort((a, b) => {
+    swaps.sort((a, b) => {
         if (a.out && !b.out) {
             return -1
         } else if (b.out && !a.out) {
@@ -84,14 +65,23 @@ async function getSwap(chain, account, BN) {
         } else if (!a.out && !b.out) {
             return 0
         } else {
-            return a.out.gt(b.out) ? -1 : 1
+            if (a.out.mul(BN(10).pow(BN(6))).div(b.out).abs().sub(BN(10).pow(BN(6))).lt(BN(5))) {
+                return b.priority ? 1 : -1
+            } else {
+                return a.out.gt(b.out) ? -1 : 1
+            }
         }
     })
-    chain.swap.setRouters(routerQuotes)
 
-    // Return best swap
+    // Return data
 
-    return swaps[best]
+    const swapFound = swaps[0].out && swaps[0].out.gt(BN(0))
+    chain.swap.setTokenOutAmount(swapFound ? swaps[0].out : "No swap")
+    chain.swap.setRouters(swaps.map(swap => ({
+        ...swap.router,
+        out: swap.out
+    })))
+    return swapFound ? swaps[0] : null
 }
 
 // Exports

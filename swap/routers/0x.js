@@ -61,11 +61,18 @@ async function quote(chain, BN) {
 // Get swap
 
 async function getSwap(chain, account, BN) {
+    // No swap
+
+    const none = {
+        router: routerData,
+        out: false
+    }
+
     // Check swap parameters
     
-    if (!chain.swapSettings.routers[routerData.id].enabled) return
+    if (!chain.swapSettings.routers[routerData.id].enabled) return none
     const endpoint = getEndpoint(chain.id)
-    if (!endpoint) return
+    if (!endpoint) return none
     const swap = chain.swap
 
     try {
@@ -79,7 +86,7 @@ async function getSwap(chain, account, BN) {
         })}`)
         
         return {
-            routerName: routerData.name,
+            router: routerData,
             in: BN(result.data.sellAmount),
             out: BN(result.data.buyAmount),
             tx: {
@@ -90,6 +97,7 @@ async function getSwap(chain, account, BN) {
         }
     } catch(error) {
         console.error(error)
+        return none
     }
 }
 

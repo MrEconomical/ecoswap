@@ -20,7 +20,6 @@ async function quote(chain, BN) {
     if (!chain.swapSettings.routers[routerData.id].enabled) return none
     const routers = swapRouters[chain.id]
     if (!Object.keys(routers).length) return none
-    const swap = chain.swap
 
     try {
         // Find best router quote
@@ -42,23 +41,34 @@ async function quote(chain, BN) {
 // Get swap
 
 async function getSwap(chain, account, BN) {
+    // No swap
+
+    const none = {
+        router: routerData,
+        out: false
+    }
+
     // Check swap parameters
 
-    if (!chain.swapSettings.routers[routerData.id].enabled) return
+    if (!chain.swapSettings.routers[routerData.id].enabled) return none
     const routers = swapRouters[chain.id]
-    if (!Object.keys(routers).length) return
+    if (!Object.keys(routers).length) return none
     const swap = chain.swap
 
     try {
         // Find best router quote
 
         const best = await getBestRouterQuote(chain, routers, BN)
-        if (best.out.isZero()) return
+        if (best.out.isZero()) return none
 
         // Calculate swap parameters
 
         return {
-            routerName: routers[best.router].name,
+            router: {
+                id: routerData.id,
+                routerId: best.router,
+                name: routers[best.router].name
+            },
             in: swap.tokenInAmount,
             out: best.out,
             tx: {
@@ -69,10 +79,8 @@ async function getSwap(chain, account, BN) {
         }
     } catch(error) {
         console.error(error)
-        return
+        return none
     }
-
-    return
 }
 
 // Get best router quote
