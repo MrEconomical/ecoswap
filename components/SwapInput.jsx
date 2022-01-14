@@ -11,6 +11,7 @@ const SwapInput = () => {
 
     const { chain, BN } = useContext(EthereumContext)
     const inputBefore = useRef("")
+    const chainBefore = useRef(chain)
 
     // Format swap input on change
 
@@ -89,7 +90,9 @@ const SwapInput = () => {
     // Reset input on chain change
 
     useEffect(() => {
+        chainBefore.current.swap.setTokenInAmount(null)
         chain.swap.setTokenInAmount(null)
+        chainBefore.current = chain
         document.getElementById("swap-input").value = ""
     }, [chain])
 
