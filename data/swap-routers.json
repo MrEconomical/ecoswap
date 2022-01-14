@@ -1,5 +1,16 @@
 {
-    "0x1": {},
+    "0x1": {
+        "uniswap": {
+            "name": "Uniswap v2",
+            "address": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+            "ETH": "ETH"
+        },
+        "sushiswap": {
+            "name": "SushiSwap",
+            "address": "0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F",
+            "ETH": "ETH"
+        }
+    },
     "0x89": {
         "quickswap": {
             "name": "QuickSwap",
@@ -41,5 +52,11 @@
             "ETH": "ETH"
         }
     },
-    "0x38": {}
+    "0x38": {
+        "pancakeswap": {
+            "name": "PancakeSwap",
+            "address": "0x10ED43C718714eb63d5aA57B78B54704E256024E",
+            "ETH": "ETH"
+        }
+    }
 }
