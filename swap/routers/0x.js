@@ -61,6 +61,8 @@ async function quote(chain, BN) {
 // Get swap
 
 async function getSwap(chain, account, BN) {
+    // Check swap parameters
+    
     if (!chain.swapSettings.routers[routerData.id].enabled) return
     const endpoint = getEndpoint(chain.id)
     if (!endpoint) return

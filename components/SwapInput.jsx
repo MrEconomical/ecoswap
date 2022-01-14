@@ -20,7 +20,7 @@ const SwapInput = () => {
         const value = !event.target.value || /^[0-9,.]+$/g.test(event.target.value) ? event.target.value : inputBefore.current
         if (chain.swap.tokenIn && value) {
             const amount = BN(unparse(value, chain.swap.tokenIn.decimals))
-            chain.swap.setTokenInAmount(amount.eq(BN(0)) ? null : amount)
+            chain.swap.setTokenInAmount(amount.isZero() ? null : amount)
         } else {
             chain.swap.setTokenInAmount(null)
         }
@@ -80,7 +80,7 @@ const SwapInput = () => {
         const value = document.getElementById("swap-input").value
         if (chain.swap.tokenIn && value) {
             const amount = BN(unparse(value, chain.swap.tokenIn.decimals))
-            chain.swap.setTokenInAmount(amount.eq(BN(0)) ? null : amount)
+            chain.swap.setTokenInAmount(amount.isZero() ? null : amount)
         } else {
             chain.swap.setTokenInAmount(null)
         }
