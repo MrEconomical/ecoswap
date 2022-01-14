@@ -84,7 +84,7 @@ const RouterOutputs = () => {
                     display: grid;
                     grid-template-columns: 2fr 5fr 3fr;
                     gap: 8px 16px;
-                    padding: 24px 0;
+                    padding: 22px 0;
                 }
 
                 .section {
@@ -142,6 +142,14 @@ const RouterOutputs = () => {
                     .routers {
                         padding-top: 0;
                         border-top: none;
+                    }
+
+                    .section {
+                        gap: 10px;
+                    }
+
+                    .arrow {
+                        margin: 0 12px;
                     }
                 }
 
