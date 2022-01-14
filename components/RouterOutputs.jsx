@@ -41,7 +41,7 @@ const RouterOutputs = () => {
                 {swap.routers.map(router => (
                     <div className="router" key={router.id}>
                         <div className="section">
-                            <img className="icon" src={`/routers/${router.id}.svg`}></img>
+                            <img className="icon" src={`/routers/${router.routerId || router.id}.svg`}></img>
                             <div className="router-name">{router.name}</div>
                         </div>
                         <div className="section">

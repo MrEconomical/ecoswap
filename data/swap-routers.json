@@ -1,0 +1,45 @@
+{
+    "0x1": {},
+    "0x89": {
+        "quickswap": {
+            "name": "QuickSwap",
+            "address": "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff",
+            "ETH": "ETH"
+        },
+        "sushiswap": {
+            "name": "SushiSwap",
+            "address": "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506",
+            "ETH": "ETH"
+        }
+    },
+    "0xfa": {
+        "spookyswap": {
+            "name": "SpookySwap",
+            "address": "0xF491e7B69E4244ad4002BC14e878a34207E38c29",
+            "ETH": "ETH"
+        },
+        "spiritswap": {
+            "name": "SpiritSwap",
+            "address": "0x16327E3FbDaCA3bcF7E38F5Af2599D2DDc33aE52",
+            "ETH": "ETH"
+        },
+        "sushiswap": {
+            "name": "SushiSwap",
+            "address": "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506",
+            "ETH": "ETH"
+        }
+    },
+    "0xa86a": {
+        "traderjoe": {
+            "name": "Trader Joe",
+            "address": "0x60aE616a2155Ee3d9A68541Ba4544862310933d4",
+            "ETH": "AVAX"
+        },
+        "sushiswap": {
+            "name": "SushiSwap",
+            "address": "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506",
+            "ETH": "ETH"
+        }
+    },
+    "0x38": {}
+}
