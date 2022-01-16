@@ -146,9 +146,9 @@ const TokenSelect = ({ label, type }) => {
     // Remove external token from token list
 
     function removeToken(oldToken) {
-        if (activeToken.address === oldToken.address) {
+        if (activeToken?.address === oldToken.address) {
             setActiveToken(null)
-        } else if (oppositeToken.address == oldToken.address) {
+        } else if (oppositeToken?.address == oldToken.address) {
             setOppositeToken(null)
         }
 

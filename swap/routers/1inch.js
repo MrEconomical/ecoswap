@@ -110,11 +110,8 @@ async function getSwap(chain, account, BN) {
         // Return swap without estimate check on insufficient gas or allowance error
 
         if (
-            withEstimate.error.response &&
-            withEstimate.error.response.data &&
-            withEstimate.error.response.data.description &&
-            (withEstimate.error.response.data.description.startsWith("insufficient funds for gas * price + value") ||
-            withEstimate.error.response.data.description.startsWith("Not enough allowance"))
+            withEstimate?.error?.response?.data?.description.startsWith("insufficient funds for gas * price + value") ||
+            withEstimate?.error?.response?.data?.description.startsWith("Not enough allowance")
         ) {
             return {
                 router: routerData,
