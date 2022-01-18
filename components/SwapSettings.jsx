@@ -275,6 +275,7 @@ const SwapSettings = () => {
                     width: 1rem;
                     height: 1rem;
                     flex-shrink: 0;
+                    cursor: pointer;
                     background-color: var(--light-gray);
                     border-radius: 4px;
                     margin-right: 8px;
