@@ -34,14 +34,20 @@ function useGasPrice(chainId, chain) {
             if (chainId === "0x1") {
                 // Ethereum gas
 
-                const data = (await axios("https://ethgas.watch/api/gas")).data
-                setSlow(data.slow.gwei)
-                setNormal(data.normal.gwei)
-                setFast(data.instant.gwei)
+                const keys = [
+                    "8Z5ND5ZBTKG83WGQG4WI5PXR1S776726X8",
+                    "MSUS7ZCDVKX5K3U3PY9H9I3EMKYT6MIABW",
+                    "T1N65JHDCQY6KM366BXCH5JFR7RXXM7D3F"
+                ]
+
+                const data = (await axios(`https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${keys[Math.floor(Math.random() * keys.length)]}`)).data.result
+                setSlow(+data.SafeGasPrice)
+                setNormal(+data.ProposeGasPrice)
+                setFast(+data.FastGasPrice)
                 setPriorityFee({
                     slow: 1,
                     default: 2,
-                    fast: data.instant.gwei > 200 ? 6 : 4
+                    fast: +data.FastGasPrice > 200 ? 6 : 4
                 })
             } else if (chainId === "0xa86a") {
                 // Avalanche gas
