@@ -92,7 +92,8 @@ async function getSwap(chain, account, BN) {
             tx: {
                 from: account,
                 to: result.data.to,
-                data: result.data.data
+                data: result.data.data,
+                ...(+result.data.gas) && { gas: chain.web3.utils.numberToHex(result.data.gas) }
             }
         }
     } catch(error) {

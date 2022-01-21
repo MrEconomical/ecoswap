@@ -80,7 +80,7 @@ async function getSwap(chain, account, BN) {
             amount: swap.tokenInAmount.toString(),
             fromAddress: account,
             slippage: chain.swapSettings.slippage,
-            referrerAddress: chain.swapSettings.referral
+            ...(chain.swapSettings.referral) && { referrerAddress: chain.swapSettings.referral }
         }
 
         // Get swap with and without estimate checking
@@ -102,7 +102,8 @@ async function getSwap(chain, account, BN) {
                 tx: {
                     from: account,
                     to: withEstimate.data.tx.to,
-                    data: withEstimate.data.tx.data
+                    data: withEstimate.data.tx.data,
+                    ...(withEstimate.data.tx.gas) && { gas: chain.web3.utils.numberToHex(Math.floor(withEstimate.data.tx.gas * 1.25)) }
                 }
             }
         }
@@ -120,7 +121,8 @@ async function getSwap(chain, account, BN) {
                 tx: {
                     from: account,
                     to: withoutEstimate.data.tx.to,
-                    data: withoutEstimate.data.tx.data
+                    data: withoutEstimate.data.tx.data,
+                    ...(withoutEstimate.data.tx.gas) && { gas: chain.web3.utils.numberToHex(Math.floor(withoutEstimate.data.tx.gas * 1.25)) }
                 }
             }
         }
