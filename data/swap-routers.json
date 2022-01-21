@@ -57,6 +57,11 @@
             "name": "PancakeSwap",
             "address": "0x10ED43C718714eb63d5aA57B78B54704E256024E",
             "ETH": "ETH"
+        },
+        "sushiswap": {
+            "name": "SushiSwap",
+            "address": "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506",
+            "ETH": "ETH"
         }
     }
 }
