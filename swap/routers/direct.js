@@ -62,6 +62,13 @@ async function getSwap(chain, account, BN) {
 
         const best = await getBestRouterQuote(chain, routers, BN)
         if (best.out.isZero()) return none
+        const swapData = encodeSwapData(chain, account, routers[best.router], swap.tokenIn.address, swap.tokenOut.address, swap.tokenInAmount, best.out, BN)
+        const gas = await chain.web3.eth.estimateGas({
+            from: account,
+            to: routers[best.router].address,
+            value: swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? swap.tokenInAmount : 0,
+            data: swapData
+        }).catch(() => {})
 
         // Calculate swap parameters
 
@@ -76,7 +83,8 @@ async function getSwap(chain, account, BN) {
             tx: {
                 from: account,
                 to: routers[best.router].address,
-                data: encodeSwapData(chain, account, routers[best.router], swap.tokenIn.address, swap.tokenOut.address, swap.tokenInAmount, best.out, BN)
+                data: swapData,
+                ...(gas) && { gas: chain.web3.utils.numberToHex(gas) }
             }
         }
     } catch(error) {
