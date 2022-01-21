@@ -84,6 +84,12 @@ async function getSwap(chain, account, BN) {
             sellAmount: swap.tokenInAmount.toString(),
             slippagePercentage: chain.swapSettings.slippage / 100
         })}`)
+        const gas = await chain.web3.eth.estimateGas({
+            from: account,
+            to: result.data.to,
+            value: swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? swap.tokenInAmount : 0,
+            data: result.data.data
+        }).catch(() => {})
         
         return {
             router: routerData,
@@ -93,7 +99,7 @@ async function getSwap(chain, account, BN) {
                 from: account,
                 to: result.data.to,
                 data: result.data.data,
-                ...(+result.data.gas) && { gas: chain.web3.utils.numberToHex(Math.floor(+result.data.gas * 1.6)) }
+                ...(gas) && { gas: chain.web3.utils.numberToHex(Math.floor(gas * 1.01)) }
             }
         }
     } catch(error) {
