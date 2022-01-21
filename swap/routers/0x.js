@@ -93,7 +93,7 @@ async function getSwap(chain, account, BN) {
                 from: account,
                 to: result.data.to,
                 data: result.data.data,
-                ...(+result.data.gas) && { gas: chain.web3.utils.numberToHex(Math.floor(+result.data.gas * 1.25)) }
+                ...(+result.data.gas) && { gas: chain.web3.utils.numberToHex(Math.floor(+result.data.gas * 1.6)) }
             }
         }
     } catch(error) {
