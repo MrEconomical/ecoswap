@@ -92,7 +92,7 @@ const RouterOutputs = () => {
                     flex-direction: row;
                     justify-content: flex-start;
                     align-items: center;
-                    gap: 16px;
+                    gap: 14px;
                     font-size: 1.1rem;
                 }
 
