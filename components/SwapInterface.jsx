@@ -276,7 +276,7 @@ const SwapInterface = () => {
         <>
             <div className="interface">
                 <div className="header">
-                    <button className="max-token" onClick={setMax}>Max {swap.tokenIn && chain.tokenBalances[swap.tokenIn.address] ? format(parse(chain.tokenBalances[swap.tokenIn.address], swap.tokenIn.decimals)) : "..."} {swap.tokenIn ? swap.tokenIn.symbol : ""}</button>
+                    <button className="max-token" onClick={setMax}>Max {swap.tokenIn && chain.tokenBalances[swap.tokenIn.address] ? format(parse(chain.tokenBalances[swap.tokenIn.address], swap.tokenIn.decimals)) : "..."}</button>
                     <div className="label">Input Token</div>
                 </div>
                 <div className="token-section">
