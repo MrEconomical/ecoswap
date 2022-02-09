@@ -102,27 +102,44 @@ const EthereumContextProvider = ({ children }) => {
         if (!account) return
         const balances = {}
         const tokens = Object.keys(chain.tokenBalances)
-        let index = 0
 
-        // Run concurrent tasks
+        // Run batch request
 
-        await Promise.all(Array.from({ length: 5 }).map(() => {
-            return new Promise(resolve => {
-                let busy = false
-                const interval = setInterval(async () => {
-                    if (busy) return
-                    busy = true
-                    if (index >= tokens.length) {
-                        clearInterval(interval)
-                        return resolve()
+        const batch = new chain.web3.BatchRequest()
+        const requests = []
+        const Token = new chain.web3.eth.Contract(ERC20ABI, token)
+        const calldata = Token.methods.balanceOf(account).encodeABI()
+
+        for (const token of tokens) {
+            requests.push(new Promise(resolve => {
+                // Request callback
+
+                const tokenAddress = token
+                const callback = (error, result) => {
+                    if (error) {
+                        console.error(error)
+                        balances[tokenAddress] = BN(0)
+                    } else {
+                        balances[tokenAddress] = web3.utils.toBN(result)
                     }
+                    resolve()
+                }
 
-                    const token = tokens[index ++]
-                    balances[token] = await getTokenBalance(token, account)
-                    busy = false
-                }, 50)
-            })
-        }))
+                // Add request to batch
+
+                if (tokenAddress === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
+                    batch.add(web3.eth.getBalance.request(account, callback))
+                } else {
+                    batch.add(web3.eth.call.request({
+                        to: tokenAddress,
+                        data: calldata
+                    }, callback))
+                }
+            }))
+        }
+
+        batch.execute()
+        await Promise.all(requests)
 
         // Update state
 
@@ -133,23 +150,6 @@ const EthereumContextProvider = ({ children }) => {
             chain.setTokenBalances(balances)
         } else {
             updateBalances()
-        }
-    }
-
-    // Fetch token balance
-
-    async function getTokenBalance(token, account, retry = 0) {
-        try {
-            if (token === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
-                return BN(await chain.web3.eth.getBalance(account))
-            } else {
-                const Token = new chain.web3.eth.Contract(ERC20ABI, token)
-                return BN(await Token.methods.balanceOf(account).call())
-            }
-        } catch(error) {
-            console.error(error)
-            if (retry === 1) return BN(0)
-            return await getTokenBalance(token, account, retry + 1)
         }
     }
 
@@ -201,7 +201,7 @@ const EthereumContextProvider = ({ children }) => {
     useEffect(() => {
         const chainId = chain.id
         updateBalances()
-        const interval = setInterval(updateBalances, 3000)
+        const interval = setInterval(updateBalances, 2000)
 
         return () => {
             clearInterval(interval)
