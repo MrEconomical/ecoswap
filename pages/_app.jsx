@@ -92,10 +92,6 @@ const App = ({ Component, pageProps }) => {
                     background-color: #96999E;
                 }
 
-                ::-webkit-scrollbar-thumb:hover {
-                    background-color: #76797E;
-                }
-
                 @media only screen and (max-width: 1000px), (max-height: 900px) {
                     html {
                         font-size: 14px;
@@ -106,6 +102,11 @@ const App = ({ Component, pageProps }) => {
                     html {
                         font-size: 12px;
                     }
+                }
+            `}</style>
+            <style>{`
+                ::-webkit-scrollbar-thumb:hover {
+                    background-color: #76797E;
                 }
             `}</style>
         </>
