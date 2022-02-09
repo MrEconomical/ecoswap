@@ -82,7 +82,7 @@ const RouterOutputs = () => {
                 .router {
                     width: 100%;
                     display: grid;
-                    grid-template-columns: 2fr 5fr 3fr;
+                    grid-template-columns: 2fr 6fr 2fr;
                     gap: 8px 16px;
                     padding: 22px 0;
                 }
