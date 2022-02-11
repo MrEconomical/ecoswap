@@ -56,6 +56,12 @@ const PriceContextProvider = ({ children }) => {
                         prices[`${token}.e`] = +market.price
                     }
                 }
+
+                // BSC token price
+
+                if (token === "BTC") {
+                    prices["BTCB"] = +market.price
+                }
             }
         }
 
