@@ -126,8 +126,8 @@ async function getAmountOut(chain, router, tokenIn, tokenOut, amount) {
         const calldata = chain.web3.eth.abi.encodeParameters(["uint256", "address[]"], [
             amount,
             [
-                tokenIn === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH._address : tokenIn,
-                tokenOut === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH._address : tokenOut
+                tokenIn === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : tokenIn,
+                tokenOut === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : tokenOut
             ]
         ])
 
@@ -150,8 +150,8 @@ function encodeSwapData(chain, account, router, tokenIn, tokenOut, amountIn, amo
 
     const amountOutMin = amountOut.mul(BN(10 ** 4 - chain.swapSettings.slippage * 100)).div(BN(10).pow(BN(4)))
     const path = [
-        tokenIn === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH._address : tokenIn,
-        tokenOut === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH._address : tokenOut
+        tokenIn === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : tokenIn,
+        tokenOut === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : tokenOut
     ]
     const deadline = BN(2).pow(BN(256)).sub(BN(1))
 

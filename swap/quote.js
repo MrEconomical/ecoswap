@@ -16,8 +16,8 @@ async function quoteSwap(chain, BN) {
 
     if (
         (chain.swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" &&
-        chain.swap.tokenOut.address === chain.WETH._address) ||
-        (chain.swap.tokenIn.address === chain.WETH._address &&
+        chain.swap.tokenOut.address === chain.WETH) ||
+        (chain.swap.tokenIn.address === chain.WETH &&
         chain.swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE")
     ) {
         return {

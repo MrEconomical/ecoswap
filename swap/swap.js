@@ -1,9 +1,12 @@
 // Files and modules
 
 import routerList from "../data/routers.json"
+import WETHABI from "../abis/WETH.json"
+import { web3 } from "../state/EthereumContext.js"
 
-// Load router handlers
+// Load swap data
 
+const WETH = new web3.eth.Contract(WETHABI)
 const routers = []
 for (const router of routerList) {
     routers.push(require(`./routers/${router.id}.js`))
@@ -14,7 +17,7 @@ for (const router of routerList) {
 async function getSwap(chain, account, BN) {
     // Wrap or unwrap ETH swap
 
-    if (chain.swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" && chain.swap.tokenOut.address === chain.WETH._address) {
+    if (chain.swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" && chain.swap.tokenOut.address === chain.WETH) {
         // Update display state
 
         chain.swap.setTokenOutAmount(chain.swap.tokenInAmount)
@@ -30,11 +33,11 @@ async function getSwap(chain, account, BN) {
             out: chain.swap.tokenInAmount,
             tx: {
                 from: account,
-                to: chain.WETH._address,
-                data: chain.WETH.methods.deposit().encodeABI()
+                to: chain.WETH,
+                data: WETH.methods.deposit().encodeABI()
             }
         }
-    } else if (chain.swap.tokenIn.address === chain.WETH._address && chain.swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
+    } else if (chain.swap.tokenIn.address === chain.WETH && chain.swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
         // Update display state
 
         chain.swap.setTokenOutAmount(chain.swap.tokenInAmount)
@@ -50,8 +53,8 @@ async function getSwap(chain, account, BN) {
             out: chain.swap.tokenInAmount,
             tx: {
                 from: account,
-                to: chain.WETH._address,
-                data: chain.WETH.methods.withdraw(chain.swap.tokenInAmount).encodeABI()
+                to: chain.WETH,
+                data: WETH.methods.withdraw(chain.swap.tokenInAmount).encodeABI()
             }
         }
     }

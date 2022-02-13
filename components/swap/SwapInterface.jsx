@@ -140,7 +140,7 @@ const SwapInterface = () => {
 
         if (
             swap.tokenIn.address !== "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" &&
-            (swap.tokenIn.address !== chain.WETH._address || swap.tokenOut.address !== "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE")
+            (swap.tokenIn.address !== chain.WETH || swap.tokenOut.address !== "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE")
         ) {
             const Token = new chain.web3.eth.Contract(ERC20ABI, swap.tokenIn.address)
             const approved = await getApproved(swapData.tx.to)
@@ -262,9 +262,9 @@ const SwapInterface = () => {
             setSwapButtonText("Swap Tokens")
             return
         }
-        if (swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" && swap.tokenOut.address === chain.WETH._address) {
+        if (swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" && swap.tokenOut.address === chain.WETH) {
             setSwapButtonText("Wrap")
-        } else if (swap.tokenIn.address === chain.WETH._address && swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
+        } else if (swap.tokenIn.address === chain.WETH && swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
             setSwapButtonText("Unwrap")
         } else {
             setSwapButtonText("Swap Tokens")

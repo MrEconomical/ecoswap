@@ -1,7 +1,6 @@
 // Files and modules
 
 import chainData from "../data/chains.json"
-import WETHABI from "../abis/WETH.json"
 import ERC20ABI from "../abis/ERC20.json"
 import useTokens from "./useTokens.js"
 import useSwap from "./useSwap.js"
@@ -21,7 +20,6 @@ for (const id in chainData) {
         ...chainData[id],
         web3: new Web3(chainData[id].rpc)
     }
-    chains[id].WETH = new chains[id].web3.eth.Contract(WETHABI, chains[id].WETH)
 }
 
 // Ethereum context
@@ -243,5 +241,5 @@ const EthereumContextProvider = ({ children }) => {
 
 // Exports
 
-export { EthereumContextProvider, chains }
+export { EthereumContextProvider, web3, chains, BN }
 export default EthereumContext
