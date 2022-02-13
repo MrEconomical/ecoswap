@@ -1,9 +1,9 @@
 // Files and modules
 
 import WindowSizeContext from "../state/WindowSizeContext.js"
-import SwapInterface from "../components/SwapInterface.jsx"
-import SwapSettings from "../components/SwapSettings.jsx"
-import RouterOutputs from "../components/RouterOutputs.jsx"
+import SwapInterface from "../components/swap/SwapInterface.jsx"
+import SwapSettings from "../components/swap/SwapSettings.jsx"
+import RouterOutputs from "../components/swap/RouterOutputs.jsx"
 import { useContext } from "react"
 
 // Swap page

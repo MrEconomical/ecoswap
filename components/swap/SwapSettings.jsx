@@ -1,8 +1,8 @@
 // Files and modules
 
-import ThemeContext from "../state/ThemeContext.js"
-import WindowSizeContext from "../state/WindowSizeContext.js"
-import EthereumContext from "../state/EthereumContext.js"
+import ThemeContext from "../../state/ThemeContext.js"
+import WindowSizeContext from "../../state/WindowSizeContext.js"
+import EthereumContext from "../../state/EthereumContext.js"
 import { useContext, useRef } from "react"
 
 // Swap settings component

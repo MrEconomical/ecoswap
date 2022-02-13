@@ -1,14 +1,14 @@
 // Files and modules
 
-import routerList from "../data/routers.json"
-import ERC20ABI from "../abis/ERC20.json"
-import ThemeContext from "../state/ThemeContext.js"
-import EthereumContext from "../state/EthereumContext.js"
+import routerList from "../../data/routers.json"
+import ERC20ABI from "../../abis/ERC20.json"
+import ThemeContext from "../../state/ThemeContext.js"
+import EthereumContext from "../../state/EthereumContext.js"
 import SwapInput from "./SwapInput.jsx"
 import TokenSelect from "./TokenSelect.jsx"
-import quoteSwap from "../swap/quote.js"
-import getSwap from "../swap/swap.js"
-import { parse, format } from "../helpers/number.js"
+import quoteSwap from "../../swap/quote.js"
+import getSwap from "../../swap/swap.js"
+import { parse, format } from "../../helpers/number.js"
 import { useState, useEffect, useContext, useRef } from "react"
 
 // Swap interface component

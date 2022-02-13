@@ -1,9 +1,9 @@
 // Files and modules
 
-import ERC20ABI from "../abis/ERC20.json"
-import ThemeContext from "../state/ThemeContext.js"
-import EthereumContext from "../state/EthereumContext.js"
-import { parse, format } from "../helpers/number.js"
+import ERC20ABI from "../../abis/ERC20.json"
+import ThemeContext from "../../state/ThemeContext.js"
+import EthereumContext from "../../state/EthereumContext.js"
+import { parse, format } from "../../helpers/number.js"
 import { useState, useEffect, useContext } from "react"
 
 // Token selection component

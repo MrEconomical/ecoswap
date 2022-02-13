@@ -1,10 +1,10 @@
 // Files and modules
 
-import ThemeContext from "../state/ThemeContext.js"
-import WindowSizeContext from "../state/WindowSizeContext.js"
-import EthereumContext from "../state/EthereumContext.js"
-import PriceContext from "../state/PriceContext.js"
-import { parse, format, formatNumber } from "../helpers/number.js"
+import ThemeContext from "../../state/ThemeContext.js"
+import WindowSizeContext from "../../state/WindowSizeContext.js"
+import EthereumContext from "../../state/EthereumContext.js"
+import PriceContext from "../../state/PriceContext.js"
+import { parse, format, formatNumber } from "../../helpers/number.js"
 import { useContext } from "react"
 
 // Router outputs component
@@ -92,7 +92,7 @@ const RouterOutputs = () => {
                     flex-direction: row;
                     justify-content: flex-start;
                     align-items: center;
-                    gap: 14px;
+                    gap: 12px;
                     font-size: 1.1rem;
                 }
 
@@ -107,7 +107,7 @@ const RouterOutputs = () => {
                 }
 
                 .arrow {
-                    margin: 0 16px;
+                    margin: 0 12px;
                 }
 
                 @media only screen and (max-width: 1000px), (max-height: 900px) {
