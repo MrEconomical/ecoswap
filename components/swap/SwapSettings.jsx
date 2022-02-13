@@ -14,6 +14,7 @@ const SwapSettings = () => {
     const { web3, chain } = useContext(EthereumContext)
     const { width } = useContext(WindowSizeContext)
     const settings = chain.swapSettings
+
     const slippageInput = useRef("")
     const gasInput = useRef("")
 
@@ -23,12 +24,14 @@ const SwapSettings = () => {
         settings.setSlippage(+event.target.value / 100)
     }
 
-    // Set slippage with text input value
+    // Set slippage as text input value
 
     function setSlippage(event) {
         if (isNaN(+event.target.value) || event.target.value.includes(" ")) {
             event.target.value = slippageInput.current
+            return
         }
+
         slippageInput.current = event.target.value
         if (+event.target.value <= 0 || event.target.value >= 50) return
         if (event.target.value.endsWith(".")) return
@@ -51,12 +54,12 @@ const SwapSettings = () => {
     function setGas(event) {
         if (isNaN(+event.target.value) || event.target.value.includes(" ")) {
             event.target.value = gasInput.current
+            return
         }
 
         gasInput.current = event.target.value
         if (+event.target.value <= 0) return
         if (event.target.value.endsWith(".")) return
-        
         settings.setGas({
             ...settings.gas,
             [chain.id]: +event.target.value

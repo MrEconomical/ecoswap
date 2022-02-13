@@ -23,6 +23,8 @@ const TokenSelect = ({ label, type }) => {
     // Update token search with query
 
     function updateTokenList(event) {
+        // Get query and searchable tokens
+
         const query = event.target.value.toLowerCase()
         if (!query) return setTokenList(chain.tokens.filter(token => oppositeToken ? token.address !== oppositeToken.address : true))
         const tokens = chain.tokens.filter(token => (oppositeToken ? token.address !== oppositeToken.address : true) &&
@@ -56,6 +58,8 @@ const TokenSelect = ({ label, type }) => {
             }
         })
 
+        // Update token list
+
         setTokenList(tokens)
         if (web3.utils.isAddress(query) && !chain.tokens.find(token => token.address.toLowerCase() === query)) {
             addExternalToken(query, tokens)
@@ -65,9 +69,10 @@ const TokenSelect = ({ label, type }) => {
     // Add external token to token list
 
     async function addExternalToken(address, tokenList) {
+        // Fetch token data
+
         const Token = new chain.web3.eth.Contract(ERC20ABI, address)
         let name, symbol, decimals, balance
-
         try {
             [ name, symbol, decimals, balance ] = await Promise.all([
                 Token.methods.name().call()
@@ -91,11 +96,12 @@ const TokenSelect = ({ label, type }) => {
             return
         }
 
+        // Set token balances and token list
+
         chain.setTokenBalances({
             ...chain.tokenBalances,
             [Token._address]: BN(balance)
         })
-
         setTokenList([...tokenList, {
             external: true,
             added: false,
@@ -113,9 +119,13 @@ const TokenSelect = ({ label, type }) => {
             if (element.classList && element.classList.contains("token-control")) return
         }
         if (chain.tokens.find(token => token.address === newToken.address)) {
+            // Switch to existing token
+
             setActiveToken({...newToken})
             setTokenList(chain.tokens.filter(token => oppositeToken ? token.address !== oppositeToken.address : true))
         } else {
+            // Add new token to token list
+
             const tokens = [...chain.tokens, newToken]
             chain.setTokens(tokens)
             setActiveToken({...newToken})
@@ -130,6 +140,8 @@ const TokenSelect = ({ label, type }) => {
         const tokens = [...chain.tokens]
         const existing = tokens.find(token => token.address === newToken.address)
         if (existing) {
+            // Update existing external token to added token
+
             existing.added = true
             if (activeToken && activeToken.address === newToken.address) {
                 setActiveToken({...newToken})
@@ -137,6 +149,8 @@ const TokenSelect = ({ label, type }) => {
                 setOppositeToken({...newToken})
             }
         } else {
+            // Add new external token
+
             newToken.added = true
             tokens.push(newToken)
         }
@@ -146,11 +160,15 @@ const TokenSelect = ({ label, type }) => {
     // Remove external token from token list
 
     function removeToken(oldToken) {
+        // Clear selected tokens
+
         if (activeToken?.address === oldToken.address) {
             setActiveToken(null)
         } else if (oppositeToken?.address == oldToken.address) {
             setOppositeToken(null)
         }
+
+        // Remove token from token list
 
         const tokenListIndex = tokenList.findIndex(token => token.address === oldToken.address)
         setTokenList(tokenList.slice(0, tokenListIndex).concat(tokenList.slice(tokenListIndex + 1)))
@@ -165,17 +183,17 @@ const TokenSelect = ({ label, type }) => {
         event.currentTarget.src = theme === "dark" ? "/tokens/unknown-white.svg" : "/tokens/unknown.svg"
     }
 
-    // Update token list on data changes
-
-    useEffect(() => {
-        setTokenList(chain.tokens.filter(token => oppositeToken ? token.address !== oppositeToken.address : true))
-    }, [chain, oppositeToken])
-
     // Hide menu on chain or account changes
 
     useEffect(() => {
         setMenuActive(false)
     }, [chain, account])
+
+    // Update token list on data changes
+
+    useEffect(() => {
+        setTokenList(chain.tokens.filter(token => oppositeToken ? token.address !== oppositeToken.address : true))
+    }, [chain, oppositeToken])
 
     // Remove unselected external tokens from token balances on menu changes
 

@@ -2,11 +2,13 @@
 
 import routerList from "../../data/routers.json"
 import ERC20ABI from "../../abis/ERC20.json"
+
 import ThemeContext from "../../state/ThemeContext.js"
 import EthereumContext from "../../state/EthereumContext.js"
 import SwapInput from "./SwapInput.jsx"
 import TokenSelect from "./TokenSelect.jsx"
 import useApproval from "../../state/useApproval.js"
+
 import quoteSwap from "../../swap/quote.js"
 import getSwap from "../../swap/swap.js"
 import { parse, format } from "../../helpers/number.js"
@@ -35,7 +37,7 @@ const SwapInterface = () => {
         account
     })
 
-    // Set max token amount
+    // Set max token in amount
 
     function setMax() {
         if (!swap.tokenIn) return
@@ -95,12 +97,17 @@ const SwapInterface = () => {
 
     async function updateQuote() {
         try {
+            // Fetch swap quote
+
             quoteStart.current = {
                 in: swap.tokenIn ? swap.tokenIn.address : null,
                 inAmount: swap.tokenInAmount,
                 out: swap.tokenOut ? swap.tokenOut.address : null
             }
             const updates = await quoteSwap(chain, BN)
+
+            // Update display with valid quote
+
             if (
                 swap.tokenIn &&
                 swap.tokenIn.address === quoteStart.current.in &&
@@ -218,9 +225,11 @@ const SwapInterface = () => {
         setSwapButtonText("Swap Tokens")
     }
 
-    // Update swap data on token changes
+    // Update swap data on token state changes
 
     useEffect(() => {
+        // Reset token data on empty input
+
         clearTimeout(updateTimeout.current)
         if (!swap.tokenIn || !swap.tokenInAmount || !swap.tokenOut) {
             swap.setTokenOutAmount(null)
@@ -231,15 +240,18 @@ const SwapInterface = () => {
             return
         }
 
+        // Update quote on change
+
         if (swap.tokenIn.address === tokenIn.current && swap.tokenInAmount.eq(BN(amountIn.current)) && swap.tokenOut.address === tokenOut.current) return
         swap.setTokenOutAmount("...")
         swap.setRouters(routerList)
-
         if (swap.tokenIn.address !== tokenIn.current || swap.tokenOut.address !== tokenOut.current) {
             updateQuote()
         } else {
             updateTimeout.current = setTimeout(updateQuote, 300)
         }
+
+        // Update state reference
         
         tokenIn.current = swap.tokenIn.address
         amountIn.current = swap.tokenInAmount
