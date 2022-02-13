@@ -442,7 +442,6 @@ const Footer = () => {
 
                 .link {
                     height: 20px;
-                    filter: ${theme === "dark" ? "invert(1)" : "none"};
                 }
 
                 @media only screen and (max-width: 1000px), (max-height: 900px) {
@@ -483,6 +482,11 @@ const Footer = () => {
                     .footer {
                         padding: 0 max(calc(50vw - 145px), 10px);
                     }
+                }
+            `}</style>
+            <style jsx>{`
+                .link {
+                    filter: ${theme === "dark" ? "invert(1)" : "none"};
                 }
             `}</style>
         </>

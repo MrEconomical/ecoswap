@@ -346,10 +346,6 @@ const SwapSettings = () => {
                     margin-right: 12px;
                 }
 
-                .router-icon[src="/routers/0x.svg"] {
-                    filter: ${theme === "dark" ? "invert(1)" : "none"};
-                }
-
                 .router-status {
                     min-width: 4.3rem;
                     color: var(--dark-gray);
@@ -388,7 +384,6 @@ const SwapSettings = () => {
                     bottom: 4px;
                     content: "";
                     outline: none;
-                    background-color: ${theme === "dark" ? "#E6E9EE" : "#FFFFFF"};
                 }
 
                 input:checked + .slider {
@@ -445,7 +440,6 @@ const SwapSettings = () => {
 
                 .referral-button:hover {
                     background-color: var(--light);
-                    color: ${theme === "dark" ? "var(--base-black)" : "default"};
                 }
 
                 @media only screen and (max-width: 1000px), (max-height: 900px) {
@@ -602,6 +596,19 @@ const SwapSettings = () => {
                         font-size: 0.9rem;
                         padding: 4px 8px;
                     }
+                }
+            `}</style>
+            <style jsx>{`
+                .router-icon[src="/routers/0x.svg"] {
+                    filter: ${theme === "dark" ? "invert(1)" : "none"};
+                }
+
+                .referral-button:hover {
+                    color: ${theme === "dark" ? "var(--base-black)" : "default"};
+                }
+
+                .slider:before {
+                    background-color: ${theme === "dark" ? "#E6E9EE" : "#FFFFFF"};
                 }
             `}</style>
         </>

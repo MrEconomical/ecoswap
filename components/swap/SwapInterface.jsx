@@ -380,7 +380,6 @@ const SwapInterface = () => {
                     width: 20px;
                     height: 20px;
                     object-fit: contain;
-                    filter: ${theme === "dark" ? "invert(1)" : "none"};
                 }
 
                 .switch:hover .arrows {
@@ -460,6 +459,11 @@ const SwapInterface = () => {
                         border-right: none;
                         margin-right: 0;
                     }
+                }
+            `}</style>
+            <style jsx>{`
+                .arrows {
+                    filter: ${theme === "dark" ? "invert(1)" : "none"};
                 }
             `}</style>
         </>

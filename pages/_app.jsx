@@ -31,12 +31,9 @@ const Metadata = ({ page }) => {
 // Site content
 
 const App = ({ Component, pageProps }) => {
-    // Page theme
+    // Page data
 
     const { theme } = useContext(ThemeContext)
-
-    // Error page
-
     if (pageProps.statusCode) {
         return <Error statusCode={pageProps.statusCode}></Error>
     }
@@ -68,7 +65,8 @@ const App = ({ Component, pageProps }) => {
                     --gray: ${theme === "light" ? "#96999E" : "#A6A9AE"};
                     --light-gray: ${theme === "light" ? "#C6C9CE" : "#76797E"};
                 }
-
+            `}</style>
+            <style jsx global>{`
                 * {
                     font-family: "Gilroy";
                     color: var(--black);
@@ -82,10 +80,6 @@ const App = ({ Component, pageProps }) => {
 
                 ::-webkit-scrollbar {
                     width: 10px;
-                }
-
-                ::-webkit-scrollbar-track {
-                    background-color: ${theme === "dark" ? "#36393E" : "#E6E9EE"};
                 }
 
                 ::-webkit-scrollbar-thumb {
@@ -102,6 +96,11 @@ const App = ({ Component, pageProps }) => {
                     html {
                         font-size: 12px;
                     }
+                }
+            `}</style>
+            <style jsx global>{`
+                ::-webkit-scrollbar-track {
+                    background-color: ${theme === "dark" ? "#36393E" : "#E6E9EE"};
                 }
             `}</style>
             <style>{`

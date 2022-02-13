@@ -102,10 +102,6 @@ const RouterOutputs = () => {
                     object-fit: contain;
                 }
 
-                .icon[src="/routers/0x.svg"] {
-                    filter: ${theme === "dark" ? "invert(1)" : "none"};
-                }
-
                 .arrow {
                     margin: 0 12px;
                 }
@@ -171,6 +167,11 @@ const RouterOutputs = () => {
                     .router-name {
                         display: none;
                     }
+                }
+            `}</style>
+            <style jsx>{`
+                .icon[src="/routers/0x.svg"] {
+                    filter: ${theme === "dark" ? "invert(1)" : "none"};
                 }
             `}</style>
         </>

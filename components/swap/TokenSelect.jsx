@@ -266,7 +266,6 @@ const TokenSelect = ({ label, type }) => {
                     width: 0.9rem;
                     height: 0.9rem;
                     object-fit: contain;
-                    filter: ${theme === "dark" ? "invert(1)" : "none"};
                     margin-left: 8px;
                 }
 
@@ -298,7 +297,6 @@ const TokenSelect = ({ label, type }) => {
                     width: 100%;
                     height: 100%;
                     object-fit: contain;
-                    filter: ${theme === "dark" ? "invert(1)" : "none"};
                 }
 
                 .token-search {
@@ -313,7 +311,6 @@ const TokenSelect = ({ label, type }) => {
                     width: 0.75rem;
                     height: 0.75rem;
                     object-fit: contain;
-                    filter: ${theme === "dark" ? "invert(1)" : "none"};
                     margin-right: 16px;
                 }
 
@@ -424,6 +421,19 @@ const TokenSelect = ({ label, type }) => {
                         width: 100%;
                         height: calc(100% - 2px);
                     }
+                }
+            `}</style>
+            <style jsx>{`
+                .arrow {
+                    filter: ${theme === "dark" ? "invert(1)" : "none"};
+                }
+
+                .exit-icon {
+                    filter: ${theme === "dark" ? "invert(1)" : "none"};
+                }
+
+                .search-icon {
+                    filter: ${theme === "dark" ? "invert(1)" : "none"};
                 }
             `}</style>
         </>
