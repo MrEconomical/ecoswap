@@ -192,20 +192,6 @@ const SwapInterface = () => {
             }
         }
 
-        // Set wrap and unwrap ETH button text
-
-        if (
-            swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" &&
-            swap.tokenOut.address === chain.WETH._address
-        ) {
-            setSwapButtonText("Wrap")
-        } else if (
-            swap.tokenIn.address === chain.WETH._address &&
-            swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
-        ) {
-            setSwapButtonText("Unwrap")
-        }
-
         // Send swap transaction
 
         swapPending.current = true
@@ -269,14 +255,29 @@ const SwapInterface = () => {
         return () => clearInterval(interval)
     }, [swap.tokenIn, swap.tokenInAmount, swap.tokenOut])
 
-    // Update swap button text on Ethereum state changes
+    // Update swap button text on token changes
+
+    useEffect(() => {
+        if (!swap.tokenIn || !swap.tokenOut) {
+            setSwapButtonText("Swap Tokens")
+            return
+        }
+        if (swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" && swap.tokenOut.address === chain.WETH._address) {
+            setSwapButtonText("Wrap")
+        } else if (swap.tokenIn.address === chain.WETH._address && swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
+            setSwapButtonText("Unwrap")
+        } else {
+            setSwapButtonText("Swap Tokens")
+        }
+    }, [swap.tokenIn, swap.tokenOut])
+
+    // Update state reference on changes
 
     useEffect(() => {
         ethereumState.current = {
             chainId: chain.id,
             account
         }
-        setSwapButtonText("Swap Tokens")
     }, [chain, account])
 
     // Component

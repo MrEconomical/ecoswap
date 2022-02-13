@@ -14,15 +14,16 @@ for (const router of routerList) {
 async function getSwap(chain, account, BN) {
     // Wrap or unwrap ETH swap
 
-    if (
-        chain.swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" &&
-        chain.swap.tokenOut.address === chain.WETH._address
-    ) {
+    if (chain.swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" && chain.swap.tokenOut.address === chain.WETH._address) {
+        // Update display state
+
         chain.swap.setTokenOutAmount(chain.swap.tokenInAmount)
         chain.swap.setRouters(routerList.map(router => ({
             ...router,
             out: chain.swap.tokenInAmount
         })))
+
+        // Wrap transaction data
 
         return {
             in: chain.swap.tokenInAmount,
@@ -33,15 +34,16 @@ async function getSwap(chain, account, BN) {
                 data: chain.WETH.methods.deposit().encodeABI()
             }
         }
-    } else if (
-        chain.swap.tokenIn.address === chain.WETH._address &&
-        chain.swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
-    ) {
+    } else if (chain.swap.tokenIn.address === chain.WETH._address && chain.swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
+        // Update display state
+
         chain.swap.setTokenOutAmount(chain.swap.tokenInAmount)
         chain.swap.setRouters(routerList.map(router => ({
             ...router,
             out: chain.swap.tokenInAmount
         })))
+
+        // Unwrap transaction data
 
         return {
             in: chain.swap.tokenInAmount,
