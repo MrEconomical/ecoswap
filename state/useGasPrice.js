@@ -1,5 +1,6 @@
 // Files and modules
 
+import { BN } from "./EthereumContext.js"
 import axios from "axios"
 import { useState, useEffect, useRef } from "react"
 
@@ -95,7 +96,7 @@ function useGasPrice(chainId, chain) {
 
     // Calculate gas parameters
 
-    function getGasParameters(gas, BN) {
+    function getGasParameters(gas) {
         if (gas === "default") return {}
         if (chainId === "0x1" || chainId === "0xa86a") {
             return {

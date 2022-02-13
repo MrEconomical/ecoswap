@@ -1,6 +1,7 @@
 // Files and modules
 
 import routerList from "../data/routers.json"
+import { BN } from "../state/EthereumContext.js"
 
 // Load router handlers
 
@@ -11,7 +12,7 @@ for (const router of routerList) {
 
 // Quote swap on routers
 
-async function quoteSwap(chain, BN) {
+async function quoteSwap(chain) {
     // Wrap or unwrap ETH quote
 
     if (
@@ -31,7 +32,7 @@ async function quoteSwap(chain, BN) {
 
     // Get best router quote
 
-    const quotes = await Promise.all(routers.map(router => router.quote(chain, BN)))
+    const quotes = await Promise.all(routers.map(router => router.quote(chain)))
     quotes.sort((a, b) => {
         if (a.out && !b.out) {
             return -1

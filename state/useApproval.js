@@ -2,11 +2,12 @@
 
 import ERC20ABI from "../abis/ERC20.json"
 import approvalCache from "../data/approval-cache.json"
+import { web3, BN } from "./EthereumContext.js"
 import { useState, useEffect } from "react"
 
 // Token approval hook
 
-function useApproval(web3, chain, account, token, BN) {
+function useApproval(chain, account, token) {
     // Token approval state data
 
     const [ approved, setApproved ] = useState({})

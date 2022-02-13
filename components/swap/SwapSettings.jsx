@@ -2,7 +2,7 @@
 
 import ThemeContext from "../../state/ThemeContext.js"
 import WindowSizeContext from "../../state/WindowSizeContext.js"
-import EthereumContext from "../../state/EthereumContext.js"
+import EthereumContext, { web3 } from "../../state/EthereumContext.js"
 import { useContext, useRef } from "react"
 
 // Swap settings component
@@ -11,7 +11,7 @@ const SwapSettings = () => {
     // Swap settings data
     
     const { theme } = useContext(ThemeContext)
-    const { web3, chain } = useContext(EthereumContext)
+    const { chain } = useContext(EthereumContext)
     const { width } = useContext(WindowSizeContext)
     const settings = chain.swapSettings
 

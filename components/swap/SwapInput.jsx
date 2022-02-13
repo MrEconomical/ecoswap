@@ -1,6 +1,6 @@
 // Files and modules
 
-import EthereumContext from "../../state/EthereumContext.js"
+import EthereumContext, { BN } from "../../state/EthereumContext.js"
 import { unparse, format } from "../../helpers/number.js"
 import { useEffect, useContext, useRef } from "react"
 
@@ -9,7 +9,7 @@ import { useEffect, useContext, useRef } from "react"
 const SwapInput = () => {
     // Swap data
 
-    const { chain, BN } = useContext(EthereumContext)
+    const { chain } = useContext(EthereumContext)
     const inputBefore = useRef("")
     const chainBefore = useRef(chain)
 

@@ -2,7 +2,7 @@
 
 import ERC20ABI from "../../abis/ERC20.json"
 import ThemeContext from "../../state/ThemeContext.js"
-import EthereumContext from "../../state/EthereumContext.js"
+import EthereumContext, { web3, BN } from "../../state/EthereumContext.js"
 import { parse, format } from "../../helpers/number.js"
 import { useState, useEffect, useContext } from "react"
 
@@ -12,7 +12,7 @@ const TokenSelect = ({ label, type }) => {
     // Token selection menu data
 
     const { theme } = useContext(ThemeContext)
-    const { web3, chain, account, BN } = useContext(EthereumContext)
+    const { chain, account } = useContext(EthereumContext)
     const activeToken = chain.swap[type === "input" ? "tokenIn" : "tokenOut"]
     const setActiveToken = chain.swap[type === "input" ? "setTokenIn" : "setTokenOut"]
     const oppositeToken = chain.swap[type === "input" ? "tokenOut" : "tokenIn"]

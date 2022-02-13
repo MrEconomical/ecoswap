@@ -22,13 +22,7 @@ for (const id in chainData) {
     }
 }
 
-// Ethereum context
-
-const EthereumContext = createContext({
-    web3,
-    chains,
-    BN
-})
+const EthereumContext = createContext({})
 
 // Ethereum context provider
 
@@ -225,14 +219,11 @@ const EthereumContextProvider = ({ children }) => {
     return (
         <EthereumContext.Provider value={{
             enabled,
-            web3,
             chain,
             account,
-            chains,
             setEnabled,
             setChain,
-            setAccount,
-            BN
+            setAccount
         }}>
             {children}
         </EthereumContext.Provider>
@@ -241,5 +232,5 @@ const EthereumContextProvider = ({ children }) => {
 
 // Exports
 
-export { EthereumContextProvider, web3, chains, BN }
+export { web3, chains, BN, EthereumContextProvider }
 export default EthereumContext

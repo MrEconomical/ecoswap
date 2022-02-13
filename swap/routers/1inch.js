@@ -1,6 +1,7 @@
 // Files and modules
 
 import routerList from "../../data/routers.json"
+import { BN } from "../../state/EthereumContext.js"
 import axios from "axios"
 import querystring from "querystring"
 
@@ -20,7 +21,7 @@ function getEndpoint(chainId) {
 
 // Quote swap
 
-async function quote(chain, BN) {
+async function quote(chain) {
     // No quote
 
     const none = {
@@ -56,7 +57,7 @@ async function quote(chain, BN) {
 
 // Get swap
 
-async function getSwap(chain, account, BN) {
+async function getSwap(chain, account) {
     // No swap
 
     const none = {

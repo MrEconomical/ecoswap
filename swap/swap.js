@@ -2,7 +2,7 @@
 
 import routerList from "../data/routers.json"
 import WETHABI from "../abis/WETH.json"
-import { web3 } from "../state/EthereumContext.js"
+import { web3, BN } from "../state/EthereumContext.js"
 
 // Load swap data
 
@@ -14,7 +14,7 @@ for (const router of routerList) {
 
 // Get best swap from routers
 
-async function getSwap(chain, account, BN) {
+async function getSwap(chain, account) {
     // Wrap or unwrap ETH swap
 
     if (chain.swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" && chain.swap.tokenOut.address === chain.WETH) {
@@ -61,7 +61,7 @@ async function getSwap(chain, account, BN) {
 
     // Get best router swap
 
-    const swaps = await Promise.all(routers.map(router => router.getSwap(chain, account, BN)))
+    const swaps = await Promise.all(routers.map(router => router.getSwap(chain, account)))
     swaps.sort((a, b) => {
         if (a.out && !b.out) {
             return -1

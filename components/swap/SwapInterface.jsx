@@ -4,7 +4,7 @@ import routerList from "../../data/routers.json"
 import ERC20ABI from "../../abis/ERC20.json"
 
 import ThemeContext from "../../state/ThemeContext.js"
-import EthereumContext from "../../state/EthereumContext.js"
+import EthereumContext, { web3, BN } from "../../state/EthereumContext.js"
 import SwapInput from "./SwapInput.jsx"
 import TokenSelect from "./TokenSelect.jsx"
 import useApproval from "../../state/useApproval.js"
@@ -20,10 +20,10 @@ const SwapInterface = () => {
     // Swap data
 
     const { theme } = useContext(ThemeContext)
-    const { enabled, web3, chain, account, BN } = useContext(EthereumContext)
+    const { enabled, chain, account } = useContext(EthereumContext)
     const swap = chain.swap
     const [ swapButtonText, setSwapButtonText ] = useState("Swap Tokens")
-    const getApproved = useApproval(web3, chain, account, swap.tokenIn, BN)
+    const getApproved = useApproval(chain, account, swap.tokenIn)
 
     const tokenIn = useRef(swap.tokenIn ? swap.tokenIn.address : null)
     const amountIn = useRef(swap.tokenInAmount)
@@ -104,7 +104,7 @@ const SwapInterface = () => {
                 inAmount: swap.tokenInAmount,
                 out: swap.tokenOut ? swap.tokenOut.address : null
             }
-            const updates = await quoteSwap(chain, BN)
+            const updates = await quoteSwap(chain)
 
             // Update display with valid quote
 
@@ -133,7 +133,7 @@ const SwapInterface = () => {
         if (chain.tokenBalances[swap.tokenIn.address].lt(swap.tokenInAmount)) return
         swap.setTokenOutAmount("...")
         swap.setRouters(routerList)
-        const swapData = await getSwap(chain, account, BN)
+        const swapData = await getSwap(chain, account)
         if (!swapData) return
 
         // Check approval
@@ -156,7 +156,7 @@ const SwapInterface = () => {
                             from: account,
                             to: Token._address,
                             data: Token.methods.approve(swapData.tx.to, BN(2).pow(BN(256)).sub(BN(1))).encodeABI(),
-                            ...chain.gasPrice.getGasParameters(chain.swapSettings.gas[chain.id], BN)
+                            ...chain.gasPrice.getGasParameters(chain.swapSettings.gas[chain.id])
                         }]
                     })
 
@@ -201,7 +201,7 @@ const SwapInterface = () => {
                 params: [{
                     ...swapData.tx,
                     value: swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? BN(swapData.in).toString(16) : 0,
-                    ...chain.gasPrice.getGasParameters(chain.swapSettings.gas[chain.id], BN)
+                    ...chain.gasPrice.getGasParameters(chain.swapSettings.gas[chain.id])
                 }]
             })
         } catch(error) {

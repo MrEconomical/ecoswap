@@ -46,7 +46,7 @@ const NavLink = ({ name, href }) => (
 const WalletManager = () => {
     // Wallet data
 
-    const { enabled, chain, account, chains, setChain } = useContext(EthereumContext)
+    const { enabled, chain, account, setChain } = useContext(EthereumContext)
     const { width } = useContext(WindowSizeContext)
     const [ chainSelectActive, setChainSelectActive ] = useState(false)
 

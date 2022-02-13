@@ -2,12 +2,13 @@
 
 import routerList from "../../data/routers.json"
 import swapRouters from "../../data/swap-routers.json"
+import { BN } from "../../state/EthereumContext.js"
 
 const routerData = routerList.find(router => router.id === "direct")
 
 // Quote swap
 
-async function quote(chain, BN) {
+async function quote(chain) {
     // No quote
 
     const none = {
@@ -24,7 +25,7 @@ async function quote(chain, BN) {
     try {
         // Find best router quote
 
-        const best = await getBestRouterQuote(chain, routers, BN)
+        const best = await getBestRouterQuote(chain, routers)
         if (best.out.isZero()) return none
         
         return {
@@ -42,7 +43,7 @@ async function quote(chain, BN) {
 
 // Get swap
 
-async function getSwap(chain, account, BN) {
+async function getSwap(chain, account) {
     // No swap
 
     const none = {
@@ -60,9 +61,9 @@ async function getSwap(chain, account, BN) {
     try {
         // Find best router quote
 
-        const best = await getBestRouterQuote(chain, routers, BN)
+        const best = await getBestRouterQuote(chain, routers)
         if (best.out.isZero()) return none
-        const swapData = encodeSwapData(chain, account, routers[best.router], swap.tokenIn.address, swap.tokenOut.address, swap.tokenInAmount, best.out, BN)
+        const swapData = encodeSwapData(chain, account, routers[best.router], swap.tokenIn.address, swap.tokenOut.address, swap.tokenInAmount, best.out)
         const gas = await chain.web3.eth.estimateGas({
             from: account,
             to: routers[best.router].address,
@@ -95,7 +96,7 @@ async function getSwap(chain, account, BN) {
 
 // Get best router quote
 
-async function getBestRouterQuote(chain, routers, BN) {
+async function getBestRouterQuote(chain, routers) {
     // Get router quotes
 
     const quotes = await Promise.all(Object.keys(routers).map(async router => {
@@ -145,7 +146,7 @@ async function getAmountOut(chain, router, tokenIn, tokenOut, amount) {
 
 // Encode swap data on router
 
-function encodeSwapData(chain, account, router, tokenIn, tokenOut, amountIn, amountOut, BN) {
+function encodeSwapData(chain, account, router, tokenIn, tokenOut, amountIn, amountOut) {
     // Calculate swap data
 
     const amountOutMin = amountOut.mul(BN(10 ** 4 - chain.swapSettings.slippage * 100)).div(BN(10).pow(BN(4)))
