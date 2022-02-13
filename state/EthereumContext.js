@@ -72,7 +72,8 @@ const EthereumContextProvider = ({ children }) => {
 
     async function updateAccount() {
         if (typeof ethereum === "undefined") return
-        setAccount((await ethereum.request({ method: "eth_accounts" }))[0])
+        const account = (await ethereum.request({ method: "eth_accounts" }))[0]
+        setAccount(web3.utils.toChecksumAddress(account))
     }
 
     // Update active chain
@@ -156,7 +157,6 @@ const EthereumContextProvider = ({ children }) => {
     // Update client side data on loop
 
     useEffect(() => {
-        delete localStorage.connected
         updateEthereumState()
         setTimeout(updateEthereumState, 500)
         setTimeout(updateEthereumState, 1000)
@@ -182,12 +182,17 @@ const EthereumContextProvider = ({ children }) => {
     // Update token balances on token changes
 
     useEffect(() => {
+        // Reset token balances
+
         const balances = {...chain.tokenBalances}
         for (const token of chain.tokens) {
             if (!balances[token.address]) {
                 balances[token.address] = BN(0)
             }
         }
+
+        // Delete removed tokens
+
         for (const address in balances) {
             if (!chain.tokens.find(token => address === token.address)) {
                 delete balances[address]
@@ -199,9 +204,13 @@ const EthereumContextProvider = ({ children }) => {
     // Update token balances on loop
 
     useEffect(() => {
+        // Update balances on loop
+
         const chainId = chain.id
         updateBalances()
         const interval = setInterval(updateBalances, 2000)
+
+        // Reset token balances for chain
 
         return () => {
             clearInterval(interval)

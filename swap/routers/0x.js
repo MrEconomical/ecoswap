@@ -97,7 +97,7 @@ async function getSwap(chain, account, BN) {
             out: BN(result.data.buyAmount),
             tx: {
                 from: account,
-                to: result.data.to,
+                to: chain.web3.utils.toChecksumAddress(result.data.to),
                 data: result.data.data,
                 ...(gas) && { gas: chain.web3.utils.numberToHex(Math.floor(gas * 1.25)) }
             }

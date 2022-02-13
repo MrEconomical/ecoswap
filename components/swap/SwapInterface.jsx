@@ -6,6 +6,7 @@ import ThemeContext from "../../state/ThemeContext.js"
 import EthereumContext from "../../state/EthereumContext.js"
 import SwapInput from "./SwapInput.jsx"
 import TokenSelect from "./TokenSelect.jsx"
+import useApproval from "../../state/useApproval.js"
 import quoteSwap from "../../swap/quote.js"
 import getSwap from "../../swap/swap.js"
 import { parse, format } from "../../helpers/number.js"
@@ -20,10 +21,12 @@ const SwapInterface = () => {
     const { enabled, web3, chain, account, BN } = useContext(EthereumContext)
     const swap = chain.swap
     const [ swapButtonText, setSwapButtonText ] = useState("Swap Tokens")
+    const getApproved = useApproval(web3, chain, account, swap.tokenIn, BN)
 
     const tokenIn = useRef(swap.tokenIn ? swap.tokenIn.address : null)
     const amountIn = useRef(swap.tokenInAmount)
     const tokenOut = useRef(swap.tokenOut ? swap.tokenOut.address : null)
+
     const updateTimeout = useRef()
     const quoteStart = useRef()
     const swapPending = useRef(false)
@@ -114,12 +117,6 @@ const SwapInterface = () => {
         }
     }
 
-    // Reset router quotes
-
-    function resetRouterQuotes() {
-        swap.setRouters(routerList)
-    }
-
     // Swap tokens
 
     async function swapTokens() {
@@ -128,7 +125,7 @@ const SwapInterface = () => {
         if (!enabled || !account || !swap.tokenIn || !swap.tokenOut || !swap.tokenInAmount) return
         if (chain.tokenBalances[swap.tokenIn.address].lt(swap.tokenInAmount)) return
         swap.setTokenOutAmount("...")
-        resetRouterQuotes()
+        swap.setRouters(routerList)
         const swapData = await getSwap(chain, account, BN)
         if (!swapData) return
 
@@ -139,7 +136,7 @@ const SwapInterface = () => {
             (swap.tokenIn.address !== chain.WETH._address || swap.tokenOut.address !== "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE")
         ) {
             const Token = new chain.web3.eth.Contract(ERC20ABI, swap.tokenIn.address)
-            const approved = BN(await Token.methods.allowance(account, swapData.tx.to).call())
+            const approved = await getApproved(swapData.tx.to)
 
             if (approved.lt(swap.tokenInAmount)) {
                 // Prompt token approve
@@ -227,7 +224,7 @@ const SwapInterface = () => {
         clearTimeout(updateTimeout.current)
         if (!swap.tokenIn || !swap.tokenInAmount || !swap.tokenOut) {
             swap.setTokenOutAmount(null)
-            resetRouterQuotes()
+            swap.setRouters(routerList)
             tokenIn.current = swap.tokenIn ? swap.tokenIn.address : null
             amountIn.current = swap.tokenInAmount
             tokenOut.current = swap.tokenOut ? swap.tokenOut.address : null
@@ -236,7 +233,7 @@ const SwapInterface = () => {
 
         if (swap.tokenIn.address === tokenIn.current && swap.tokenInAmount.eq(BN(amountIn.current)) && swap.tokenOut.address === tokenOut.current) return
         swap.setTokenOutAmount("...")
-        resetRouterQuotes()
+        swap.setRouters(routerList)
 
         if (swap.tokenIn.address !== tokenIn.current || swap.tokenOut.address !== tokenOut.current) {
             updateQuote()
