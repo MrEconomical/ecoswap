@@ -31,11 +31,8 @@ const SwapInterface = () => {
 
     const updateTimeout = useRef()
     const quoteStart = useRef()
+    const approveInterval = useRef()
     const swapPending = useRef(false)
-    const ethereumState = useRef({
-        chainId: chain.id,
-        account
-    })
 
     // Set max token in amount
 
@@ -133,6 +130,8 @@ const SwapInterface = () => {
         if (chain.tokenBalances[swap.tokenIn.address].lt(swap.tokenInAmount)) return
         swap.setTokenOutAmount("...")
         swap.setRouters(routerList)
+        clearInterval(approveInterval.current)
+        updateSwapButtonText()
         const swapData = await getSwap(chain, account)
         if (!swapData) return
 
@@ -144,7 +143,7 @@ const SwapInterface = () => {
         ) {
             const Token = new chain.web3.eth.Contract(ERC20ABI, swap.tokenIn.address)
             const approved = await getApproved(swapData.tx.to)
-            
+
             if (approved.lt(swap.tokenInAmount)) {
                 setSwapButtonText(`Approve ${swap.tokenIn.symbol} on ${swapData.router.name}`)
                 try {
@@ -162,22 +161,17 @@ const SwapInterface = () => {
 
                     setSwapButtonText(`Approve ${swap.tokenIn.symbol} on ${swapData.router.name}...`)
                     const sent = Date.now()
-                    const interval = setInterval(async () => {
+                    approveInterval.current = setInterval(async () => {
                         try {
                             // Poll approve transaction
-
-                            if (chain.id !== ethereumState.current.chainId || account !== ethereumState.current.account) {
-                                clearInterval(interval)
-                                return
-                            }
 
                             const transaction = await chain.web3.eth.getTransactionReceipt(approveTx)
                             if (!transaction) {
                                 if (Date.now() - sent < 60000) return
-                                clearInterval(interval)
+                                clearInterval(approveInterval.current)
                                 updateSwapButtonText()
                             } else if (transaction.status || transaction.status === false) {
-                                clearInterval(interval)
+                                clearInterval(approveInterval.current)
                                 updateSwapButtonText()
                             }
                         } catch(error) {
@@ -275,14 +269,11 @@ const SwapInterface = () => {
 
     useEffect(() => updateSwapButtonText, [swap.tokenIn, swap.tokenOut])
 
-    // Update state reference on state changes
+    // Clear approve transaction poll interval on state changes
 
     useEffect(() => {
-        ethereumState.current = {
-            chainId: chain.id,
-            account
-        }
-    }, [chain, account])
+        clearInterval(approveInterval.current)
+    }, [chain, account, swap.tokenIn, swap.tokenOut])
 
     // Component
 
