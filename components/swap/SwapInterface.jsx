@@ -208,6 +208,7 @@ const SwapInterface = () => {
 
     function updateSwapButtonText() {
         setSwapButtonText("Swap Tokens")
+        return
         if (!swap.tokenIn || !swap.tokenOut) {
             setSwapButtonText("Swap Tokens")
             return
