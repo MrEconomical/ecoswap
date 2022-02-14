@@ -50,23 +50,34 @@ function useGasPrice(chainId, chain) {
                     default: 2,
                     fast: +data.FastGasPrice > 200 ? 6 : 4
                 })
-            } else if (chainId === "0xa86a") {
-                // Avalanche gas
+            } else if (chainId === "0x89" || chainId === "0xa86a") {
+                // Polygon and Avalanche gas
 
-                const data = (await axios("https://api.zapper.fi/v1/gas-price?network=avalanche&api_key=96e0cc51-a62e-42ca-acee-910ea7d2a241")).data
+                const data = (await axios(`https://api.zapper.fi/v1/gas-price?network=${
+                    chainId === "0x89" ? "polygon" :
+                    chainId === "0xa86a" ? "avalanche" : null
+                }&api_key=96e0cc51-a62e-42ca-acee-910ea7d2a241`)).data
                 setSlow(data.standard)
                 setNormal(data.fast)
                 setFast(data.instant)
-                setPriorityFee({
-                    slow: 15,
-                    default: 25,
-                    fast: data.instant > 100 ? 40 : 30
-                })
+
+                if (chainId === "0x89") {
+                    setPriorityFee({
+                        slow: Math.min(25, data.standard),
+                        default: Math.min(35, data.fast),
+                        fast: Math.min(data.instant > 100 ? 100 : 60, data.instant)
+                    })
+                } else if (chainId === "0xa86a") {
+                    setPriorityFee({
+                        slow: Math.min(15, data.standard),
+                        default: Math.min(25, data.fast),
+                        fast: Math.min(data.instant > 100 ? 40 : 30, data.instant)
+                    })
+                }
             } else {
                 // Default gas API
 
                 const data = (await axios(`https://api.zapper.fi/v1/gas-price?network=${
-                    chainId === "0x89" ? "polygon" :
                     chainId === "0xfa" ? "fantom" :
                     chainId === "0x38" ? "binance-smart-chain" : null
                 }&api_key=96e0cc51-a62e-42ca-acee-910ea7d2a241`)).data
@@ -98,7 +109,7 @@ function useGasPrice(chainId, chain) {
 
     function getGasParameters(gas) {
         if (gas === "default") return {}
-        if (chainId === "0x1" || chainId === "0xa86a") {
+        if (["0x1", "0x89", "0xa86a"].includes(chainId)) {
             return {
                 type: "2",
                 maxFeePerGas: BN((gasPrice[gas] || gas) * 100).mul(BN(10).pow(BN(7))).toString(16),
