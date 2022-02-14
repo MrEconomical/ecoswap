@@ -207,8 +207,6 @@ const SwapInterface = () => {
     // Update swap button text
 
     function updateSwapButtonText() {
-        setSwapButtonText("Swap Tokens")
-        return
         if (!swap.tokenIn || !swap.tokenOut) {
             setSwapButtonText("Swap Tokens")
             return
@@ -268,7 +266,7 @@ const SwapInterface = () => {
 
     // Update swap button text on swap state changes
 
-    useEffect(() => updateSwapButtonText, [swap.tokenIn, swap.tokenOut])
+    useEffect(updateSwapButtonText, [swap.tokenIn, swap.tokenOut])
 
     // Clear approve transaction poll interval on state changes
 
