@@ -83,6 +83,8 @@ function useApproval(chain, account, token) {
         }
     }
 
+    // Approval data
+
     return getApproved
 }
 

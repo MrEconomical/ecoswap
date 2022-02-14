@@ -144,12 +144,12 @@ const SwapInterface = () => {
         ) {
             const Token = new chain.web3.eth.Contract(ERC20ABI, swap.tokenIn.address)
             const approved = await getApproved(swapData.tx.to)
-
+            
             if (approved.lt(swap.tokenInAmount)) {
-                // Prompt token approve
-
                 setSwapButtonText(`Approve ${swap.tokenIn.symbol} on ${swapData.router.name}`)
                 try {
+                    // Prompt token approve transaction
+
                     const approveTx = await ethereum.request({
                         method: "eth_sendTransaction",
                         params: [{
@@ -175,10 +175,10 @@ const SwapInterface = () => {
                             if (!transaction) {
                                 if (Date.now() - sent < 60000) return
                                 clearInterval(interval)
-                                setSwapButtonText("Swap Tokens")
+                                updateSwapButtonText()
                             } else if (transaction.status || transaction.status === false) {
                                 clearInterval(interval)
-                                setSwapButtonText("Swap Tokens")
+                                updateSwapButtonText()
                             }
                         } catch(error) {
                             console.error(error)
@@ -186,8 +186,8 @@ const SwapInterface = () => {
                     }, 500)
                 } catch(error) {
                     console.error(error)
+                    updateSwapButtonText()
                 }
-                setSwapButtonText("Swap Tokens")
                 return
             }
         }
@@ -208,7 +208,23 @@ const SwapInterface = () => {
             console.error(error)
         }
         swapPending.current = false
-        setSwapButtonText("Swap Tokens")
+        updateSwapButtonText()
+    }
+
+    // Update swap button text
+
+    function updateSwapButtonText() {
+        if (!swap.tokenIn || !swap.tokenOut) {
+            setSwapButtonText("Swap Tokens")
+            return
+        }
+        if (swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" && swap.tokenOut.address === chain.WETH) {
+            setSwapButtonText("Wrap")
+        } else if (swap.tokenIn.address === chain.WETH && swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
+            setSwapButtonText("Unwrap")
+        } else {
+            setSwapButtonText("Swap Tokens")
+        }
     }
 
     // Update swap data on token state changes
@@ -255,23 +271,11 @@ const SwapInterface = () => {
         return () => clearInterval(interval)
     }, [swap.tokenIn, swap.tokenInAmount, swap.tokenOut])
 
-    // Update swap button text on token changes
+    // Update swap button text on swap state changes
 
-    useEffect(() => {
-        if (!swap.tokenIn || !swap.tokenOut) {
-            setSwapButtonText("Swap Tokens")
-            return
-        }
-        if (swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" && swap.tokenOut.address === chain.WETH) {
-            setSwapButtonText("Wrap")
-        } else if (swap.tokenIn.address === chain.WETH && swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
-            setSwapButtonText("Unwrap")
-        } else {
-            setSwapButtonText("Swap Tokens")
-        }
-    }, [swap.tokenIn, swap.tokenOut])
+    useEffect(() => updateSwapButtonText, [swap.tokenIn, swap.tokenOut])
 
-    // Update state reference on changes
+    // Update state reference on state changes
 
     useEffect(() => {
         ethereumState.current = {
