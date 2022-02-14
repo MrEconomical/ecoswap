@@ -143,7 +143,6 @@ const SwapInterface = () => {
         ) {
             const Token = new chain.web3.eth.Contract(ERC20ABI, swap.tokenIn.address)
             const approved = await getApproved(swapData.tx.to)
-
             if (approved.lt(swap.tokenInAmount)) {
                 setSwapButtonText(`Approve ${swap.tokenIn.symbol} on ${swapData.router.name}`)
                 try {
