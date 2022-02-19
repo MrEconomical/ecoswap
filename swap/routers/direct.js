@@ -2,7 +2,7 @@
 
 import routerList from "../../data/routers.json"
 import swapRouters from "../../data/swap-routers.json"
-import { BN } from "../../state/EthereumContext.js"
+import { web3, BN } from "../../state/EthereumContext.js"
 
 const routerData = routerList.find(router => router.id === "direct")
 
@@ -85,7 +85,7 @@ async function getSwap(chain, account) {
                 from: account,
                 to: routers[best.router].address,
                 data: swapData,
-                ...(gas) && { gas: chain.web3.utils.numberToHex(Math.floor(gas * 1.25)) }
+                ...(gas) && { gas: web3.utils.numberToHex(Math.floor(gas * 1.25)) }
             }
         }
     } catch(error) {
@@ -97,14 +97,46 @@ async function getSwap(chain, account) {
 // Get best router quote
 
 async function getBestRouterQuote(chain, routers) {
-    // Get router quotes
+    // Run batch request
 
-    const quotes = await Promise.all(Object.keys(routers).map(async router => {
-        return {
-            router,
-            out: BN(await getAmountOut(chain, routers[router], chain.swap.tokenIn.address, chain.swap.tokenOut.address, chain.swap.tokenInAmount))
-        }
-    }))
+    const batch = new chain.web3.BatchRequest()
+    const requests = []
+    const quotes = []
+    const signature = web3.eth.abi.encodeFunctionSignature("getAmountsOut(uint256,address[])")
+    const calldata = web3.eth.abi.encodeParameters(["uint256", "address[]"], [
+        chain.swap.tokenInAmount,
+        [
+            chain.swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : chain.swap.tokenIn.address,
+            chain.swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : chain.swap.tokenOut.address
+        ]
+    ])
+
+    for (const router in routers) {
+        requests.push(new Promise(resolve => {
+            batch.add(chain.web3.eth.call.request({
+                to: routers[router].address,
+                data: `${signature}${calldata.slice(2)}`
+            }, (error, result) => {
+                if (error) {
+                    console.error(error)
+                    quotes.push({
+                        router,
+                        out: BN(0)
+                    })
+                } else {
+                    quotes.push({
+                        router,
+                        out: BN(web3.eth.abi.decodeParameter("uint256[]", result)[1])
+                    })
+                }
+                resolve()
+            }))
+        }))
+    }
+
+    batch.execute()
+    await Promise.all(requests)
+    console.log(quotes)
 
     // Find best router quote
 
@@ -115,33 +147,6 @@ async function getBestRouterQuote(chain, routers) {
         }
     }
     return best
-}
-
-// Query router for amount out
-
-async function getAmountOut(chain, router, tokenIn, tokenOut, amount) {
-    try {
-        // Encode calldata
-
-        const signature = chain.web3.eth.abi.encodeFunctionSignature("getAmountsOut(uint256,address[])")
-        const calldata = chain.web3.eth.abi.encodeParameters(["uint256", "address[]"], [
-            amount,
-            [
-                tokenIn === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : tokenIn,
-                tokenOut === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : tokenOut
-            ]
-        ])
-
-        // Call estimate
-
-        const result = await chain.web3.eth.call({
-            to: router.address,
-            data: `${signature}${calldata.slice(2)}`
-        })
-        return chain.web3.eth.abi.decodeParameter("uint256[]", result)[1]
-    } catch {
-        return 0
-    }
 }
 
 // Encode swap data on router
@@ -159,8 +164,8 @@ function encodeSwapData(chain, account, router, tokenIn, tokenOut, amountIn, amo
     if (tokenIn === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
         // Swap exact ETH for tokens
 
-        const signature = chain.web3.eth.abi.encodeFunctionSignature(`swapExact${router.ETH}ForTokens(uint256,address[],address,uint256)`)
-        const calldata = chain.web3.eth.abi.encodeParameters(["uint256", "address[]", "address", "uint256"], [
+        const signature = web3.eth.abi.encodeFunctionSignature(`swapExact${router.ETH}ForTokens(uint256,address[],address,uint256)`)
+        const calldata = web3.eth.abi.encodeParameters(["uint256", "address[]", "address", "uint256"], [
             amountOutMin,
             path,
             account,
@@ -170,8 +175,8 @@ function encodeSwapData(chain, account, router, tokenIn, tokenOut, amountIn, amo
     } else if (tokenOut === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
         // Swap exact tokens for ETH
 
-        const signature = chain.web3.eth.abi.encodeFunctionSignature(`swapExactTokensFor${router.ETH}(uint256,uint256,address[],address,uint256)`)
-        const calldata = chain.web3.eth.abi.encodeParameters(["uint256", "uint256", "address[]", "address", "uint256"], [
+        const signature = web3.eth.abi.encodeFunctionSignature(`swapExactTokensFor${router.ETH}(uint256,uint256,address[],address,uint256)`)
+        const calldata = web3.eth.abi.encodeParameters(["uint256", "uint256", "address[]", "address", "uint256"], [
             amountIn,
             amountOutMin,
             path,
@@ -182,8 +187,8 @@ function encodeSwapData(chain, account, router, tokenIn, tokenOut, amountIn, amo
     } else {
         // Swap exact tokens for tokens
 
-        const signature = chain.web3.eth.abi.encodeFunctionSignature(`swapExactTokensForTokens(uint256,uint256,address[],address,uint256)`)
-        const calldata = chain.web3.eth.abi.encodeParameters(["uint256", "uint256", "address[]", "address", "uint256"], [
+        const signature = web3.eth.abi.encodeFunctionSignature(`swapExactTokensForTokens(uint256,uint256,address[],address,uint256)`)
+        const calldata = web3.eth.abi.encodeParameters(["uint256", "uint256", "address[]", "address", "uint256"], [
             amountIn,
             amountOutMin,
             path,

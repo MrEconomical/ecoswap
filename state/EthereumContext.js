@@ -100,7 +100,7 @@ const EthereumContextProvider = ({ children }) => {
 
         const batch = new chain.web3.BatchRequest()
         const requests = []
-        const Token = new chain.web3.eth.Contract(ERC20ABI, token)
+        const Token = new web3.eth.Contract(ERC20ABI)
         const calldata = Token.methods.balanceOf(account).encodeABI()
 
         for (const token of tokens) {

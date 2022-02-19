@@ -1,7 +1,7 @@
 // Files and modules
 
 import routerList from "../../data/routers.json"
-import { BN } from "../../state/EthereumContext.js"
+import { web3, BN } from "../../state/EthereumContext.js"
 import axios from "axios"
 import querystring from "querystring"
 
@@ -104,7 +104,7 @@ async function getSwap(chain, account) {
                     from: account,
                     to: withEstimate.data.tx.to,
                     data: withEstimate.data.tx.data,
-                    ...(withEstimate.data.tx.gas) && { gas: chain.web3.utils.numberToHex(Math.floor(withEstimate.data.tx.gas * 1.25)) }
+                    ...(withEstimate.data.tx.gas) && { gas: web3.utils.numberToHex(Math.floor(withEstimate.data.tx.gas * 1.25)) }
                 }
             }
         }
@@ -123,7 +123,7 @@ async function getSwap(chain, account) {
                     from: account,
                     to: withoutEstimate.data.tx.to,
                     data: withoutEstimate.data.tx.data,
-                    ...(withoutEstimate.data.tx.gas) && { gas: chain.web3.utils.numberToHex(Math.floor(withoutEstimate.data.tx.gas * 1.25)) }
+                    ...(withoutEstimate.data.tx.gas) && { gas: web3.utils.numberToHex(Math.floor(withoutEstimate.data.tx.gas * 1.25)) }
                 }
             }
         }
