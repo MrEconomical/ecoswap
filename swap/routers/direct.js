@@ -85,7 +85,7 @@ async function getSwap(chain, account) {
                 from: account,
                 to: routers[best.router].address,
                 data: swapData,
-                ...(gas) && { gas: chain.web3.utils.numberToHex(Math.floor(gas * 1.05)) }
+                ...(gas) && { gas: chain.web3.utils.numberToHex(Math.floor(gas * 1.25)) }
             }
         }
     } catch(error) {
