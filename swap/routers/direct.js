@@ -136,7 +136,6 @@ async function getBestRouterQuote(chain, routers) {
 
     batch.execute()
     await Promise.all(requests)
-    console.log(quotes)
 
     // Find best router quote
 
