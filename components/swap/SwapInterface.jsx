@@ -128,12 +128,18 @@ const SwapInterface = () => {
 
         if (!enabled || !account || !swap.tokenIn || !swap.tokenOut || !swap.tokenInAmount) return
         if (chain.tokenBalances[swap.tokenIn.address].lt(swap.tokenInAmount)) return
+
         swap.setTokenOutAmount("...")
         swap.setRouters(routerList)
         clearInterval(approveInterval.current)
         updateSwapButtonText()
+
+        swapPending.current = true
         const swapData = await getSwap(chain, account)
-        if (!swapData) return
+        if (!swapData) {
+            swapPending.current = false
+            return
+        }
 
         // Check approval
 
@@ -145,6 +151,7 @@ const SwapInterface = () => {
             const approved = await getApproved(swapData.tx.to)
             if (approved.lt(swap.tokenInAmount)) {
                 setSwapButtonText(`Approve ${swap.tokenIn.symbol} on ${swapData.router.name}`)
+                swapPending.current = false
                 try {
                     // Prompt token approve transaction
 
@@ -187,7 +194,6 @@ const SwapInterface = () => {
 
         // Send swap transaction
 
-        swapPending.current = true
         try {
             await ethereum.request({
                 method: "eth_sendTransaction",
