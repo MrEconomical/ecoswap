@@ -1,17 +1,24 @@
 // Files and modules
 
+import chainData from "../data/chains.json"
 import { useState, useEffect, useRef } from "react"
+
+// Load token lists
+
+const tokenLists = {}
+for (const id in chainData) {
+    tokenLists[id] = require(`../data/tokens/${id}.json`)
+    for (const token of tokenLists[id]) {
+        token.default = true
+    }
+}
 
 // Chain tokens hook
 
 function useTokens(chainId) {
     // Tokens state data
 
-    const tokenList = require(`../data/tokens/${chainId}.json`)
-    for (const token of tokenList) {
-        token.default = true
-    }
-    const [ tokens, setTokens ] = useState(tokenList)
+    const [ tokens, setTokens ] = useState(tokenLists[chainId])
 
     // Get external tokens from local storage
 
