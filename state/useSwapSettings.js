@@ -1,47 +1,44 @@
 // Files and modules
 
+import chainData from "../data/chains.json"
 import routerList from "../data/routers.json"
 import { useState, useEffect } from "react"
 
+// Load initial state
+
+const initialGas = {}
+for (const id in chainData) {
+    initialGas[id] = "default"
+}
+
+const initialRouters = {}
+for (const router of routerList) {
+    initialRouters[router.id] = {
+        name: router.name,
+        enabled: true
+    }
+}
+
 // Swap settings hook
 
-function useSwapSettings(chains) {
+function useSwapSettings() {
     // Swap settings state data
 
     const [ slippage, setSlippage ] = useState(0.5)
-    const initialGas = {}
-    for (const chainId in chains) {
-        initialGas[chainId] = "default"
-    }
-
     const [ gas, setGas ] = useState(initialGas)
-    const initialRouters = {}
-    for (const router of routerList) {
-        initialRouters[router.id] = {
-            name: router.name,
-            enabled: true
-        }
-    }
-
     const [ routers, setRouters ] = useState(initialRouters)
     const [ referral, setReferral ] = useState()
-
-    // Default settings
-
-    function getDefault() {
-        return {
-            slippage: 0.5,
-            gas: initialGas,
-            routers: initialRouters,
-            referral: null
-        }
-    }
 
     // Get swap settings from local storage
 
     useEffect(() => {
         if (!localStorage.swapSettings) {
-            localStorage.swapSettings = JSON.stringify(getDefault())
+            localStorage.swapSettings = JSON.stringify({
+                slippage: 0.5,
+                gas: initialGas,
+                routers: initialRouters,
+                referral: null
+            })
         } else {
             try {
                 const settings = JSON.parse(localStorage.swapSettings)
@@ -67,7 +64,12 @@ function useSwapSettings(chains) {
                 setReferral(settings.referral)
                 localStorage.swapSettings = JSON.stringify(settings)
             } catch {
-                localStorage.swapSettings = JSON.stringify(getDefault())
+                localStorage.swapSettings = JSON.stringify({
+                    slippage: 0.5,
+                    gas: initialGas,
+                    routers: initialRouters,
+                    referral: null
+                })
             }
         }
     }, [])

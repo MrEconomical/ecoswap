@@ -29,7 +29,7 @@ const EthereumContext = createContext({})
 const EthereumContextProvider = ({ children }) => {
     // Default Ethereum application state
 
-    const swapSettings = useSwapSettings(chains)
+    const swapSettings = useSwapSettings()
     for (const id in chains) {
         // Initialize token list
 

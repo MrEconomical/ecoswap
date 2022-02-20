@@ -5,13 +5,14 @@ import approvalCache from "../data/approval-cache.json"
 import { web3, BN } from "./EthereumContext.js"
 import { useState, useEffect } from "react"
 
+const Token = new web3.eth.Contract(ERC20ABI)
+
 // Token approval hook
 
 function useApproval(chain, account, token) {
     // Token approval state data
 
     const [ approved, setApproved ] = useState({})
-    const Token = new web3.eth.Contract(ERC20ABI)
 
     // Update approval cache loop on state changes
 
