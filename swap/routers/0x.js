@@ -105,8 +105,9 @@ async function getSwap(chain, account) {
         }
     } catch(error) {
         console.error(error)
-        return none
     }
+
+    return none
 }
 
 // Exports
