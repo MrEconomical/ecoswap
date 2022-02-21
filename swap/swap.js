@@ -62,6 +62,7 @@ async function getSwap(chain, account) {
     // Get best router swap
 
     const swaps = await Promise.all(routers.map(router => router.getSwap(chain, account)))
+    console.log(swaps)
     swaps.sort((a, b) => {
         if (a.out && !b.out) {
             return -1
