@@ -159,7 +159,7 @@ function encodeSwapData(chain, account, router, tokenIn, tokenOut, amountIn, amo
         tokenIn === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : tokenIn,
         tokenOut === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : tokenOut
     ]
-    const deadline = BN(2).pow(BN(256)).sub(BN(1))
+    const deadline = Math.floor(Date.now() / 1000) + 60 * 60 * 1000
 
     if (tokenIn === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
         // Swap exact ETH for tokens
