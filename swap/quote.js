@@ -41,7 +41,7 @@ async function quoteSwap(chain) {
         } else if (!a.out && !b.out) {
             return 0
         } else {
-            if (a.out.mul(BN(10).pow(BN(6))).div(b.out).sub(BN(10).pow(BN(6))).abs().lt(BN(7))) {
+            if (a.out.mul(BN(10).pow(BN(6))).div(b.out).sub(BN(10).pow(BN(6))).abs().lt(BN(10))) {
                 return a.priority > b.priority ? -1 : a.priority < b.priority ? 1 : 0
             } else {
                 return a.out.gt(b.out) ? -1 : a.out.lt(b.out) ? 1 : 0
