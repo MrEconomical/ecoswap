@@ -2,6 +2,7 @@
 
 import routerList from "../../data/routers.json"
 import swapRouters from "../../data/swap-routers.json"
+import routeTokens from "../../data/route-tokens.json"
 import { web3, BN } from "../../state/EthereumContext.js"
 
 const routerData = routerList.find(router => router.id === "direct")
@@ -63,7 +64,7 @@ async function getSwap(chain, account) {
 
         const best = await getBestRouterQuote(chain, routers)
         if (best.out.isZero()) return none
-        const swapData = encodeSwapData(chain, account, routers[best.router], swap.tokenIn.address, swap.tokenOut.address, swap.tokenInAmount, best.out)
+        const swapData = encodeSwapData(chain, account, routers[best.router], swap.tokenIn.address, swap.tokenOut.address, best.path, swap.tokenInAmount, best.out)
         const gas = await chain.web3.eth.estimateGas({
             from: account,
             to: routers[best.router].address,
@@ -104,35 +105,35 @@ async function getBestRouterQuote(chain, routers) {
     const requests = []
     const quotes = []
     const signature = web3.eth.abi.encodeFunctionSignature("getAmountsOut(uint256,address[])")
-    const calldata = web3.eth.abi.encodeParameters(["uint256", "address[]"], [
-        chain.swap.tokenInAmount,
-        [
-            chain.swap.tokenIn.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : chain.swap.tokenIn.address,
-            chain.swap.tokenOut.address === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : chain.swap.tokenOut.address
-        ]
-    ])
+    const paths = getPaths(chain, chain.swap.tokenIn.address, chain.swap.tokenOut.address)
 
-    for (const router in routers) {
-        requests.push(new Promise(resolve => {
-            batch.add(chain.web3.eth.call.request({
-                to: routers[router].address,
-                data: `${signature}${calldata.slice(2)}`
-            }, (error, result) => {
-                if (error) {
-                    console.error(error)
-                    quotes.push({
-                        router,
-                        out: BN(0)
-                    })
-                } else {
-                    quotes.push({
-                        router,
-                        out: BN(web3.eth.abi.decodeParameter("uint256[]", result)[1])
-                    })
-                }
-                resolve()
+    for (const path of paths) {
+        const calldata = web3.eth.abi.encodeParameters(["uint256", "address[]"], [chain.swap.tokenInAmount, path])
+        for (const router in routers) {
+            requests.push(new Promise(resolve => {
+                const swapPath = path.slice()
+                batch.add(chain.web3.eth.call.request({
+                    to: routers[router].address,
+                    data: `${signature}${calldata.slice(2)}`
+                }, (error, result) => {
+                    if (error) {
+                        quotes.push({
+                            router,
+                            path: swapPath,
+                            out: BN(0)
+                        })
+                    } else {
+                        const amounts = web3.eth.abi.decodeParameter("uint256[]", result)
+                        quotes.push({
+                            router,
+                            path: swapPath,
+                            out: BN(amounts[amounts.length - 1])
+                        })
+                    }
+                    resolve()
+                }))
             }))
-        }))
+        }
     }
 
     batch.execute()
@@ -149,16 +150,30 @@ async function getBestRouterQuote(chain, routers) {
     return best
 }
 
+// Get swap paths with route tokens
+
+function getPaths(chain, tokenIn, tokenOut) {
+    // Generate all paths with chain route tokens
+
+    const addressIn = tokenIn === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : tokenIn
+    const addressOut = tokenOut === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : tokenOut
+    const paths = [[addressIn, addressOut]]
+
+    for (const token of routeTokens[chain.id]) {
+        if (token !== addressIn && token !== addressOut) {
+            paths.push([addressIn, token, addressOut])
+        }
+    }
+
+    return paths
+}
+
 // Encode swap data on router
 
-function encodeSwapData(chain, account, router, tokenIn, tokenOut, amountIn, amountOut) {
+function encodeSwapData(chain, account, router, tokenIn, tokenOut, path, amountIn, amountOut) {
     // Calculate swap data
 
     const amountOutMin = amountOut.mul(BN(10 ** 4 - chain.swapSettings.slippage * 100)).div(BN(10).pow(BN(4)))
-    const path = [
-        tokenIn === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : tokenIn,
-        tokenOut === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" ? chain.WETH : tokenOut
-    ]
     const deadline = Math.floor(Date.now() / 1000) + 60 * 60 * 1000
 
     if (tokenIn === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
