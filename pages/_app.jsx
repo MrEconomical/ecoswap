@@ -17,11 +17,11 @@ const Metadata = ({ page }) => {
         <Head>
             <meta charSet="UTF-8"></meta>
             <meta name="viewport" content="width=device-width"></meta>
-            <meta name="description" content="A privacy-centered DEX aggregator, bringing you a fast, lightweight swap experience with the best rates on Ethereum, Polygon, Fantom, Avalanche, and the Binance Smart Chain"></meta>
+            <meta name="description" content="A privacy-centered DEX aggregator, bringing you a fast, lightweight swap experience with the best rates on Ethereum, Polygon, Fantom, Avalanche, and BNB Chain"></meta>
             <meta property="og:title" content={title}></meta>
             <meta property="og:type" content="website"></meta>
             <meta property="og:image" content="/ecoswap.png"></meta>
-            <meta property="og:description" content="A privacy-centered DEX aggregator, bringing you a fast, lightweight swap experience with the best rates on Ethereum, Polygon, Fantom, Avalanche, and the Binance Smart Chain"></meta>
+            <meta property="og:description" content="A privacy-centered DEX aggregator, bringing you a fast, lightweight swap experience with the best rates on Ethereum, Polygon, Fantom, Avalanche, and BNB Chain"></meta>
             <title>{title}</title>
             <link rel="icon" href="/ecoswap-square.png"></link>
         </Head>

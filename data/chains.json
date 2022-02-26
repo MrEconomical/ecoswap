@@ -32,8 +32,8 @@
         "explorer": "https://snowtrace.io"
     },
     "0x38": {
-        "name": "Binance SC",
-        "fullName": "Binance Smart Chain",
+        "name": "BNB Chain",
+        "fullName": "BNB Chain",
         "token": "BNB",
         "WETH": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
         "rpc": "https://bsc-dataseed.binance.org",
