@@ -450,11 +450,25 @@ const SwapInterface = () => {
                         padding: 20px 20px 20px 0;
                         margin-right: 20px;
                     }
+
+                    .max-token {
+                        font-size: 0.9rem;
+                    }
+
+                    .switch {
+                        width: 36px;
+                        height: 36px;
+                    }
+
+                    .arrows {
+                        width: 18px;
+                        height: 18px;
+                    }
                 }
 
                 @media only screen and (max-width: 700px) {
                     .interface {
-                        width: 290px;
+                        width: 300px;
                         padding: 0;
                         border-right: none;
                         margin-right: 0;

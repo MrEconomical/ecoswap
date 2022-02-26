@@ -121,7 +121,7 @@ const WalletManager = () => {
                     <div className="connect-content">
                         <img className="connect-icon" src="/icons/wallet.svg"></img>
                         {width > 550 ? enabled ? account ? `${account.slice(0, 6)}...${account.slice(-4)}` : "Connect Wallet" : "Enable Ethereum" :
-                                        enabled ? account ? `${account.slice(0, 4)}...${account.slice(-2)}` : "Connect" : "Enable"}
+                                        enabled ? account ? `${account.slice(0, 6)}...` : "Connect" : "Enable"}
                     </div>
                 </button>
                 {chainSelectActive ? (
@@ -348,7 +348,11 @@ const NavBar = () => {
 
                 @media only screen and (max-width: 550px) {
                     .nav {
-                        padding: 0 max(calc(50vw - 145px), 10px);
+                        padding: 0 max(calc(50vw - 155px), 10px);
+                    }
+
+                    .icon {
+                        height: 2.6rem;
                     }
 
                     .title {
@@ -510,7 +514,7 @@ const Layout = ({ children }) => (
 
             @media only screen and (max-width: 550px) {
                 .content {
-                    padding: 0 max(calc(50vw - 145px), 10px);
+                    padding: 0 max(calc(50vw - 155px), 10px);
                 }
             }
         `}</style>

@@ -116,6 +116,12 @@ const SwapInput = () => {
                 .input:focus {
                     border: 1px solid var(--gray);
                 }
+
+                @media only screen and (max-width: 800px), (max-height: 800px) {
+                    .input {
+                        padding: 7px 9px;
+                    }
+                }
             `}</style>
         </>
     )
