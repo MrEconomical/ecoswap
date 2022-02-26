@@ -14,7 +14,8 @@ async function quote(chain) {
 
     const none = {
         ...routerData,
-        out: false
+        out: false,
+        priority: 0
     }
 
     // Check swap parameters
@@ -34,12 +35,13 @@ async function quote(chain) {
             routerId: best.router,
             name: routers[best.router].name,
             out: best.out,
-            priority: true
+            priority: 1
         }
     } catch(error) {
         console.error(error)
-        return none
     }
+
+    return none
 }
 
 // Get swap
@@ -49,7 +51,8 @@ async function getSwap(chain, account) {
 
     const none = {
         router: routerData,
-        out: false
+        out: false,
+        priority: 0
     }
 
     // Check swap parameters
@@ -87,7 +90,8 @@ async function getSwap(chain, account) {
                 to: routers[best.router].address,
                 data: swapData,
                 ...(gas) && { gas: web3.utils.numberToHex(Math.floor(gas * 1.25)) }
-            }
+            },
+            priority: 1
         }
     } catch(error) {
         console.error(error)

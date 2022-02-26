@@ -26,7 +26,8 @@ async function quote(chain) {
 
     const none = {
         ...routerData,
-        out: false
+        out: false,
+        priority: 0
     }
 
     // Check swap parameters
@@ -47,12 +48,14 @@ async function quote(chain) {
 
         return {
             ...routerData,
-            out: BN(result.data.toTokenAmount)
+            out: BN(result.data.toTokenAmount),
+            priority: 0
         }
     } catch(error) {
         console.error(error)
-        return none
     }
+
+    return none
 }
 
 // Get swap
@@ -62,7 +65,8 @@ async function getSwap(chain, account) {
 
     const none = {
         router: routerData,
-        out: false
+        out: false,
+        priority: 0
     }
 
     // Check swap parameters
@@ -105,7 +109,8 @@ async function getSwap(chain, account) {
                     to: withEstimate.data.tx.to,
                     data: withEstimate.data.tx.data,
                     ...(withEstimate.data.tx.gas) && { gas: web3.utils.numberToHex(Math.floor(withEstimate.data.tx.gas * 1.25)) }
-                }
+                },
+                priority: 0
             }
         }
 
@@ -124,7 +129,8 @@ async function getSwap(chain, account) {
                     to: withoutEstimate.data.tx.to,
                     data: withoutEstimate.data.tx.data,
                     ...(withoutEstimate.data.tx.gas) && { gas: web3.utils.numberToHex(Math.floor(withoutEstimate.data.tx.gas * 1.25)) }
-                }
+                },
+                priority: 0
             }
         }
     } catch(error) {

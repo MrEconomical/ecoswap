@@ -30,7 +30,8 @@ async function quote(chain) {
 
     const none = {
         ...routerData,
-        out: false
+        out: false,
+        priority: 0
     }
 
     // Check swap parameters
@@ -51,12 +52,14 @@ async function quote(chain) {
 
         return {
             ...routerData,
-            out: BN(result.data.buyAmount)
+            out: BN(result.data.buyAmount),
+            priority: chain.id === "0x38" ? 2 : 0
         }
     } catch(error) {
         console.error(error)
-        return none
     }
+
+    return none
 }
 
 // Get swap
@@ -66,7 +69,8 @@ async function getSwap(chain, account) {
 
     const none = {
         router: routerData,
-        out: false
+        out: false,
+        priority: 0
     }
 
     // Check swap parameters
@@ -101,7 +105,8 @@ async function getSwap(chain, account) {
                 to: web3.utils.toChecksumAddress(result.data.to),
                 data: result.data.data,
                 ...(gas) && { gas: web3.utils.numberToHex(Math.floor(gas * 1.25)) }
-            }
+            },
+            priority: chain.id === "0x38" ? 2 : 0
         }
     } catch(error) {
         console.error(error)
