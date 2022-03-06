@@ -38,4 +38,9 @@
     "symbol": "MIM",
     "address": "0x130966628846BFd36ff31a822705796e8cb8C18D",
     "decimals": 18
+}, {
+    "name": "JoeToken",
+    "symbol": "JOE",
+    "address": "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd",
+    "decimals": 18
 }]
