@@ -11,11 +11,13 @@ const routerData = routerList.find(router => router.id === "1inch")
 
 function getEndpoint(chainId) {
     if (chainId === "0x1") {
-        return "https://api.1inch.exchange/v3.0/1"
+        return "https://api.1inch.exchange/v4.0/1"
     } else if (chainId === "0x89") {
-        return "https://api.1inch.exchange/v3.0/137"
+        return "https://api.1inch.exchange/v4.0/137"
     } else if (chainId === "0x38") {
-        return "https://api.1inch.exchange/v3.0/56"
+        return "https://api.1inch.exchange/v4.0/56"
+    } else if (chainId === "0xa86a") {
+        return "https://api.1inch.exchange/v4.0/43114"
     }
 }
 
