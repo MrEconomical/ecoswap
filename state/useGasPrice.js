@@ -132,7 +132,7 @@ function useGasPrice(chainId, chain) {
             initialized.current = true
             updateGas()
         }
-        const interval = setInterval(updateGas, chain.id === chainId ? 3000 : 10000)
+        const interval = setInterval(updateGas, chain.id === chainId ? 5000 : 20000)
         return () => clearInterval(interval)
     }, [chain])
 
