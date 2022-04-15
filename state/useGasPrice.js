@@ -53,7 +53,7 @@ function useGasPrice(chainId, chain) {
             } else if (chainId === "0x89" || chainId === "0xa86a") {
                 // Polygon and Avalanche gas
 
-                const data = (await axios(`https://api.zapper.fi/v1/gas-price?network=${
+                const data = (await axios(`https://api.zapper.fi/v1/gas-prices?network=${
                     chainId === "0x89" ? "polygon" :
                     chainId === "0xa86a" ? "avalanche" : null
                 }&api_key=96e0cc51-a62e-42ca-acee-910ea7d2a241`)).data
@@ -77,7 +77,7 @@ function useGasPrice(chainId, chain) {
             } else {
                 // Default gas API
 
-                const data = (await axios(`https://api.zapper.fi/v1/gas-price?network=${
+                const data = (await axios(`https://api.zapper.fi/v1/gas-prices?network=${
                     chainId === "0xfa" ? "fantom" :
                     chainId === "0x38" ? "binance-smart-chain" : null
                 }&api_key=96e0cc51-a62e-42ca-acee-910ea7d2a241`)).data
