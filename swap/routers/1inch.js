@@ -14,10 +14,12 @@ function getEndpoint(chainId) {
         return "https://api.1inch.exchange/v4.0/1"
     } else if (chainId === "0x89") {
         return "https://api.1inch.exchange/v4.0/137"
-    } else if (chainId === "0x38") {
-        return "https://api.1inch.exchange/v4.0/56"
+    } else if (chainId === "0xfa") {
+        return "https://api.1inch.exchange/v4.0/250"
     } else if (chainId === "0xa86a") {
         return "https://api.1inch.exchange/v4.0/43114"
+    } else if (chainId === "0x38") {
+        return "https://api.1inch.exchange/v4.0/56"
     }
 }
 
