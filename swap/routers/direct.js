@@ -178,7 +178,7 @@ function encodeSwapData(chain, account, router, tokenIn, tokenOut, path, amountI
     // Calculate swap data
 
     const amountOutMin = amountOut.mul(BN(10 ** 4 - chain.swapSettings.slippage * 100)).div(BN(10).pow(BN(4)))
-    const deadline = Math.floor(Date.now() / 1000) + 60 * 60 * 1000
+    const deadline = Math.floor(Date.now() / 1000) + 20 * 60 * 1000
 
     if (tokenIn === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
         // Swap exact ETH for tokens
