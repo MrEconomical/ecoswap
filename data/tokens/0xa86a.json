@@ -19,6 +19,11 @@
     "address": "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
     "decimals": 6
 }, {
+    "name": "USD Coin",
+    "symbol": "USDC",
+    "address": "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+    "decimals": 6
+}, {
     "name": "Dai Stablecoin",
     "symbol": "DAI.e",
     "address": "0xd586E7F844cEa2F87f50152665BCbc2C279D8d70",
@@ -27,6 +32,11 @@
     "name": "Tether USD",
     "symbol": "USDT.e",
     "address": "0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
+    "decimals": 6
+}, {
+    "name": "TetherToken",
+    "symbol": "USDt",
+    "address": "0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7",
     "decimals": 6
 }, {
     "name": "Wrapped BTC",
