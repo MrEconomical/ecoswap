@@ -69,9 +69,9 @@ function useGasPrice(chainId, chain) {
                     })
                 } else if (chainId === "0xa86a") {
                     setPriorityFee({
-                        slow: Math.min(15, data.standard),
-                        default: Math.min(25, data.fast),
-                        fast: Math.min(data.instant > 100 ? 40 : 30, data.instant)
+                        slow: 10 ** -6,
+                        default: 10 ** -6,
+                        fast: Math.min(data.instant > 100 ? 15 : 5, data.instant)
                     })
                 }
             } else {
@@ -112,13 +112,13 @@ function useGasPrice(chainId, chain) {
         if (["0x1", "0x89", "0xa86a"].includes(chainId)) {
             return {
                 type: "2",
-                maxFeePerGas: BN((gasPrice[gas] || gas) * 100).mul(BN(10).pow(BN(7))).toString(16),
-                maxPriorityFeePerGas: BN(getPriorityFee(gas) * 100).mul(BN(10).pow(BN(7))).toString(16)
+                maxFeePerGas: BN((gasPrice[gas] || gas) * 10 ** 6).mul(BN(10).pow(BN(3))).toString(16),
+                maxPriorityFeePerGas: BN(getPriorityFee(gas) * 10 ** 6).mul(BN(10).pow(BN(3))).toString(16)
             }
         } else {
             return {
                 type: "1",
-                gasPrice: BN((gasPrice[gas] || gas) * 100).mul(BN(10).pow(BN(7))).toString(16)
+                gasPrice: BN((gasPrice[gas] || gas) * 10 ** 6).mul(BN(10).pow(BN(3))).toString(16)
             }
         }
     }
