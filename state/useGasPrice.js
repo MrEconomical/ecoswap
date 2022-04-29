@@ -63,15 +63,15 @@ function useGasPrice(chainId, chain) {
 
                 if (chainId === "0x89") {
                     setPriorityFee({
-                        slow: Math.min(data.standard > 30 ? 10 : 2, data.standard),
-                        default: Math.min(data.fast > 35 ? 20 : 4, data.fast),
+                        slow: Math.min(31, data.standard),
+                        default: Math.min(35, data.fast),
                         fast: data.instant
                     })
                 } else if (chainId === "0xa86a") {
                     setPriorityFee({
-                        slow: Math.min(15, data.standard),
-                        default: Math.min(25, data.fast),
-                        fast: Math.min(data.instant > 100 ? 40 : 30, data.instant)
+                        slow: Math.min(10**-18, data.standard),
+                        default: Math.min(10**-18, data.fast),
+                        fast: Math.min(data.instant > 100 ? 3 : 2, data.instant)
                     })
                 }
             } else {
