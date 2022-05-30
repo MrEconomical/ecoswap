@@ -50,10 +50,11 @@ function useGasPrice(chainId, chain) {
                     default: 2,
                     fast: +data.FastGasPrice > 200 ? 6 : 4
                 })
-            } else if (chainId === "0x89" || chainId === "0xa86a") {
+            } else if (chainId === "0xfa" || chainId === "0x89" || chainId === "0xa86a") {
                 // Polygon and Avalanche gas
 
                 const data = (await axios(`https://api.zapper.fi/v1/gas-prices?network=${
+                    chainId === "0xfa" ? "fantom":
                     chainId === "0x89" ? "polygon" :
                     chainId === "0xa86a" ? "avalanche" : null
                 }&api_key=96e0cc51-a62e-42ca-acee-910ea7d2a241`)).data
@@ -61,7 +62,13 @@ function useGasPrice(chainId, chain) {
                 setNormal(data.fast)
                 setFast(data.instant)
 
-                if (chainId === "0x89") {
+                if (chainId === "0xfa") {
+                    setPriorityFee({
+                        slow: Math.min(data.standard > 1000 ? 100 : 20, data.standard),
+                        default: Math.min(data.fast > 1000 ? 200 : 50, data.fast),
+                        fast: data.instant
+                    })
+                } else if (chainId === "0x89") {
                     setPriorityFee({
                         slow: Math.min(data.standard > 30 ? 10 : 2, data.standard),
                         default: Math.min(data.fast > 35 ? 20 : 4, data.fast),
@@ -78,7 +85,6 @@ function useGasPrice(chainId, chain) {
                 // Default gas API
 
                 const data = (await axios(`https://api.zapper.fi/v1/gas-prices?network=${
-                    chainId === "0xfa" ? "fantom" :
                     chainId === "0x38" ? "binance-smart-chain" : null
                 }&api_key=96e0cc51-a62e-42ca-acee-910ea7d2a241`)).data
                 setSlow(data.standard)
@@ -109,7 +115,7 @@ function useGasPrice(chainId, chain) {
 
     function getGasParameters(gas) {
         if (gas === "default") return {}
-        if (["0x1", "0x89", "0xa86a"].includes(chainId)) {
+        if (["0x1", "0xfa", "0x89", "0xa86a"].includes(chainId)) {
             return {
                 type: "2",
                 maxFeePerGas: BN((gasPrice[gas] || gas) * 10 ** 6).mul(BN(10).pow(BN(3))).toString(16),
