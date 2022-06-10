@@ -391,9 +391,6 @@ const Footer = () => {
                     <img className="theme-icon" src={theme === "dark" ? "/icons/moon.svg" : "/icons/sun.svg"}></img>
                 </button>
                 <div className="links">
-                    <a href="https://twitter.com/MrEconomical_" target="_blank">
-                        <img className="link" src="/icons/twitter.svg"></img>
-                    </a>
                     <a href="https://discord.gg/PCVHj8kQsZ" target="_blank">
                         <img className="link" src="/icons/discord.svg"></img>
                     </a>
