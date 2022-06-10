@@ -386,7 +386,7 @@ const Footer = () => {
     return (
         <>
             <div className="footer">
-                Built by MrEconomical.eth
+                Built by MrEconomical
                 <button className="switch-theme" onClick={switchTheme}>
                     <img className="theme-icon" src={theme === "dark" ? "/icons/moon.svg" : "/icons/sun.svg"}></img>
                 </button>
