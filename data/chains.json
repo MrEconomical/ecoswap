@@ -41,7 +41,9 @@
         "api": {
             "endpoint": "https://api.ftmscan.com",
             "keys": [
-                ""
+                "RCZ2PE9XSREXDHN5KGK3MBZP9PH36SWZQ3",
+                "JBDGVIGPEBVC1WDMWHXRP8BQ771DIMGVMX",
+                "FE1HJDEA3FFG9ANDIJXQM73BADD1RFZIUB"
             ]
         }
     },
