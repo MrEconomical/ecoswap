@@ -34,9 +34,9 @@ function useGasPrice(chainId, chain) {
         try {
             const key = chain.api.keys[Math.floor(Math.random() * chain.api.keys.length)]
             const data = (await axios(`${chain.api.endpoint}/api?module=gastracker&action=gasoracle&apikey=${key}`)).data.result
-            const slow = +data.SafeGasPrice
-            const normal = +data.ProposeGasPrice
-            const fast = +data.FastGasPrice
+            const slow = Math.floor(+data.SafeGasPrice * 100) / 100
+            const normal = Math.round(+data.ProposeGasPrice * 100) / 100
+            const fast = Math.ceil(+data.FastGasPrice * 100) / 100
             if (isNaN(slow) || isNaN(normal) || isNaN(fast)) return
 
             setSlow(slow)
