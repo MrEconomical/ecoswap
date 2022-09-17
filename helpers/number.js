@@ -1,6 +1,7 @@
 // Convert BN to string
 
 function parse(num, decimals = 18) {
+    if (decimals === 0) return num.toString()
     const padded = num.toString().padStart(decimals + 1, "0")
     const parsed = `${padded.slice(0, -decimals)}.${padded.slice(-decimals)}`.replace(/0+$/g, "")
     return parsed.endsWith(".") ? parsed.slice(0, -1) : parsed
