@@ -95,13 +95,13 @@ function useGasPrice(chainId, chain) {
         if (["0x1", "0xfa", "0x89", "0xa86a"].includes(chainId)) {
             return {
                 type: "2",
-                maxFeePerGas: BN((gasPrice[gas] || gas) * 10 ** 6).mul(BN(10).pow(BN(3))).toString(16),
-                maxPriorityFeePerGas: BN(getPriorityFee(gas) * 10 ** 6).mul(BN(10).pow(BN(3))).toString(16)
+                maxFeePerGas: "0x" + BN((gasPrice[gas] || gas) * 10 ** 6).mul(BN(10).pow(BN(3))).toString(16),
+                maxPriorityFeePerGas: "0x" + BN(getPriorityFee(gas) * 10 ** 6).mul(BN(10).pow(BN(3))).toString(16)
             }
         } else {
             return {
                 type: "1",
-                gasPrice: BN((gasPrice[gas] || gas) * 10 ** 6).mul(BN(10).pow(BN(3))).toString(16)
+                gasPrice: "0x" + BN((gasPrice[gas] || gas) * 10 ** 6).mul(BN(10).pow(BN(3))).toString(16)
             }
         }
     }
