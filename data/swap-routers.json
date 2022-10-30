@@ -24,6 +24,11 @@
         }
     },
     "0xfa": {
+        "soulswap": {
+            "name": "SoulSwap",
+            "address": "0x6b3d631B87FE27aF29efeC61d2ab8CE4d621cCBF",
+            "ETH": "ETH"
+        },
         "spookyswap": {
             "name": "SpookySwap",
             "address": "0xF491e7B69E4244ad4002BC14e878a34207E38c29",
@@ -41,6 +46,11 @@
         }
     },
     "0xa86a": {
+        "soulswap": {
+            "name": "SoulSwap",
+            "address": "0xa4594460A9d3D41e8B85542D34E23AdAbc3c86Ef",
+            "ETH": "ETH"
+        },
         "traderjoe": {
             "name": "Trader Joe",
             "address": "0x60aE616a2155Ee3d9A68541Ba4544862310933d4",
