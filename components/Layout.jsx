@@ -298,11 +298,9 @@ const NavBar = () => {
             <nav className="nav">
                 <Link href="/">
                     <a className="header">
-                        <img className="icon" src={theme === "dark" ? "/ecoswap-white.png" : "/ecoswap.png"}></img>
-                        <div className="title">EcoSwap</div>
+                        <div className="title">SoulSwap</div>
                     </a>
                 </Link>
-                <NavLink name="About" href="/about"></NavLink>
                 <WalletManager></WalletManager>
             </nav>
             <style jsx>{`
@@ -386,15 +384,14 @@ const Footer = () => {
     return (
         <>
             <div className="footer">
-                Built by MrEconomical
                 <button className="switch-theme" onClick={switchTheme}>
                     <img className="theme-icon" src={theme === "dark" ? "/icons/moon.svg" : "/icons/sun.svg"}></img>
                 </button>
                 <div className="links">
-                    <a href="https://discord.gg/PCVHj8kQsZ" target="_blank">
+                    <a href="https://discord.gg/SoulSwap" target="_blank">
                         <img className="link" src="/icons/discord.svg"></img>
                     </a>
-                    <a href="https://github.com/MrEconomical/ecoswap" target="_blank">
+                    <a href="https://github.com/SoulSwapFinance" target="_blank">
                         <img className="link" src="/icons/github.svg"></img>
                     </a>
                 </div>

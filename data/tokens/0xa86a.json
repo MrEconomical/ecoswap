@@ -53,4 +53,10 @@
     "symbol": "JOE",
     "address": "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd",
     "decimals": 18
+}, {
+    "name": "Soul Power",
+    "symbol": "SOUL",
+    "address": "0x11d6DD25c1695764e64F439E32cc7746f3945543",
+    "decimals": 18
+ 
 }]
