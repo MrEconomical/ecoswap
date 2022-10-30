@@ -36,6 +36,7 @@ const Swap = () => {
                         <div className="divider"></div>
                     </>
                 )}
+          </div> 
             <style jsx>{`
                 .content {
                     width: 100%;
