@@ -12,7 +12,7 @@ const chainIds = Object.keys(chains)
 
 const NavLink = ({ name, href }) => (
     <>
-        <Link href={href}>
+        <Link href={href} legacyBehavior>
             <a className="link">{name}</a>
         </Link>
         <style jsx>{`
@@ -296,7 +296,7 @@ const NavBar = () => {
     return (
         <>
             <nav className="nav">
-                <Link href="/">
+                <Link href="/" legacyBehavior>
                     <a className="header">
                         <img className="icon" src={theme === "dark" ? "/ecoswap-white.png" : "/ecoswap.png"}></img>
                         <div className="title">EcoSwap</div>
