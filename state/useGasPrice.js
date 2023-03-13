@@ -32,6 +32,18 @@ function useGasPrice(chainId, chain) {
 
     async function updateGas() {
         try {
+            if (chainId === "0xa4b1") {
+                setSlow(0.1)
+                setNormal(0.1)
+                setFast(0.1)
+                setPriorityFee({
+                    slow: 0.1,
+                    default: 0.1,
+                    fast: 0.1
+                })
+                return
+            }
+
             const key = chain.api.keys[Math.floor(Math.random() * chain.api.keys.length)]
             const data = (await axios(`${chain.api.endpoint}/api?module=gastracker&action=gasoracle&apikey=${key}`)).data.result
             const slow = Math.floor(+data.SafeGasPrice * 100) / 100
@@ -92,7 +104,7 @@ function useGasPrice(chainId, chain) {
 
     function getGasParameters(gas) {
         if (gas === "default") return {}
-        if (["0x1", "0xfa", "0x89", "0xa86a"].includes(chainId)) {
+        if (["0x1", "0xfa", "0x89", "0xa86a", "0xa4b1"].includes(chainId)) {
             return {
                 type: "2",
                 maxFeePerGas: "0x" + BN((gasPrice[gas] || gas) * 10 ** 6).mul(BN(10).pow(BN(3))).toString(16),
