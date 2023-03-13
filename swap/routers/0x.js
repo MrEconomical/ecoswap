@@ -20,6 +20,8 @@ function getEndpoint(chainId) {
         return "https://avalanche.api.0x.org"
     } else if (chainId === "0x38") {
         return "https://bsc.api.0x.org"
+    } else if (chainId === "0xa4b1") {
+        return "https://arbitrum.api.0x.org"
     }
 }
 

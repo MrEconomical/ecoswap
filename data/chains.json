@@ -78,5 +78,21 @@
                 "V1NKYYZ92DM1QM9BZEDS1GDF7FB12J9V9F"
             ]
         }
+    },
+    "0xa4b1": {
+        "name": "Arbitrum",
+        "fullName": "Arbitrum One",
+        "token": "ETH",
+        "WETH": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+        "rpc": "https://arb1.arbitrum.io/rpc",
+        "explorer": "https://arbiscan.io",
+        "api": {
+            "endpoint": "https://api.arbiscan.io",
+            "keys": [
+                "PBB22ASDNYEHC419FNS2XYGTGM5B5B82PP",
+                "RBFN8N5ND2MN79PXUQXRGQWIJF5G8CQDTP",
+                "B9UIXZ32ATW75FCS19T1W79WGB8YRMM7UJ"
+            ]
+        }
     }
 }
