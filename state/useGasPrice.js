@@ -37,9 +37,9 @@ function useGasPrice(chainId, chain) {
                 setNormal(0.1)
                 setFast(0.1)
                 setPriorityFee({
-                    slow: 0.1,
-                    default: 0.1,
-                    fast: 0.1
+                    slow: 0,
+                    default: 0,
+                    fast: 1
                 })
                 return
             }
